@@ -13,7 +13,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 	public Context build(Context<Object> context) {
 		ContinuousSpaceFactory spaceFact = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 		
-		ContinuousSpace<Object> space = spaceFact.createContinuousSpace("space", context, new SimpleCartesianAdder<Object>(), new WrapAroundBorders(), 10, 10);
+		ContinuousSpace<Object> space = spaceFact.createContinuousSpace("space", context, new SimpleCartesianAdder<Object>(), new StrictBorders(), 10, 10);
 
 		for (int i = 0; i < 10; i++) {
 			basestudent stud = new basestudent();
@@ -25,6 +25,6 @@ public class modelbuilder implements ContextBuilder<Object>{
 		}
 		
 		return context;
-	}
+	}	
 
 }

@@ -3,6 +3,8 @@ package mensamodell;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
 
+//thekentreu hat suchradius unendlich: geht immer zur richtigen theke.
+
 public class basestudent {
 	
 	int food_preference; // 0=veggie, 1=vegan, 2=meat, 3=no_preference 
