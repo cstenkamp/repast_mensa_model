@@ -78,7 +78,6 @@ public class basestudent {
 	} // END of ScheduledMethod
 	
 	/**
-	// eigentliche Bewegung zwischen den Zeitschritten
 	@ScheduledMethod(start=1.5, interval=1)
 	public void move(){
 		space.moveByDisplacement(this, velocity.x, velocity.y);

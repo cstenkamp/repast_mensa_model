@@ -19,20 +19,16 @@ public class modelbuilder implements ContextBuilder<Object>{
 		// save the parameters in variables
 		int initialNumStud = (Integer)param.getValue("initialNumStud");
 		
-		// create ContinuousSpace, size: 100x80
+		// create ContinuousSpace, size: 100x70
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
-		ContinuousSpace<Object> space = spaceFactory.createContinuousSpace("space", context, new RandomCartesianAdder<Object>(),
-				new repast.simphony.space.continuous.WrapAroundBorders(), 100, 80, 1);
+		ContinuousSpace<Object> space = spaceFactory.createContinuousSpace("space", context, new SimpleCartesianAdder<Object>(), new WrapAroundBorders(), 100, 70, 1);
 		
-		/*
-		 * ContinuousSpaceFactory spaceFact = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
-		 * ContinuousSpace<Object> space = spaceFact.createContinuousSpace("space", context, new SimpleCartesianAdder<Object>(), new WrapAroundBorders(), 10, 10);
-		 */
 		
 		// add students to context
 		for (int i = 0; i < initialNumStud; i++) {
 			basestudent stud = new basestudent(space);	// add new students
-			context.add(stud);							// add the new prey to the root context
+			context.add(stud);	// add the new prey to the root context
+			space.moveTo(stud, 50);
 		}
 		
 		return context;
