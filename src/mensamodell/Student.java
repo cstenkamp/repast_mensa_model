@@ -6,7 +6,6 @@ import javax.vecmath.Vector2d;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
-import schwarm.Prey;
 
 
 
@@ -87,7 +86,7 @@ public class Student {
 		
 		NdPoint destPos; 		// Ziel
 		Theke neigh;			// dummy für Theken Objekt
-		double[] distXY;		// Abstandsvektor
+		double[] distXY = null;		// Abstandsvektor
 		
 		// Durchlaufe die Query des Sichtradius
 		for (Object o : query.query()){

@@ -10,21 +10,14 @@ public class Theke {
 	int y;
 	int kind;
 	
+	
 	public Theke(int x, int y, int kind) {
 		this.x = x;
 		this.y = y;
 		this.kind = kind;
 	}
 	
-	// returns meal to student 
-	public int getMeal() {
-		
-	}
-	
-	// returns queue of students 
-	public "QUEUE" getQueue() {
-		
-	}
+
 	
 	
 	
