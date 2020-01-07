@@ -16,4 +16,17 @@ public class Theke {
 		this.kind = kind;
 	}
 	
-}
+	// returns meal to student 
+	public int getMeal() {
+		
+	}
+	
+	// returns queue of students 
+	public "QUEUE" getQueue() {
+		
+	}
+	
+	
+	
+	
+} // END of Class

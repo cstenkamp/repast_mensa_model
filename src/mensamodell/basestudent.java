@@ -6,6 +6,7 @@ import javax.vecmath.Vector2d;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
+import schwarm.Prey;
 
 
 
@@ -22,19 +23,19 @@ public class basestudent {
 		int x;
 		int y;
 	}
-	
+	// Class variables
 	private ContinuousSpace space;	// Der kontinuierliche Raum wird in dieser Variablen gespeichert.
-	int food_preference; // 0=veggie, 1=vegan, 2=meat, 3=no_preference 
-	int movement; // 0=chaotic, 1=goal oriented, 2=constant
-	double vision;			// Sichtradius
-	Velocity velocity;
+	int food_preference; 			// 0=veggie, 1=vegan, 2=meat, 3=no_preference 
+	int movement; 					// 0=chaotic, 1=goal oriented, 2=constant
+	double vision;					// Sichtradius
+	private Vector2d velocity;		// Geschwindigkeits- und Ausrichtungsvektor	
 	
 	// choose randomly 	
 	public basestudent(ContinuousSpace s) {
 		this.space = s;
 		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
 		this.movement = RandomHelper.nextIntFromTo(0, 2);
-		this.velocity = new Velocity();
+		this.velocity = new Vector2d(0,0);
 		if (this.movement == 0) {
 			this.vision = 20; // chaotische besitzen einen kleineren Sichtradius
 		}
@@ -76,9 +77,40 @@ public class basestudent {
 	@ScheduledMethod(start = 0, interval = 1)
 	public void step() {
 		
-		public double[] destination() {
+		// speichere die aktuelle Position
+		NdPoint lastPos = space.getLocation(this);
+		
+		// erzeugt eine Query mit allen Objekten im Sichtradius
+		ContinuousWithin query = new ContinuousWithin(space, this, vision);
+		
+		NdPoint destPos; 		// Ziel
+		Theke neigh;			// dummy für Theken Objekt
+		double[] distXY;		// Abstandsvektor
+		
+		// Durchlaufe die Query des Sichtradius
+		for (Object o : query.query()){
+					
+			// falls das Objekt Beute
+			if (o instanceof Theke){
+				neigh = (Theke)o;
+				
+				NdPoint t = space.getLocation(neigh);
+				// Distanz zur Theke, falls minimum -> speichern
+				double dist = space.getDistance(lastPos, t);
+				// speichere Abstand in x- und y-Ausrichtung
+				distXY = space.getDisplacement(lastPos, t);
+			}
+		}
+		
+		// Set Velocity 
+		velocity.setX(distXY[0]);
+		velocity.setY(distXY[1]);
+		// normalisiert den Vektor auf 1
+		velocity.normalize();
+		
+		
+		public NdPoint destination() {
 			
-			double koord[] = new double[2];
 			if (this.movement == 0) {
 				// randomly choose a destination in a specific search radius
 			} 
@@ -89,7 +121,7 @@ public class basestudent {
 				// look for the meals in a constant order
 			}
 			
-			return koord;
+			return destPos;
 		}
 			
 			
