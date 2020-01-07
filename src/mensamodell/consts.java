@@ -2,10 +2,9 @@ package mensamodell;
 
 public class consts {
 
-	public static final int SIZE_X = 200;
-	public static final int SIZE_Y = 200;
+	public final static int SIZE_X = 100;
+	public final static int SIZE_Y = 80;
 
-	
 	//Theken
 	public final static int AKTIONSTHEKE = 0;
 	public final static int FLEISCH = 1;
@@ -13,5 +12,5 @@ public class consts {
 	public final static int VEGGIE = 3;
 	public final static int EINTOPF = 4;
 	public final static int SCHNELLERTELLER = 5;
-	public final static int SALATBAR = 6;	
+	public final static int SALATBAR = 6;
 }
