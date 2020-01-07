@@ -28,8 +28,9 @@ public class modelbuilder implements ContextBuilder<Object>{
 		
 		// create ContinuousSpace, size: 100x70
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
+
 		ContinuousSpace<Object> space = spaceFactory.createContinuousSpace("space", context, new SimpleCartesianAdder<Object>(), new StrictBorders(), SIZE_X, SIZE_Y);
-		
+
 		Theke aktionstheke = new Theke(SIZE_X/2, 0, consts.AKTIONSTHEKE);
 		context.add(aktionstheke);
 		space.moveTo(aktionstheke, aktionstheke.x, aktionstheke.y);
@@ -37,9 +38,10 @@ public class modelbuilder implements ContextBuilder<Object>{
 		// add students to context
 		for (int i = 0; i < initialNumStud; i++) {
 			basestudent stud = new basestudent(space);	// add new students
-			context.add(stud);	// add the new prey to the root context
-			space.moveTo(stud, 50, 50);
+			context.add(stud);	// add the new students to the root context
+			space.moveTo(stud, 50, 69); // add students to space
 		}
+		
 		
 		return context;
 	} // END of Context.
