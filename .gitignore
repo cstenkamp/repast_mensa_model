@@ -1,3 +1,6 @@
+#Repast.settings contains absolute directories
+Repast.settings
+
 # Compiled class file
 *.class
 
