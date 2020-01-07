@@ -27,15 +27,15 @@ public class Student {
 	public Student(ContinuousSpace s) {
 		this.space = s;
 		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
-		this.movement = RandomHelper.nextIntFromTo(0, 2);
+		this.movement = 1;//RandomHelper.nextIntFromTo(0, 2);
 		this.velocity = new Vector2d(0,0);
 		if (this.movement == 0) {
 			this.vision = 20; // chaotische besitzen einen kleineren Sichtradius
 		}
 		if (this.movement == 1) {
-			this.vision = 100;
+			this.vision = 300;
 		} else {
-			this.vision = 100;
+			this.vision = 300;
 		}
 	}
 	
@@ -85,18 +85,24 @@ public class Student {
 		ContinuousWithin query = new ContinuousWithin(space, this, vision);
 		
 		Theke neigh;				// dummy für Theken Objekt
-		double[] distXY = null;		// Abstandsvektor
+		double[] distXY = null;		// Abstandsvektor fuer NdPoints 
+		double minBarDist = vision;	// kürzester Abstand zu einer Bar
+		NdPoint closestBarPoint = new NdPoint();	// Punkt mit nächster Bar
 		
 		// Durchlaufe die Query des Sichtradius
 		for (Object o : query.query()){
 					
 			// falls das Objekt Theke
 			if (o instanceof Theke){
-				neigh = (Theke)o;
+				neigh = (Theke) o;
 				
 				NdPoint t = space.getLocation(neigh);
 				// Distanz zur Theke, falls minimum -> speichern
 				double dist = space.getDistance(lastPos, t);
+				if (dist < minBarDist){
+					minBarDist = dist;
+					closestBarPoint = t;
+				}
 				// speichere Abstand in x- und y-Ausrichtung
 				distXY = space.getDisplacement(lastPos, t);
 			}
@@ -115,6 +121,9 @@ public class Student {
 	 */
 	@ScheduledMethod(start=1.5, interval=1)
 	public void move(){
+		NdPoint potentialcoordinates = space.getLocation(this);
+	    if ((potentialcoordinates.getX()+velocity.x <= 0) || (potentialcoordinates.getX()+velocity.x >= consts.SIZE_X)) velocity.x = 0;
+	    if ((potentialcoordinates.getY()+velocity.y <= 0) || (potentialcoordinates.getY()+velocity.y  >= consts.SIZE_Y)) velocity.y = 0;
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
 	

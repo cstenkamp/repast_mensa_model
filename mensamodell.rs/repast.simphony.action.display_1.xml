@@ -3,14 +3,22 @@
   <type>2D</type>
   <styles>
     <entry>
-      <string>mensamodell.basestudent</string>
-      <string>repast.simphony.visualizationOGL2D.DefaultStyleOGL2D</string>
+      <string>mensamodell.Student</string>
+      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+    </entry>
+    <entry>
+      <string>mensamodell.Theke</string>
+      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
   </styles>
   <editedStyles>
     <entry>
-      <string>mensamodell.basestudent</string>
-      <null/>
+      <string>mensamodell.Student</string>
+      <string>mensamodell.Student.style_3.xml</string>
+    </entry>
+    <entry>
+      <string>mensamodell.Theke</string>
+      <string>mensamodell.Theke.style_2.xml</string>
     </entry>
   </editedStyles>
   <netStyles/>
@@ -23,14 +31,18 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-964314923</hashCode>
+    <hashCode>-1090968445</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>mensamodell.basestudent</string>
+      <string>mensamodell.Student</string>
+      <int>1</int>
+    </entry>
+    <entry>
+      <string>mensamodell.Theke</string>
       <int>0</int>
     </entry>
   </layerOrder>
@@ -42,7 +54,7 @@
     </repast.simphony.scenario.data.ProjectionData>
   </projections>
   <visualizationProperties class="repast.simphony.visualization.UnitSizeLayoutProperties">
-    <unitSize>15.0</unitSize>
+    <unitSize>50.0</unitSize>
   </visualizationProperties>
   <projectionDescriptors>
     <entry>
@@ -59,7 +71,7 @@
               </entry>
               <entry>
                 <string>UNIT_SIZE</string>
-                <float>15.0</float>
+                <float>50.0</float>
               </entry>
               <entry>
                 <string>SHOW</string>
