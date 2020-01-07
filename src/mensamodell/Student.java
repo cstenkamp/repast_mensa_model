@@ -15,14 +15,8 @@ import schwarm.Prey;
  * seines movement_pref entscheidet er wohin er laeuft.
  */
 
-public class basestudent {
+public class Student {
 	
-	//thekentreu hat suchradius unendlich: geht immer zur richtigen theke.
-	
-	public class Velocity {
-		int x;
-		int y;
-	}
 	// Class variables
 	private ContinuousSpace space;	// Der kontinuierliche Raum wird in dieser Variablen gespeichert.
 	int food_preference; 			// 0=veggie, 1=vegan, 2=meat, 3=no_preference 
@@ -31,7 +25,7 @@ public class basestudent {
 	private Vector2d velocity;		// Geschwindigkeits- und Ausrichtungsvektor	
 	
 	// choose randomly 	
-	public basestudent(ContinuousSpace s) {
+	public Student(ContinuousSpace s) {
 		this.space = s;
 		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
 		this.movement = RandomHelper.nextIntFromTo(0, 2);
@@ -44,11 +38,10 @@ public class basestudent {
 		} else {
 			this.vision = 100;
 		}
-		
 	}
 	
 	// choose only one preference
-	public basestudent(ContinuousSpace s, int value, boolean food_pref) {
+	public Student(ContinuousSpace s, int value, boolean food_pref) {
 		
 		this.space = s;
 		// test
@@ -64,15 +57,24 @@ public class basestudent {
 	}
 	
 	// initialise both preferences
-	public basestudent(ContinuousSpace s, int food_pref, int move_pref) {
+	public Student(ContinuousSpace s, int food_pref, int move_pref) {
 		this.space = s;
 		this.food_preference = food_pref;
 		this.movement = move_pref; 
 	}
 	
-		
 	/**
-	 * Methode wird jede Runde ausgefuehrt.
+	 *  private Methoden der Klasse.
+	 * 
+	 */
+	
+	public boolean select_meal() {
+		return true;
+	}
+	
+
+	/**
+	 * Methode wird jede Runde ausgefuehrt. Suche das/die nächste Ziel/Theke
 	 */
 	@ScheduledMethod(start = 0, interval = 1)
 	public void step() {
@@ -108,29 +110,11 @@ public class basestudent {
 		// normalisiert den Vektor auf 1
 		velocity.normalize();
 		
-		
-		public NdPoint destination() {
-			
-			if (this.movement == 0) {
-				// randomly choose a destination in a specific search radius
-			} 
-			if (this.movement == 1) {
-				//	search for your previously picked meal in a big search radius		
-			}
-			if (this.movement == 2) {
-				// look for the meals in a constant order
-			}
-			
-			return destPos;
-		}
-			
-			
-		public boolean select_meal() {
-			return true;
-		}
 	} // END of ScheduledMethod.
 	
-	// eigentliche Bewegung zwischen den Zeitschritten
+	/** 
+	 * Eigentliche Bewegung zwischen den Zeitschritten.
+	 */
 	@ScheduledMethod(start=1.5, interval=1)
 	public void move(){
 		space.moveByDisplacement(this, velocity.x, velocity.y);
