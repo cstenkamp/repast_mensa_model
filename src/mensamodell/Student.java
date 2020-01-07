@@ -73,7 +73,7 @@ public class Student {
 	
 
 	/**
-	 * Methode wird jede Runde ausgefuehrt. Suche das/die nächste Ziel/Theke
+	 * Methode wird jede Runde ausgefuehrt. Suche das/die naechste Ziel/Theke
 	 */
 	@ScheduledMethod(start = 0, interval = 1)
 	public void step() {
@@ -84,14 +84,13 @@ public class Student {
 		// erzeugt eine Query mit allen Objekten im Sichtradius
 		ContinuousWithin query = new ContinuousWithin(space, this, vision);
 		
-		NdPoint destPos; 		// Ziel
-		Theke neigh;			// dummy für Theken Objekt
+		Theke neigh;				// dummy für Theken Objekt
 		double[] distXY = null;		// Abstandsvektor
 		
 		// Durchlaufe die Query des Sichtradius
 		for (Object o : query.query()){
 					
-			// falls das Objekt Beute
+			// falls das Objekt Theke
 			if (o instanceof Theke){
 				neigh = (Theke)o;
 				
