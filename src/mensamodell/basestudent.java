@@ -21,6 +21,16 @@ public class basestudent {
 	public class Velocity {
 		int x;
 		int y;
+		
+		public Velocity() {
+			x = 0; 
+			y = 0;
+		}
+		
+		public Velocity(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
 	}
 	
 	private ContinuousSpace space;	// Der kontinuierliche Raum wird in dieser Variablen gespeichert.
