@@ -2,22 +2,44 @@ package mensamodell;
 
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
+import javax.vecmath.Vector2d;
+import repast.simphony.query.space.continuous.ContinuousWithin;
+import repast.simphony.space.continuous.ContinuousSpace;
+import repast.simphony.space.continuous.NdPoint;
 
-//thekentreu hat suchradius unendlich: geht immer zur richtigen theke.
+
+
+/*
+ * Studenten Klasse. Der Student laeuft durch die Mensa und erkennt innerhalb seines Sichtradius verschiedene Theken anhand der Schlange und 
+ * seines movement_pref entscheidet er wohin er l�uft.
+ */
 
 public class basestudent {
 	
+	//thekentreu hat suchradius unendlich: geht immer zur richtigen theke.
+	
+	public class Velocity {
+		int x;
+		int y;
+	}
+	
+	private ContinuousSpace space;	// Der kontinuierliche Raum wird in dieser Variablen gespeichert.
 	int food_preference; // 0=veggie, 1=vegan, 2=meat, 3=no_preference 
 	int movement; // 0=chaotic, 1=goal oriented, 2=constant
-
+	Velocity velocity;
+	
 	// choose randomly 	
-	public basestudent() {
+	public basestudent(ContinuousSpace s) {
+		this.space = s;
 		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
 		this.movement = RandomHelper.nextIntFromTo(0, 2);
+		this.velocity = new Velocity();
 	}
 	
 	// choose only one preference
-	public basestudent(int value, boolean food_pref) {
+	public basestudent(ContinuousSpace s, int value, boolean food_pref) {
+		
+		this.space = s;
 		// test
 		// if foodpref: value in 0,1,2,3, else in 0,1,2
 		
@@ -31,7 +53,8 @@ public class basestudent {
 	}
 	
 	// initialise both preferences
-	public basestudent(int food_pref, int move_pref) {
+	public basestudent(ContinuousSpace s, int food_pref, int move_pref) {
+		this.space = s;
 		this.food_preference = food_pref;
 		this.movement = move_pref; 
 	}
@@ -52,20 +75,25 @@ public class basestudent {
 		
 		return koord;
 	}
-	
-	
+		
+		
 	public boolean select_meal() {
 		return true;
 	}
-	
-	
-	
-	
-	
-	@ScheduledMethod(start = 0, interval = 1, shuffle = true)
+		
+	/**
+	 * Methode wird jede Runde ausgefuehrt.
+	 */
+	@ScheduledMethod(start = 0, interval = 1)
 	public void step() {
-		//pass
+		
 	}
 	
-		
-}
+	// eigentliche Bewegung zwischen den Zeitschritten
+	@ScheduledMethod(start=1.5, interval=1)
+	public void move(){
+		space.moveByDisplacement(this, velocity.x, velocity.y);
+	}
+	
+	
+} // END of Class.
