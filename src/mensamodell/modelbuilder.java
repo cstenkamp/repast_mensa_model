@@ -15,9 +15,6 @@ import mensamodell.consts.*;
 
 public class modelbuilder implements ContextBuilder<Object>{
 
-	public final int SIZE_X = 200;
-	public final int SIZE_Y = 200;
-
 	@Override
 	public Context<Object> build(Context<Object> context) {
 		
@@ -29,10 +26,10 @@ public class modelbuilder implements ContextBuilder<Object>{
 		// create ContinuousSpace, size: 100x70
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 
-		ContinuousSpace<Object> space = spaceFactory.createContinuousSpace("space", context, new SimpleCartesianAdder<Object>(), new StrictBorders(), SIZE_X, SIZE_Y);
+		ContinuousSpace<Object> space = spaceFactory.createContinuousSpace("space", context, new SimpleCartesianAdder<Object>(), new StrictBorders(), consts.SIZE_X, consts.SIZE_Y);
 
 		// add Theke to context
-		Theke aktionstheke = new Theke(SIZE_X/2, 0, consts.AKTIONSTHEKE);
+		Theke aktionstheke = new Theke(consts.SIZE_X/2, 0, consts.AKTIONSTHEKE);
 		context.add(aktionstheke);
 		space.moveTo(aktionstheke, aktionstheke.x, aktionstheke.y);
 		

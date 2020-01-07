@@ -7,6 +7,8 @@ import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 
+import mensamodell.consts.*;
+
 
 
 /*
@@ -84,7 +86,7 @@ public class Student {
 		// erzeugt eine Query mit allen Objekten im Sichtradius
 		ContinuousWithin query = new ContinuousWithin(space, this, vision);
 		
-		Theke neigh;				// dummy für Theken Objekt
+		Theke neigh;				// dummy fï¿½r Theken Objekt
 		double[] distXY = null;		// Abstandsvektor
 		
 		// Durchlaufe die Query des Sichtradius
@@ -115,6 +117,12 @@ public class Student {
 	 */
 	@ScheduledMethod(start=1.5, interval=1)
 	public void move(){
+		NdPoint potentialcoordinates = space.getLocation(this);
+		if ((potentialcoordinates.getX()+velocity.x <= 0) || (potentialcoordinates.getX()+velocity.x >= consts.SIZE_X)) 
+			velocity.x = 0;
+		if ((potentialcoordinates.getY()+velocity.y <= 0) || (potentialcoordinates.getY()+velocity.y  >= consts.SIZE_Y)) 
+			velocity.y = 0;
+		
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
 	

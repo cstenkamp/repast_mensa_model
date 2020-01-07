@@ -3,13 +3,21 @@
   <type>2D</type>
   <styles>
     <entry>
-      <string>mensamodell.basestudent</string>
+      <string>mensamodell.Student</string>
+      <string>repast.simphony.visualizationOGL2D.DefaultStyleOGL2D</string>
+    </entry>
+    <entry>
+      <string>mensamodell.Theke</string>
       <string>repast.simphony.visualizationOGL2D.DefaultStyleOGL2D</string>
     </entry>
   </styles>
   <editedStyles>
     <entry>
-      <string>mensamodell.basestudent</string>
+      <string>mensamodell.Student</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>mensamodell.Theke</string>
       <null/>
     </entry>
   </editedStyles>
@@ -23,14 +31,18 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-964314923</hashCode>
+    <hashCode>575078961</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>mensamodell.basestudent</string>
+      <string>mensamodell.Student</string>
+      <int>1</int>
+    </entry>
+    <entry>
+      <string>mensamodell.Theke</string>
       <int>0</int>
     </entry>
   </layerOrder>
