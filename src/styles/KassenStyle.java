@@ -8,6 +8,7 @@ import repast.simphony.visualization.visualization3D.ShapeFactory;
 //import PredatorPrey.agents.Sheep;
 //import PredatorPrey.agents.Wolf;
 import repast.simphony.visualizationOGL2D.DefaultStyleOGL2D;
+import saf.v3d.scene.VSpatial;
 
 
 public class KassenStyle extends DefaultStyleOGL2D {
@@ -26,7 +27,6 @@ public class KassenStyle extends DefaultStyleOGL2D {
 	
 	@Override
 	public Color getColor(Object o){
-		
 		return Color.DARK_GRAY;
 	}	
 	
@@ -41,12 +41,12 @@ public class KassenStyle extends DefaultStyleOGL2D {
 //		return 1f;
 //	}
 
-  public Shape3D getVSpatial(Object agent, Shape3D spatial) { 
-    if (spatial == null) {
-      
-    }
-    spatial = ShapeFactory.createCube(4, 16); // You can use it to create circles, rectangles, images, or any shape by passing in a java.awt.Shape
+	@Override
+  public VSpatial getVSpatial(Object agent, VSpatial spatial) {
+		if (spatial == null) {
+		  spatial = shapeFactory.createCircle(100, 100);
+		}
     return spatial;
-  }	
+  }
 	
 }

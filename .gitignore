@@ -1,5 +1,7 @@
 #Repast.settings contains absolute directories
 Repast.settings
+*.log
+*.log.*
 
 # Compiled class file
 *.class

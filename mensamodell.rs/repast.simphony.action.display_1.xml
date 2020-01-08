@@ -12,13 +12,13 @@
     </entry>
     <entry>
       <string>mensamodell.Theke</string>
-      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+      <string>styles.ThekenStyle</string>
     </entry>
   </styles>
   <editedStyles>
     <entry>
       <string>mensamodell.Kasse</string>
-      <string>mensamodell.Kasse.style_2.xml</string>
+      <null/>
     </entry>
     <entry>
       <string>mensamodell.Student</string>
@@ -26,7 +26,7 @@
     </entry>
     <entry>
       <string>mensamodell.Theke</string>
-      <string>mensamodell.Theke.style_2.xml</string>
+      <null/>
     </entry>
   </editedStyles>
   <netStyles/>
@@ -39,15 +39,19 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-2045574649</hashCode>
+    <hashCode>1454955206</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>mensamodell.Student</string>
+      <string>mensamodell.Kasse</string>
       <int>1</int>
+    </entry>
+    <entry>
+      <string>mensamodell.Student</string>
+      <int>2</int>
     </entry>
     <entry>
       <string>mensamodell.Theke</string>

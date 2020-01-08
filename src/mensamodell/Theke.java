@@ -8,7 +8,7 @@ import mensamodell.consts.*;
 public class Theke {
 	int x;
 	int y;
-	int kind;
+	public int kind;
 	boolean visited;
 	
 	
@@ -21,6 +21,10 @@ public class Theke {
 	
 	public void setVisit() {
 		this.visited = true;
+	}
+	
+	public boolean isLeft() {
+		return x > consts.SIZE_X/2;
 	}
 	
 
