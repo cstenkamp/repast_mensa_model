@@ -3,6 +3,10 @@
   <type>2D</type>
   <styles>
     <entry>
+      <string>mensamodell.Kasse</string>
+      <string>styles.KassenStyle</string>
+    </entry>
+    <entry>
       <string>mensamodell.Student</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
@@ -12,6 +16,10 @@
     </entry>
   </styles>
   <editedStyles>
+    <entry>
+      <string>mensamodell.Kasse</string>
+      <string>mensamodell.Kasse.style_2.xml</string>
+    </entry>
     <entry>
       <string>mensamodell.Student</string>
       <string>mensamodell.Student.style_3.xml</string>
@@ -31,7 +39,7 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1090968445</hashCode>
+    <hashCode>-2045574649</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>

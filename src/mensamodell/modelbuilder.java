@@ -7,7 +7,8 @@ import repast.simphony.dataLoader.ContextBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.space.continuous.*;
-import repast.simphony.random.RandomHelper;
+
+import javax.media.j3d.Shape3D;
 
 import mensamodell.consts.*;
 
@@ -28,39 +29,39 @@ public class modelbuilder implements ContextBuilder<Object>{
 
 		ContinuousSpace<Object> space = spaceFactory.createContinuousSpace("space", context, new SimpleCartesianAdder<Object>(), new StrictBorders(), consts.SIZE_X, consts.SIZE_Y);
 
-		// add Theke to context
-		Theke aktionstheke = new Theke(consts.SIZE_X/2, 5, consts.AKTIONSTHEKE);
-		context.add(aktionstheke);
-		space.moveTo(aktionstheke, aktionstheke.x, aktionstheke.y);
+		// Theken
+//		Theke aktionstheke = new Theke(consts.SIZE_X/2, 5, consts.AKTIONSTHEKE);
+//		context.add(aktionstheke);
+//		space.moveTo(aktionstheke, aktionstheke.x, aktionstheke.y);
+//		Theke fleisch = new Theke(consts.SIZE_X*3/4, 5, consts.FLEISCH);
+//		context.add(fleisch);
+//		space.moveTo(fleisch, fleisch.x, fleisch.y);
+//		Theke salatbar = new Theke(consts.SIZE_X*3/4, consts.SIZE_Y/2, consts.SALATBAR);
+//		context.add(salatbar);
+//		space.moveTo(salatbar, salatbar.x, salatbar.y);
+//		Theke veggie = new Theke(5, consts.SIZE_Y*1/4, consts.VEGGIE);
+//		context.add(veggie);
+//		space.moveTo(veggie, veggie.x, veggie.y);
 		
-		// NEUE DUMMY THEKEN ZUM TESTEN:
-		Theke kasseL = new Theke(consts.SIZE_X*1/4, consts.SIZE_Y-5, consts.KASSE);
+		// Kassen
+		Kasse kasseL = new Kasse(consts.SIZE_X*1/4, consts.SIZE_Y-5);
 		context.add(kasseL);
 		space.moveTo(kasseL, kasseL.x, kasseL.y);
-		Theke kasseR = new Theke(consts.SIZE_X*3/4, consts.SIZE_Y-5, consts.KASSE);
+		Kasse kasseR = new Kasse(consts.SIZE_X*3/4, consts.SIZE_Y-5);
 		context.add(kasseR);
 		space.moveTo(kasseR, kasseR.x, kasseR.y);
 		
-		Theke fleisch = new Theke(consts.SIZE_X*3/4, 5, consts.FLEISCH);
-		context.add(fleisch);
-		space.moveTo(fleisch, fleisch.x, fleisch.y);
-		Theke salatbar = new Theke(consts.SIZE_X*3/4, consts.SIZE_Y/2, consts.SALATBAR);
-		context.add(salatbar);
-		space.moveTo(salatbar, salatbar.x, salatbar.y);
-		Theke veggie = new Theke(5, consts.SIZE_Y*1/4, consts.VEGGIE);
-		context.add(veggie);
-		space.moveTo(veggie, veggie.x, veggie.y);
-		// ENDE DUMMY THEKEN 
-		
-
 		// add students to context
-		for (int i = 0; i < initialNumStud; i++) {
-			Student stud = new Student(space);	// add new students
-			context.add(stud);	// add the new students to the root context
-			space.moveTo(stud, (double)consts.SIZE_X/2, (double)consts.SIZE_Y-5); // add students to space
-		}
+//		for (int i = 0; i < initialNumStud; i++) {
+//			Student stud = new Student(space);	// add new students
+//			context.add(stud);	// add the new students to the root context
+//			space.moveTo(stud, (double)consts.SIZE_X/2, (double)consts.SIZE_Y-5); // add students to space
+//		}
 
 		return context;
 	} // END of Context.
+	
+	
+ 
 
 } // END of modelbuilder.
