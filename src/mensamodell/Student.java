@@ -128,13 +128,14 @@ public class Student {
 		velocity.setX(distXY[0]);
 		velocity.setY(distXY[1]);
 		
+		
 	}
 
 	/**
 	 * Methode wird jede Runde für jeden Studenten ausgefuehrt. 
 	 * Sucht das naechste Ziel.
 	 */
-	@ScheduledMethod(start = 0, interval = 2, shuffle = true)
+	@ScheduledMethod(start = 0, interval = 1, shuffle = true)
 	public void step() {
 		if (!this.sated) {
 			shorty();	

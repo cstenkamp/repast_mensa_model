@@ -41,9 +41,15 @@ public class modelbuilder implements ContextBuilder<Object>{
 		context.add(kasseR);
 		space.moveTo(kasseR, kasseR.x, kasseR.y);
 		
-		Theke fleisch = new Theke(consts.SIZE_X*3/4, 5, consts.FLEISCH);
-		context.add(fleisch);
-		space.moveTo(fleisch, fleisch.x, fleisch.y);
+		Theke fleischL = new Theke(consts.SIZE_X*1/4, 5, consts.FLEISCH);
+		context.add(fleischL);
+		space.moveTo(fleischL, fleischL.x, fleischL.y);
+		Theke fleischR = new Theke(consts.SIZE_X*3/4, 5, consts.FLEISCH);
+		context.add(fleischR);
+		space.moveTo(fleischR, fleischR.x, fleischR.y);
+		Theke salatbarL = new Theke(consts.SIZE_X*1/4, consts.SIZE_Y/2, consts.SALATBAR);
+		context.add(salatbarL);
+		space.moveTo(salatbarL, salatbarL.x, salatbarL.y);
 		Theke salatbar = new Theke(consts.SIZE_X*3/4, consts.SIZE_Y/2, consts.SALATBAR);
 		context.add(salatbar);
 		space.moveTo(salatbar, salatbar.x, salatbar.y);
