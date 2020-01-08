@@ -86,10 +86,10 @@ public class Student {
 		// erzeugt eine Query mit allen Objekten im Sichtradius
 		ContinuousWithin query = new ContinuousWithin(space, this, vision);
 
-		Theke neigh;				// dummy f�r Theken Objekt
+		Theke neigh;				// dummy fuer Theken Objekt
 		double[] distXY = null;		// Abstandsvektor fuer NdPoints
-		double minBarDist = vision;	// k�rzester Abstand zu einer Bar
-		NdPoint closestBarPoint = new NdPoint();	// Punkt mit n�chster Bar
+		double minBarDist = vision;	// kuerzester Abstand zu einer Bar
+		NdPoint closestBarPoint = new NdPoint();	// Punkt mit naechster Bar
 
 		// Durchlaufe die Query des Sichtradius
 		for (Object o : query.query()){
@@ -110,12 +110,10 @@ public class Student {
 			}
 		}
 
-		// Set Velocity
+		// Set Velocity/Geschwindigkeit
 		velocity.setX(distXY[0]);
 		velocity.setY(distXY[1]);
-		// normalisiert den Vektor auf 1
-		velocity.normalize();
-
+	
 	} // END of ScheduledMethod.
 
 	/**
@@ -123,10 +121,13 @@ public class Student {
 	 */
 	@ScheduledMethod(start=1.5, interval=1)
 	public void move(){
-		NdPoint potentialcoordinates = space.getLocation(this);
-	    if ((potentialcoordinates.getX()+velocity.x <= 0) || (potentialcoordinates.getX()+velocity.x >= consts.SIZE_X)) velocity.x = 0;
-	    if ((potentialcoordinates.getY()+velocity.y <= 0) || (potentialcoordinates.getY()+velocity.y  >= consts.SIZE_Y)) velocity.y = 0;
-		space.moveByDisplacement(this, velocity.x, velocity.y);
+	    NdPoint potentialcoordinates = space.getLocation(this);
+	    if (potentialcoordinates.getX()+velocity.x >= 0 || potentialcoordinates.getX()+velocity.x <= consts.SIZE_X || 
+	    	potentialcoordinates.getY()+velocity.y >= 0 || potentialcoordinates.getY()+velocity.y <= consts.SIZE_Y){
+	    	space.moveByDisplacement(this, velocity.x, velocity.y);
+	    } else { 
+	    	throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
+	    }
 	}
 
 

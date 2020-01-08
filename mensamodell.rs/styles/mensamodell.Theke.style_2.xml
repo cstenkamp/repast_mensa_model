@@ -6,9 +6,9 @@
   <sizeScale>1.0</sizeScale>
   <label></label>
   <labelPosition>bottom</labelPosition>
-  <labelPrecision>3</labelPrecision>
+  <labelPrecision>8</labelPrecision>
   <labelOffset>5.0</labelOffset>
-  <labelFontSize>14</labelFontSize>
+  <labelFontSize>100</labelFontSize>
   <labelFontType>0</labelFontType>
   <labelFontFamily>Arial</labelFontFamily>
   <labelColor>
