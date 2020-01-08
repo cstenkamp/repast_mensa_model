@@ -20,11 +20,12 @@ public class Student {
 
 	// Class variables
 	private ContinuousSpace space;	// Der kontinuierliche Raum wird in dieser Variablen gespeichert.
-	int food_preference; 			// 0=veggie, 1=vegan, 2=meat, 3=no_preference
-	int movement; 					// 0=chaotic, 1=goal oriented, 2=constant
-	double vision;					// Sichtradius
-	private Vector2d velocity;		// Geschwindigkeits- und Ausrichtungsvektor
-
+	int food_preference; 						// 0=veggie, 1=vegan, 2=meat, 3=no_preference
+	int movement; 									// 0=chaotic, 1=goal oriented, 2=pathoriented (constant)
+	double vision;									// Sichtradius
+	protected Vector2d velocity;		// Geschwindigkeits- und Ausrichtungsvektor
+	float walking_speed = 0.002f;
+	
 	// choose randomly
 	public Student(ContinuousSpace s) {
 		this.space = s;
@@ -33,83 +34,74 @@ public class Student {
 		this.velocity = new Vector2d(0,0);
 		if (this.movement == 0) {
 			this.vision = 20; // chaotische besitzen einen kleineren Sichtradius
-		}
-		if (this.movement == 1) {
+		} else if (this.movement == 1) {
 			this.vision = 300;
 		} else {
 			this.vision = 300;
 		}
 	}
 
-	// choose only one preference
-	public Student(ContinuousSpace s, int value, boolean food_pref) {
+//	// choose only one preference
+//	public Student(ContinuousSpace s, int value, boolean food_pref) {
+//		this.space = s;
+//		// test
+//		// if foodpref: value in 0,1,2,3, else in 0,1,2
+//		if(food_pref) {
+//			this.food_preference = value;
+//			this.movement = RandomHelper.nextIntFromTo(0, 2);
+//		}else {
+//			this.food_preference = RandomHelper.nextIntFromTo(0, 3);
+//			this.movement = value;
+//		}
+//	}
+//
+//	// initialise both preferences
+//	public Student(ContinuousSpace s, int food_pref, int move_pref) {
+//		this.space = s;
+//		this.food_preference = food_pref;
+//		this.movement = move_pref;
+//	}
 
-		this.space = s;
-		// test
-		// if foodpref: value in 0,1,2,3, else in 0,1,2
-
-		if(food_pref) {
-			this.food_preference = value;
-			this.movement = RandomHelper.nextIntFromTo(0, 2);
-		}else {
-			this.food_preference = RandomHelper.nextIntFromTo(0, 3);
-			this.movement = value;
-		}
-	}
-
-	// initialise both preferences
-	public Student(ContinuousSpace s, int food_pref, int move_pref) {
-		this.space = s;
-		this.food_preference = food_pref;
-		this.movement = move_pref;
-	}
-
-	/**
-	 *  private Methoden der Klasse.
-	 *
-	 */
-
-	public boolean select_meal() {
-		return true;
-	}
+//	public boolean select_meal() {
+//		return true;
+//	}
+//	
+//	// chaotischer Lauftyp
+//	public void chaotic() {
+//		
+//	}
 	
-	// chaotischer Lauftyp
-	public void chaotic() {
+	public void to_next_ausgabe() {
 		
-	}
-	
-	// kurze Wege Lauftyp
-	public void shorty() {
-		// speichere die aktuelle Position
-		NdPoint lastPos = space.getLocation(this);
+		NdPoint lastPos = space.getLocation(this);																	// speichere die aktuelle Position
+		ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);		// erzeugt eine Query mit allen Objekten im Sichtradius
 
-		// erzeugt eine Query mit allen Objekten im Sichtradius
-		ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);
-
-		Theke tempBar;				// dummy fuer Theken Objekt
-		double[] distXY = null;		// Abstandsvektor fuer NdPoints
-		double minBarDist = vision;	// kuerzester Abstand zu einer Bar
+		double[] distXY = null;										// Abstandsvektor fuer NdPoints
+		double minBarDist = vision;								// kuerzester Abstand zu einer Bar
 		NdPoint closestBarPoint = new NdPoint();	// Punkt mit naechster Bar
-		Theke v = null; // zum speichern der besuchten Theke
+		Theke v = null; 													// zum speichern der besuchten Theke
 
-		// Durchlaufe die Query des Sichtradius
-		for (Object o : barInVision.query()){
-		// falls das Objekt Essensausgabe aber keine Kasse und noch nicht besucht
-			if (o instanceof Theke && ((Theke) o).kind != - 1 && !((Theke) o).visited){
-				tempBar = (Theke) o;
+		for (Object o : barInVision.query()){															// Durchlaufe die Query des Sichtradius
+			if (o instanceof Theke &&  !((Theke)o).visited){								// falls das Objekt Essensausgabe aber keine Kasse und noch nicht besucht
+				Theke tempBar = (Theke)o;
 				NdPoint tempBarLoc = space.getLocation(tempBar);
-				// Distanz zur Theke, falls minimum -> speichern
-				double dist = space.getDistance(lastPos, tempBarLoc);
+				double dist = space.getDistance(lastPos, tempBarLoc);					// Distanz zur Theke, falls minimum -> speichern
 				if (dist < minBarDist){
 					minBarDist = dist;
 					closestBarPoint = tempBarLoc;
 					v = tempBar;
+					distXY = space.getDisplacement(lastPos, closestBarPoint);		// speichere Abstand in x- und y-Ausrichtung
 				}
-				// speichere Abstand in x- und y-Ausrichtung
-				distXY = space.getDisplacement(lastPos, closestBarPoint);
-			} //else if (o instanceof Theke && ((Theke) o).kind = - 1) {
-				// Gehe zur Kasse!
-			//}
+			} 
+		}
+		if (v != null) {
+	    //double vec_len = Math.sqrt(distXY[0]*distXY[0] + distXY[1]*distXY[1]);
+			//velocity.setX(distXY[0]/vec_len*walking_speed);
+			//velocity.setY(distXY[1]/vec_len*walking_speed);
+			velocity.normalize();
+			velocity.scale(walking_speed);
+		} else {
+			velocity.set(0, 0);
 		}
 		/*
 		try {
@@ -122,32 +114,24 @@ public class Student {
 		
 		
 		// Set Velocity/Geschwindigkeit
-		velocity.setX(distXY[0]);
-		velocity.setY(distXY[1]);
+
 	}
 
-	/**
-	 * Methode wird jede Runde ausgefuehrt. Suche das/die naechste Ziel/Theke
-	 */
-	@ScheduledMethod(start = 0, interval = 1)
-	public void step() {
-		
-		shorty();
-		
-	} // END of ScheduledMethod.
 
 	/**
 	 * Eigentliche Bewegung zwischen den Zeitschritten.
 	 */
-	@ScheduledMethod(start=1.5, interval=1)
-	public void move(){
-	    NdPoint potentialcoordinates = space.getLocation(this);
-	    if (potentialcoordinates.getX()+velocity.x >= 0 || potentialcoordinates.getX()+velocity.x <= consts.SIZE_X || 
-	    	potentialcoordinates.getY()+velocity.y >= 0 || potentialcoordinates.getY()+velocity.y <= consts.SIZE_Y){
-	    	space.moveByDisplacement(this, velocity.x, velocity.y);
-	    } else { 
-	    	throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
-	    }
+	@ScheduledMethod(start=0.5, interval=1)
+	public void do_move(){
+    NdPoint pos = space.getLocation(this);
+		Vector2d potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
+		
+    if (potentialcoords.x <= 0 || potentialcoords.x >= consts.SIZE_X || potentialcoords.y <= 0 || potentialcoords.y >= consts.SIZE_Y){
+    	//throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
+    	return;
+    }
+    
+    space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
 
 

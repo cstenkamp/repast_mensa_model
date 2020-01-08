@@ -30,12 +30,8 @@ public class ThekenStyle extends DefaultStyleOGL2D {
 			spatial = shapeFactory.createCircle(10, 10);
 			
 			if (obj instanceof Theke) {
-				if (((Theke)obj).kind == consts.AKTIONSTHEKE)
-					spatial = shapeFactory.createRectangle(40, 100);
-				if (((Theke)obj).kind == consts.FLEISCH)
-					spatial = shapeFactory.createRectangle(50, 20);
-				if (((Theke)obj).kind == consts.SALATBAR)
-					spatial = shapeFactory.createRectangle(50, 60);
+				if (((Theke)obj).size != null)
+					spatial = shapeFactory.createRectangle((int)((Theke)obj).size.x, (int)((Theke)obj).size.y);
 			}
 		}
 	  return spatial;
