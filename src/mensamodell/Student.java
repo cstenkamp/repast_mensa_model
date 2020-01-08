@@ -24,13 +24,16 @@ public class Student {
 	int movement; 					// 0=chaotic, 1=goal oriented, 2=constant
 	double vision;					// Sichtradius
 	private Vector2d velocity;		// Geschwindigkeits- und Ausrichtungsvektor
-
+	boolean sated;					// Besser wäre es das Objekt vom context zu entfernen jedoch 
+									// kann ich innerhalb der Klasse nicht darauf zugreifen
+									// context.remove(Object)
 	// choose randomly
 	public Student(ContinuousSpace s) {
 		this.space = s;
 		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
 		this.movement = 1;//RandomHelper.nextIntFromTo(0, 2);
 		this.velocity = new Vector2d(0,0);
+		this.sated = false;
 		if (this.movement == 0) {
 			this.vision = 20; // chaotische besitzen einen kleineren Sichtradius
 		}
@@ -107,48 +110,52 @@ public class Student {
 				}
 				// speichere Abstand in x- und y-Ausrichtung
 				distXY = space.getDisplacement(lastPos, closestBarPoint);
-			} //else if (o instanceof Theke && ((Theke) o).kind = - 1) {
-				// Gehe zur Kasse!
-			//}
+			} 
 		}
-		/*
-		try {
-			// setze visited der Theke auf true
+		// setze visited der Theke auf true
+		if (v != null) {
 			v.setVisit();
-		} catch (Exception e) {
-			System.out.println("Alle Essensausgaben besucht.");
+		} else {
+			// Alle Theken wurden besucht. Gehe zur Kasse
+			double[] kL = {consts.SIZE_X*1/4, consts.SIZE_Y-5};
+			NdPoint kasseL = new NdPoint(kL);
+			distXY = space.getDisplacement(lastPos, kasseL);
+			this.sated = true; // der Student hat sein Essen und wird nicht mehr umhergschickt
+			System.out.println("Alle Theken besucht." + this);
+			
 		}
-		*/
-		
-		
-		// Set Velocity/Geschwindigkeit
+		// Set Velocity
 		velocity.setX(distXY[0]);
 		velocity.setY(distXY[1]);
+		
 	}
 
 	/**
-	 * Methode wird jede Runde ausgefuehrt. Suche das/die naechste Ziel/Theke
+	 * Methode wird jede Runde für jeden Studenten ausgefuehrt. 
+	 * Sucht das naechste Ziel.
 	 */
-	@ScheduledMethod(start = 0, interval = 1)
+	@ScheduledMethod(start = 0, interval = 2, shuffle = true)
 	public void step() {
-		
-		shorty();
-		
-	} // END of ScheduledMethod.
+		if (!this.sated) {
+			shorty();	
+			move();
+		}
+	} // END of step.
 
 	/**
 	 * Eigentliche Bewegung zwischen den Zeitschritten.
 	 */
-	@ScheduledMethod(start=1.5, interval=1)
+	
 	public void move(){
 	    NdPoint potentialcoordinates = space.getLocation(this);
 	    if (potentialcoordinates.getX()+velocity.x >= 0 || potentialcoordinates.getX()+velocity.x <= consts.SIZE_X || 
 	    	potentialcoordinates.getY()+velocity.y >= 0 || potentialcoordinates.getY()+velocity.y <= consts.SIZE_Y){
+	    	// Bewegt den Studenten zum neuen Ziel.
 	    	space.moveByDisplacement(this, velocity.x, velocity.y);
 	    } else { 
 	    	throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
 	    }
-	}
+	} // END of move.
 
 
 } // END of Class.
