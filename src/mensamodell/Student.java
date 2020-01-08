@@ -72,48 +72,68 @@ public class Student {
 	public boolean select_meal() {
 		return true;
 	}
+	
+	// chaotischer Lauftyp
+	public void chaotic() {
+		
+	}
+	
+	// kurze Wege Lauftyp
+	public void shorty() {
+		// speichere die aktuelle Position
+		NdPoint lastPos = space.getLocation(this);
 
+		// erzeugt eine Query mit allen Objekten im Sichtradius
+		ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);
+
+		Theke tempBar;				// dummy fuer Theken Objekt
+		double[] distXY = null;		// Abstandsvektor fuer NdPoints
+		double minBarDist = vision;	// kuerzester Abstand zu einer Bar
+		NdPoint closestBarPoint = new NdPoint();	// Punkt mit naechster Bar
+		Theke v = null; // zum speichern der besuchten Theke
+
+		// Durchlaufe die Query des Sichtradius
+		for (Object o : barInVision.query()){
+		// falls das Objekt Essensausgabe aber keine Kasse und noch nicht besucht
+			if (o instanceof Theke && ((Theke) o).kind != - 1 && !((Theke) o).visited){
+				tempBar = (Theke) o;
+				NdPoint tempBarLoc = space.getLocation(tempBar);
+				// Distanz zur Theke, falls minimum -> speichern
+				double dist = space.getDistance(lastPos, tempBarLoc);
+				if (dist < minBarDist){
+					minBarDist = dist;
+					closestBarPoint = tempBarLoc;
+					v = tempBar;
+				}
+				// speichere Abstand in x- und y-Ausrichtung
+				distXY = space.getDisplacement(lastPos, closestBarPoint);
+			} //else if (o instanceof Theke && ((Theke) o).kind = - 1) {
+				// Gehe zur Kasse!
+			//}
+		}
+		/*
+		try {
+			// setze visited der Theke auf true
+			v.setVisit();
+		} catch (Exception e) {
+			System.out.println("Alle Essensausgaben besucht.");
+		}
+		*/
+		
+		
+		// Set Velocity/Geschwindigkeit
+		velocity.setX(distXY[0]);
+		velocity.setY(distXY[1]);
+	}
 
 	/**
 	 * Methode wird jede Runde ausgefuehrt. Suche das/die naechste Ziel/Theke
 	 */
 	@ScheduledMethod(start = 0, interval = 1)
 	public void step() {
-
-		// speichere die aktuelle Position
-		NdPoint lastPos = space.getLocation(this);
-
-		// erzeugt eine Query mit allen Objekten im Sichtradius
-		ContinuousWithin query = new ContinuousWithin(space, this, vision);
-
-		Theke neigh;				// dummy fuer Theken Objekt
-		double[] distXY = null;		// Abstandsvektor fuer NdPoints
-		double minBarDist = vision;	// kuerzester Abstand zu einer Bar
-		NdPoint closestBarPoint = new NdPoint();	// Punkt mit naechster Bar
-
-		// Durchlaufe die Query des Sichtradius
-		for (Object o : query.query()){
-
-			// falls das Objekt Theke
-			if (o instanceof Theke){
-				neigh = (Theke) o;
-
-				NdPoint t = space.getLocation(neigh);
-				// Distanz zur Theke, falls minimum -> speichern
-				double dist = space.getDistance(lastPos, t);
-				if (dist < minBarDist){
-					minBarDist = dist;
-					closestBarPoint = t;
-				}
-				// speichere Abstand in x- und y-Ausrichtung
-				distXY = space.getDisplacement(lastPos, t);
-			}
-		}
-
-		// Set Velocity/Geschwindigkeit
-		velocity.setX(distXY[0]);
-		velocity.setY(distXY[1]);
-	
+		
+		shorty();
+		
 	} // END of ScheduledMethod.
 
 	/**

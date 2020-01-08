@@ -9,12 +9,18 @@ public class Theke {
 	int x;
 	int y;
 	int kind;
+	boolean visited;
 	
 	
 	public Theke(int x, int y, int kind) {
 		this.x = x;
 		this.y = y;
 		this.kind = kind;
+		this.visited = false;
+	}
+	
+	public void setVisit() {
+		this.visited = true;
 	}
 	
 

@@ -34,10 +34,10 @@ public class modelbuilder implements ContextBuilder<Object>{
 		space.moveTo(aktionstheke, aktionstheke.x, aktionstheke.y);
 		
 		// NEUE DUMMY THEKEN ZUM TESTEN:
-		Theke kasseL = new Theke(consts.SIZE_X*1/4, consts.SIZE_Y-5, consts.FLEISCH);
+		Theke kasseL = new Theke(consts.SIZE_X*1/4, consts.SIZE_Y-5, consts.KASSE);
 		context.add(kasseL);
 		space.moveTo(kasseL, kasseL.x, kasseL.y);
-		Theke kasseR = new Theke(consts.SIZE_X*3/4, consts.SIZE_Y-5, consts.FLEISCH);
+		Theke kasseR = new Theke(consts.SIZE_X*3/4, consts.SIZE_Y-5, consts.KASSE);
 		context.add(kasseR);
 		space.moveTo(kasseR, kasseR.x, kasseR.y);
 		
