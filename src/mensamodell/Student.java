@@ -38,15 +38,12 @@ public class Student {
 	int aversionradius = 1;
 	Context<Object> context;
 	List<Theke> visitedBars; 		// Liste der Besuchten Theken 
-	boolean sated;					// Besser waere es das Objekt vom context zu entfernen 
-									// context.remove(Object)
 
 	// choose randomly
 	public Student(ContinuousSpace s, Context c) {
 		this.space = s;
 		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
 		this.velocity = new Vector2d(0,0);
-		this.sated = false;
 		this.visitedBars = new ArrayList<>();
 		this.context = c;
 	}
@@ -86,9 +83,24 @@ public class Student {
 		return null;
 	}
 	
+	// HIER WIRD GEPRUEFT OB WIR VOR EINER THEKE STEHEN!!! 
+	// RETURN VALUES muessen passen. siehe:StudentGoalOriented.to_next_Ausgabe()
+	public double[] at_bar() {
+		// pruefe ob du bereits nah genug bist um Essen zu nehmen
+		double[] distXY = null;
+		ContinuousWithin barInRange;
+		barInRange = new ContinuousWithin(space, this, 4);
+		for (Object b : barInRange.query()) {
+			if (b instanceof Theke && !visitedBars.contains(b)) {
+				visitedBars.add((Theke) b); // DAS MUSS AUCH BLEIBEN 
+				// Du stehst vor einer Theke behalte deine aktuelle Position bei
+				distXY = space.getDisplacement(space.getLocation(this), space.getLocation(this));
+				return distXY; //  == {0.0, 0.0}
+			}
+		}	
+		return distXY; // == null
+	}
 	
-	
-
 	public Vector2d avoid_others() {
 		NdPoint lastPos = space.getLocation(this);
 		ContinuousWithin query = new ContinuousWithin(space, this, vision);

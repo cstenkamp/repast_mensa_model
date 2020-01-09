@@ -66,8 +66,8 @@ public class modelbuilder implements ContextBuilder<Object>{
 			else
 				stud = new StudentChaotic(space, context);
 			context.add(stud);	// add the new students to the root context
-			x = RandomHelper.nextIntFromTo(0, consts.SIZE_X-1);
-			y = RandomHelper.nextIntFromTo(0, consts.SIZE_Y-1);
+			x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);
+			y = consts.SIZE_Y-5;
 			space.moveTo(stud, x, y); // add students to space
 		}
 		return context;

@@ -12,7 +12,7 @@ public class StudentGoalOriented extends Student {
 
 	public StudentGoalOriented(ContinuousSpace s, Context c) {
 		super(s, c);
-		this.vision = 200; // Sichtweite
+		this.vision = 300; // Sichtweite
 	}
 	
 	// Sucht den kuerzesten Weg
@@ -24,23 +24,12 @@ public class StudentGoalOriented extends Student {
 			 * distXY == (0,0)--> Wähle dein Essen. Du stehst vor einer Theke.
 			 * distXY == (X,Y)--> Du bist auf dem Weg.
 			 */
-
-			ContinuousWithin barInRange;
-			double[] distXY = null;						// Abstandsvektor fuer NdPoints
 			
-			// HIER WIRD GEPRUEFT OB WIR VOR EINER THEKE STEHEN!!! 
-			// pruefe ob du bereits nah genug bist um Essen zu nehmen
-			barInRange = new ContinuousWithin(space, this, 4);
-			for (Object b : barInRange.query()) {
-				if (b instanceof Theke && !visitedBars.contains(b)) {
-					visitedBars.add((Theke) b); 
-					// Du stehst vor einer Theke behalte deine aktuelle Position bei
-					distXY = space.getDisplacement(space.getLocation(this), space.getLocation(this));
-					return distXY; //  == {0.0, 0.0}
-				}
-			}
-			
+			// Falls der student vor einer Theke steht
+			if (at_bar() != null) return at_bar();
+						
 			// Suche deinen Weg zur naechsten Theke
+			double[] distXY = null;			
 			NdPoint lastPos = space.getLocation(this);										// speichere die aktuelle Position
 			ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);		// erzeugt eine Query mit allen Objekten im Sichtradius
 			double minBarDist = vision;					// kuerzester Abstand zu einer Bar

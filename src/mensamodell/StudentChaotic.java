@@ -23,8 +23,19 @@ public class StudentChaotic extends Student {
 		 * distXY == (0,0)--> Wähle dein Essen. Du stehst vor einer Theke.
 		 * distXY == (X,Y)--> Du bist auf dem Weg.
 		 */
-		//wenn in der naehe einer theke, gehe dort hin...
-		double[] distXY = {0.2*RandomHelper.nextDoubleFromTo(-20, 20)*walking_speed + 0.8*velocity.x, 0.2*RandomHelper.nextDoubleFromTo(-20, 20)*walking_speed + 0.8*velocity.y};
+		// Falls der student vor einer Theke steht
+		if (at_bar() != null) return at_bar();
+		
+		//waehle zufaellig eine Theke NOCH NICHT GANZ ZUFAELLIG
+		double[] distXY = null;
+		NdPoint lastPos = space.getLocation(this);
+		ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);
+		for (Object o : barInVision.query()){			
+			if (o instanceof Theke && !visitedBars.contains(o)){	
+				distXY = space.getDisplacement(lastPos, space.getLocation(o));	
+				
+			}
+		}
 		return distXY;
 	}
 	
