@@ -13,6 +13,7 @@ import mensamodell.consts.*;
 //TODO next:
 //-Studenten gehen nicht auf die Theke drauf
 //-Studenten gehen theke nach theke ab
+//	⁻Studenten haben listen welche theken sie schon besucht haben
 //-Vor einer Theke gehen studenten in ordentliche Reihen
 //-Chaotische Studenten gehen zu Theke falls in Sichtweite
 
