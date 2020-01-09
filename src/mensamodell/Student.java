@@ -15,9 +15,9 @@ import mensamodell.consts.*;
 import repast.simphony.context.Context;
 
 //TODO next:
-//-Studenten gehen nicht auf die Theke drauf
-//-Studenten gehen theke nach theke ab
-//-Studenten haben listen welche theken sie schon besucht haben
+//-Studenten gehen nicht auf die Theke drauf SO HALB GELOEST
+//-Studenten gehen theke nach theke ab DONE
+//-Studenten haben listen welche theken sie schon besucht haben DONE
 //-Vor einer Theke gehen studenten in ordentliche Reihen
 //-Chaotische Studenten gehen zu Theke falls in Sichtweite
 
@@ -30,7 +30,7 @@ import repast.simphony.context.Context;
 public class Student {
 
 	// Class variables
-	private ContinuousSpace space;	// Der kontinuierliche Raum wird in dieser Variablen gespeichert.
+	ContinuousSpace space;	// Der kontinuierliche Raum wird in dieser Variablen gespeichert.
 	int food_preference; 			// 0=veggie, 1=vegan, 2=meat, 3=no_preference
 	double vision;					// Sichtradius
 	protected Vector2d velocity;	// Geschwindigkeits- und Ausrichtungsvektor
@@ -71,6 +71,7 @@ public class Student {
 //		this.food_preference = food_pref;
 //		this.movement = move_pref;
 //	}
+	
 	public double[] to_kasse() {
 		double[] distXY = null;
 		ContinuousWithin kasseInRange = new ContinuousWithin(space, this, 1000);
@@ -86,51 +87,7 @@ public class Student {
 	}
 	
 	
-	// Sucht den kuerzesten Weg
-	public double[] to_next_ausgabe() {
-
-		ContinuousWithin barInRange;
-		double[] distXY = null;						// Abstandsvektor fuer NdPoints
-		
-		// pruefe ob du bereits nah genug bist um Essen zu nehmen
-		barInRange = new ContinuousWithin(space, this, 4);
-		for (Object b : barInRange.query()) {
-			if (b instanceof Theke && !visitedBars.contains(b)) {
-				visitedBars.add((Theke) b); 
-				// Du stehst vor einer Theke
-				distXY = space.getDisplacement(space.getLocation(this), space.getLocation(this));
-				// System.out.println(distXY[0] + " " + distXY[1]);
-				return distXY; //  == {0,0}
-			}
-		}
-		
-		// Suche deinen Weg zur naechsten Theke
-		NdPoint lastPos = space.getLocation(this);										// speichere die aktuelle Position
-		ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);		// erzeugt eine Query mit allen Objekten im Sichtradius
-		double minBarDist = vision;					// kuerzester Abstand zu einer Bar
-		NdPoint closestBarPoint = new NdPoint();	// Punkt mit naechster Bar
-		Theke v = null; 							// zum speichern der besuchten Theke
-		
-		for (Object o : barInVision.query()){			// Durchlaufe die Query des Sichtradius
-			if (o instanceof Theke && !visitedBars.contains(o)){	// falls das Theke und noch nicht besucht
-				Theke tempBar = (Theke) o;
-				NdPoint tempBarLoc = space.getLocation(tempBar);
-				double dist = space.getDistance(lastPos, tempBarLoc);			// Distanz zur Theke, falls minimum -> speichern
-				if (dist < minBarDist){
-					minBarDist = dist;
-					closestBarPoint = tempBarLoc;
-					v = tempBar;
-					distXY = space.getDisplacement(lastPos, closestBarPoint);	// speichere Abstand in x- und y-Ausrichtung
-				}
-			}
-		}
-		if (v != null) {
-			return distXY;
-		} else {
-			// Falls alle Theken besucht oder Essen gefunden.
-			return null;
-		}
-	}
+	
 
 	public Vector2d avoid_others() {
 		NdPoint lastPos = space.getLocation(this);
@@ -152,9 +109,7 @@ public class Student {
 				}
 			}
 		}
-		if (distXY.length() < aversionradius)
-			return distXY;
-
+		if (distXY.length() < aversionradius) return distXY;
 		return null;
 	}
 

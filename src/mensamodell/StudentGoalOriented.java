@@ -3,7 +3,9 @@ package mensamodell;
 import javax.vecmath.Vector2d;
 
 import repast.simphony.engine.schedule.ScheduledMethod;
+import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
+import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.context.Context;
 
 public class StudentGoalOriented extends Student {
@@ -13,6 +15,58 @@ public class StudentGoalOriented extends Student {
 		this.vision = 200; // Sichtweite
 	}
 	
+	// Sucht den kuerzesten Weg
+		public double[] to_next_ausgabe() {
+			
+			/*
+			 * Return Values:
+			 * distXY == null --> gehe zur Kasse
+			 * distXY == (0,0)--> Wähle dein Essen. Du stehst vor einer Theke.
+			 * distXY == (X,Y)--> Du bist auf dem Weg.
+			 */
+
+			ContinuousWithin barInRange;
+			double[] distXY = null;						// Abstandsvektor fuer NdPoints
+			
+			// HIER WIRD GEPRUEFT OB WIR VOR EINER THEKE STEHEN!!! 
+			// pruefe ob du bereits nah genug bist um Essen zu nehmen
+			barInRange = new ContinuousWithin(space, this, 4);
+			for (Object b : barInRange.query()) {
+				if (b instanceof Theke && !visitedBars.contains(b)) {
+					visitedBars.add((Theke) b); 
+					// Du stehst vor einer Theke behalte deine aktuelle Position bei
+					distXY = space.getDisplacement(space.getLocation(this), space.getLocation(this));
+					return distXY; //  == {0.0, 0.0}
+				}
+			}
+			
+			// Suche deinen Weg zur naechsten Theke
+			NdPoint lastPos = space.getLocation(this);										// speichere die aktuelle Position
+			ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);		// erzeugt eine Query mit allen Objekten im Sichtradius
+			double minBarDist = vision;					// kuerzester Abstand zu einer Bar
+			NdPoint closestBarPoint = new NdPoint();	// Punkt mit naechster Bar
+			Theke v = null; 							// zum speichern der besuchten Theke
+			
+			for (Object o : barInVision.query()){			// Durchlaufe die Query des Sichtradius
+				if (o instanceof Theke && !visitedBars.contains(o)){	// falls das Theke und noch nicht besucht
+					Theke tempBar = (Theke) o;
+					NdPoint tempBarLoc = space.getLocation(tempBar);
+					double dist = space.getDistance(lastPos, tempBarLoc);			// Distanz zur Theke, falls minimum -> speichern
+					if (dist < minBarDist){
+						minBarDist = dist;
+						closestBarPoint = tempBarLoc;
+						v = tempBar;
+						distXY = space.getDisplacement(lastPos, closestBarPoint);	// speichere Abstand in x- und y-Ausrichtung
+					}
+				}
+			}
+			if (v != null) {
+				return distXY;
+			} else {
+				// Falls alle Theken besucht oder Essen gefunden.
+				return null;
+			}
+		}	
 	
 	/**
 	 * Methode wird jede Runde ausgefuehrt. 
@@ -29,18 +83,14 @@ public class StudentGoalOriented extends Student {
 				// Du bist auf dem Weg.
 				velocity.setX(movement[0]);
 				velocity.setY(movement[1]);	
-				System.out.println("Move " + this);
 			} else if (movement == null) {
 				// gehe zur Kasse
 				movement = to_kasse();
 				velocity.setX(movement[0]);
 				velocity.setY(movement[1]);	
-				// entferne den Studenten
-				//context.remove(this);
-				System.out.println("Kasse " + this);
 			} else {
 				// Wähle dein Essen. Du stehst vor einer Theke.
-				System.out.println("Essen " + this);
+				System.out.println("Essenswahl!");
 			}
 		}
 	} 
