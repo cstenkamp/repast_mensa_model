@@ -32,13 +32,17 @@ public class Student {
 	protected Vector2d velocity;		// Geschwindigkeits- und Ausrichtungsvektor
 	float walking_speed = 0.002f;
 	int aversionradius = 1;
-	
+	boolean sated;					// Besser w�re es das Objekt vom context zu entfernen jedoch
+									// kann ich innerhalb der Klasse nicht darauf zugreifen
+									// context.remove(Object)
+
 	// choose randomly
 	public Student(ContinuousSpace s) {
 		this.space = s;
 		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
 		this.movement = 1;//RandomHelper.nextIntFromTo(0, 2);
 		this.velocity = new Vector2d(0,0);
+		this.sated = false;
 		if (this.movement == 0) {
 			this.vision = 20; // chaotische besitzen einen kleineren Sichtradius
 		} else if (this.movement == 1) {
@@ -72,16 +76,16 @@ public class Student {
 //	public boolean select_meal() {
 //		return true;
 //	}
-//	
+//
 //	// chaotischer Lauftyp
 //	public void chaotic() {
-//		
+//
 //	}
-	
-	
-	
+
+
+
 	public double[] to_next_ausgabe() {
-		
+
 		NdPoint lastPos = space.getLocation(this);																	// speichere die aktuelle Position
 		ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);		// erzeugt eine Query mit allen Objekten im Sichtradius
 
@@ -101,7 +105,7 @@ public class Student {
 					v = tempBar;
 					distXY = space.getDisplacement(lastPos, closestBarPoint);		// speichere Abstand in x- und y-Ausrichtung
 				}
-			} 
+			}
 		}
 		if (v != null) {
 			return distXY;
@@ -109,18 +113,18 @@ public class Student {
 			return null;
 		}
 	}
-	
+
 	public Vector2d avoid_others() {
 		NdPoint lastPos = space.getLocation(this);
 		ContinuousWithin query = new ContinuousWithin(space, this, vision);
 		Vector2d distXY = new Vector2d(0,0);
-		double minStudDist = 99999;	
-		NdPoint closestStudPoint = new NdPoint();	
+		double minStudDist = 99999;
+		NdPoint closestStudPoint = new NdPoint();
 		Student neigh;
-		
+
 		for (Object o : query.query()){
 			if (o instanceof Student){
-				neigh = (Student)o;				
+				neigh = (Student)o;
 				NdPoint p = space.getLocation(neigh);
 				double dist = space.getDistance(lastPos, p);
 				if (dist < minStudDist){
@@ -132,11 +136,11 @@ public class Student {
 		}
 		if (distXY.length() < aversionradius)
 			return distXY;
-		
+
 		return null;
 	}
-	
-	
+
+
 	@ScheduledMethod(start = 0, interval = 1)
 	public void step() {
 		Vector2d avoidance = avoid_others();
@@ -151,18 +155,18 @@ public class Student {
 	 */
 	@ScheduledMethod(start=0.5, interval=1)
 	public void do_move(){
-		
+
 		velocity.normalize();
 		velocity.scale(walking_speed);
-		
+
     NdPoint pos = space.getLocation(this);
 		Vector2d potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
-		
+
     if (potentialcoords.x <= 0 || potentialcoords.x >= consts.SIZE_X || potentialcoords.y <= 0 || potentialcoords.y >= consts.SIZE_Y){
     	//throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
     	return;
     }
-    
+
     space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
 

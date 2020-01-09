@@ -33,7 +33,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 		Theke aktionstheke = new Theke(consts.SIZE_X/2, 10, consts.AKTIONSTHEKE);
 		context.add(aktionstheke);
 		space.moveTo(aktionstheke, aktionstheke.x, aktionstheke.y);
-		
+
 		for (double i : new double[]{-consts.SIZE_X/6.0, consts.SIZE_X/6.0}) {
 				Theke fleisch = new Theke((int)(consts.SIZE_X/2.0+i), 5, consts.FLEISCHTHEKE);
 				context.add(fleisch);
@@ -48,7 +48,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 		Theke veggie = new Theke(5, consts.SIZE_Y*1/4, consts.VEGGIETHEKE);
 		context.add(veggie);
 		space.moveTo(veggie, veggie.x, veggie.y);
-		
+
 		// Kassen
 		Kasse kasseL = new Kasse(consts.SIZE_X*1/4, consts.SIZE_Y-5);
 		context.add(kasseL);
@@ -56,7 +56,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 		Kasse kasseR = new Kasse(consts.SIZE_X*3/4, consts.SIZE_Y-5);
 		context.add(kasseR);
 		space.moveTo(kasseR, kasseR.x, kasseR.y);
-		
+
 		// add students to context
 		double x, y;
 		Student stud;
@@ -66,14 +66,14 @@ public class modelbuilder implements ContextBuilder<Object>{
 			else
 				stud = new StudentChaotic(space);
 			context.add(stud);	// add the new students to the root context
-			x = RandomHelper.nextIntFromTo(0, consts.SIZE_X-1); 
-			y = RandomHelper.nextIntFromTo(0, consts.SIZE_Y-1); 
+			x = RandomHelper.nextIntFromTo(0, consts.SIZE_X-1);
+			y = RandomHelper.nextIntFromTo(0, consts.SIZE_Y-1);
 			space.moveTo(stud, x, y); // add students to space
 		}
 		return context;
 	} // END of Context.
-	
-	
- 
+
+
+
 
 } // END of modelbuilder.
