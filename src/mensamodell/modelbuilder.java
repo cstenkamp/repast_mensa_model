@@ -50,10 +50,10 @@ public class modelbuilder implements ContextBuilder<Object>{
 		space.moveTo(veggie, veggie.x, veggie.y);
 
 		// Kassen
-		Kasse kasseL = new Kasse(consts.SIZE_X*1/4, consts.SIZE_Y-5);
+		Kasse kasseL = new Kasse(consts.SIZE_X*1/4, consts.SIZE_Y-5, space);
 		context.add(kasseL);
 		space.moveTo(kasseL, kasseL.x, kasseL.y);
-		Kasse kasseR = new Kasse(consts.SIZE_X*3/4, consts.SIZE_Y-5);
+		Kasse kasseR = new Kasse(consts.SIZE_X*3/4, consts.SIZE_Y-5, space);
 		context.add(kasseR);
 		space.moveTo(kasseR, kasseR.x, kasseR.y);
 

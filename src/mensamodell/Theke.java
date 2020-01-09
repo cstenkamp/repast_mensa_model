@@ -10,7 +10,6 @@ public class Theke {
 	int x;
 	int y;
 	public int kind;
-	boolean visited;
 	public Vector2d size;
 	
 	
@@ -18,7 +17,6 @@ public class Theke {
 		this.x = x;
 		this.y = y;
 		this.kind = kind;
-		this.visited = false;
 		
 		if (this.kind == consts.AKTIONSTHEKE) 
 			size = new Vector2d(40,100);
@@ -29,10 +27,6 @@ public class Theke {
 		else
 			size = null;
 		
-	}
-	
-	public void setVisit() {
-		this.visited = true;
 	}
 	
 	public boolean isLeft() {

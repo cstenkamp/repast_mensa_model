@@ -13,10 +13,11 @@ public class StudentChaotic extends Student {
 
 	public StudentChaotic(ContinuousSpace s, Context c) {
 		super(s, c);
+		this.vision = 100; // Sichweite
 	}
 	
 	public double[] move_chaotically() {
-		//wenn in der nähe einer theke, gehe dort hin...
+		//wenn in der naehe einer theke, gehe dort hin...
 		double[] distXY = {0.2*RandomHelper.nextDoubleFromTo(-20, 20)*walking_speed + 0.8*velocity.x, 0.2*RandomHelper.nextDoubleFromTo(-20, 20)*walking_speed + 0.8*velocity.y};
 		return distXY;
 	}

@@ -10,6 +10,7 @@ public class StudentGoalOriented extends Student {
 
 	public StudentGoalOriented(ContinuousSpace s, Context c) {
 		super(s, c);
+		this.vision = 200; // Sichtweite
 	}
 	
 	
@@ -24,8 +25,23 @@ public class StudentGoalOriented extends Student {
 			velocity.setY(-avoidance.y);
 		} else {
 			double[] movement = to_next_ausgabe();
-			velocity.setX(movement[0]);
-			velocity.setY(movement[1]);		
+			if (movement != null && !(movement[0] == 0 && movement[1] == 0)) {
+				// Du bist auf dem Weg.
+				velocity.setX(movement[0]);
+				velocity.setY(movement[1]);	
+				System.out.println("Move " + this);
+			} else if (movement == null) {
+				// gehe zur Kasse
+				movement = to_kasse();
+				velocity.setX(movement[0]);
+				velocity.setY(movement[1]);	
+				// entferne den Studenten
+				//context.remove(this);
+				System.out.println("Kasse " + this);
+			} else {
+				// Wähle dein Essen. Du stehst vor einer Theke.
+				System.out.println("Essen " + this);
+			}
 		}
 	} 
 

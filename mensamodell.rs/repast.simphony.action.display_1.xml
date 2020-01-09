@@ -7,7 +7,11 @@
       <string>styles.KassenStyle</string>
     </entry>
     <entry>
-      <string>mensamodell.Student</string>
+      <string>mensamodell.StudentGoalOriented</string>
+      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+    </entry>
+    <entry>
+      <string>mensamodell.StudentChaotic</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
     <entry>
@@ -21,8 +25,12 @@
       <null/>
     </entry>
     <entry>
-      <string>mensamodell.Student</string>
-      <string>mensamodell.Student.style_3.xml</string>
+      <string>mensamodell.StudentGoalOriented</string>
+      <string>mensamodell.StudentGoalOriented.style_0.xml</string>
+    </entry>
+    <entry>
+      <string>mensamodell.StudentChaotic</string>
+      <string>mensamodell.StudentChaotic.style_0.xml</string>
     </entry>
     <entry>
       <string>mensamodell.Theke</string>
@@ -39,7 +47,7 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1454955206</hashCode>
+    <hashCode>874067137</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>
@@ -50,7 +58,11 @@
       <int>1</int>
     </entry>
     <entry>
-      <string>mensamodell.Student</string>
+      <string>mensamodell.StudentGoalOriented</string>
+      <int>3</int>
+    </entry>
+    <entry>
+      <string>mensamodell.StudentChaotic</string>
       <int>2</int>
     </entry>
     <entry>
