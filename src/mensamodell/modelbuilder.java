@@ -62,9 +62,9 @@ public class modelbuilder implements ContextBuilder<Object>{
 		Student stud;
 		for (int i = 0; i < initialNumStud; i++) {
 			if (RandomHelper.nextIntFromTo(0, 1) == 0)
-				stud = new StudentGoalOriented(space);
+				stud = new StudentGoalOriented(space, context);
 			else
-				stud = new StudentChaotic(space);
+				stud = new StudentChaotic(space, context);
 			context.add(stud);	// add the new students to the root context
 			x = RandomHelper.nextIntFromTo(0, consts.SIZE_X-1);
 			y = RandomHelper.nextIntFromTo(0, consts.SIZE_Y-1);

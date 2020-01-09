@@ -7,11 +7,12 @@ import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
+import repast.simphony.context.Context;
 
 public class StudentChaotic extends Student {
 
-	public StudentChaotic(ContinuousSpace s) {
-		super(s);
+	public StudentChaotic(ContinuousSpace s, Context c) {
+		super(s, c);
 	}
 	
 	public double[] move_chaotically() {

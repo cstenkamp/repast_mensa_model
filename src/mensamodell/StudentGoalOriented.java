@@ -4,11 +4,12 @@ import javax.vecmath.Vector2d;
 
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.space.continuous.ContinuousSpace;
+import repast.simphony.context.Context;
 
 public class StudentGoalOriented extends Student {
 
-	public StudentGoalOriented(ContinuousSpace s) {
-		super(s);
+	public StudentGoalOriented(ContinuousSpace s, Context c) {
+		super(s, c);
 	}
 	
 	

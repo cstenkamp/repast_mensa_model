@@ -8,12 +8,12 @@ import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 
 import mensamodell.consts.*;
-
+import repast.simphony.context.Context;
 
 //TODO next:
 //-Studenten gehen nicht auf die Theke drauf
 //-Studenten gehen theke nach theke ab
-//	⁻Studenten haben listen welche theken sie schon besucht haben
+//-Studenten haben listen welche theken sie schon besucht haben
 //-Vor einer Theke gehen studenten in ordentliche Reihen
 //-Chaotische Studenten gehen zu Theke falls in Sichtweite
 
@@ -38,7 +38,7 @@ public class Student {
 									// context.remove(Object)
 
 	// choose randomly
-	public Student(ContinuousSpace s) {
+	public Student(ContinuousSpace s, Context c) {
 		this.space = s;
 		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
 		this.movement = 1;//RandomHelper.nextIntFromTo(0, 2);
@@ -141,12 +141,13 @@ public class Student {
 		return null;
 	}
 
-
+	// Standard Student weicht nur aus. 
 	@ScheduledMethod(start = 0, interval = 1)
 	public void step() {
 		Vector2d avoidance = avoid_others();
 		if (avoidance != null) {
-			velocity = avoidance;
+			velocity.setX(-avoidance.x);
+			velocity.setY(-avoidance.y);
 		}
 	}
 
