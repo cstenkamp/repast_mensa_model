@@ -10,6 +10,12 @@ import repast.simphony.space.continuous.NdPoint;
 import mensamodell.consts.*;
 
 
+//TODO next:
+//-Studenten gehen nicht auf die Theke drauf
+//-Studenten gehen theke nach theke ab
+//-Vor einer Theke gehen studenten in ordentliche Reihen
+//-Chaotische Studenten gehen zu Theke falls in Sichtweite
+
 
 /*
  * Studenten Klasse. Der Student laeuft durch die Mensa und erkennt innerhalb seines Sichtradius verschiedene Theken anhand der Schlange und
@@ -25,6 +31,7 @@ public class Student {
 	double vision;									// Sichtradius
 	protected Vector2d velocity;		// Geschwindigkeits- und Ausrichtungsvektor
 	float walking_speed = 0.002f;
+	int aversionradius = 1;
 	
 	// choose randomly
 	public Student(ContinuousSpace s) {
@@ -71,7 +78,9 @@ public class Student {
 //		
 //	}
 	
-	public void to_next_ausgabe() {
+	
+	
+	public double[] to_next_ausgabe() {
 		
 		NdPoint lastPos = space.getLocation(this);																	// speichere die aktuelle Position
 		ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);		// erzeugt eine Query mit allen Objekten im Sichtradius
@@ -95,26 +104,45 @@ public class Student {
 			} 
 		}
 		if (v != null) {
-	    //double vec_len = Math.sqrt(distXY[0]*distXY[0] + distXY[1]*distXY[1]);
-			//velocity.setX(distXY[0]/vec_len*walking_speed);
-			//velocity.setY(distXY[1]/vec_len*walking_speed);
-			velocity.normalize();
-			velocity.scale(walking_speed);
+			return distXY;
 		} else {
-			velocity.set(0, 0);
+			return null;
 		}
-		/*
-		try {
-			// setze visited der Theke auf true
-			v.setVisit();
-		} catch (Exception e) {
-			System.out.println("Alle Essensausgaben besucht.");
+	}
+	
+	public Vector2d avoid_others() {
+		NdPoint lastPos = space.getLocation(this);
+		ContinuousWithin query = new ContinuousWithin(space, this, vision);
+		Vector2d distXY = new Vector2d(0,0);
+		double minStudDist = 99999;	
+		NdPoint closestStudPoint = new NdPoint();	
+		Student neigh;
+		
+		for (Object o : query.query()){
+			if (o instanceof Student){
+				neigh = (Student)o;				
+				NdPoint p = space.getLocation(neigh);
+				double dist = space.getDistance(lastPos, p);
+				if (dist < minStudDist){
+					minStudDist = dist;
+					closestStudPoint = p;
+					distXY = new Vector2d(space.getDisplacement(lastPos, p)[0], space.getDisplacement(lastPos, p)[1]);
+				}
+			}
 		}
-		*/
+		if (distXY.length() < aversionradius)
+			return distXY;
 		
-		
-		// Set Velocity/Geschwindigkeit
-
+		return null;
+	}
+	
+	
+	@ScheduledMethod(start = 0, interval = 1)
+	public void step() {
+		Vector2d avoidance = avoid_others();
+		if (avoidance != null) {
+			velocity = avoidance;
+		}
 	}
 
 
@@ -123,6 +151,10 @@ public class Student {
 	 */
 	@ScheduledMethod(start=0.5, interval=1)
 	public void do_move(){
+		
+		velocity.normalize();
+		velocity.scale(walking_speed);
+		
     NdPoint pos = space.getLocation(this);
 		Vector2d potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
 		
