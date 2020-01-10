@@ -11,8 +11,6 @@ import repast.simphony.space.continuous.*;
 
 import javax.media.j3d.Shape3D;
 
-import mensamodell.consts.*;
-
 
 
 public class modelbuilder implements ContextBuilder<Object>{
@@ -57,19 +55,10 @@ public class modelbuilder implements ContextBuilder<Object>{
 		context.add(kasseR);
 		space.moveTo(kasseR, kasseR.x, kasseR.y);
 
-		// add students to context
-		double x, y;
-		Student stud;
-		for (int i = 0; i < initialNumStud; i++) {
-			if (RandomHelper.nextIntFromTo(0, 1) == 0)
-				stud = new StudentGoalOriented(space, context);
-			else
-				stud = new StudentChaotic(space, context);
-			context.add(stud);	// add the new students to the root context
-			x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);
-			y = consts.SIZE_Y-5;
-			space.moveTo(stud, x, y); // add students to space
-		}
+		MensaEingang eingang = new MensaEingang(initialNumStud, context, space); //TODO darauf achten dass man immer 100 studenten drin hat bspw
+		context.add(eingang);
+		space.moveTo(eingang, consts.SIZE_X*2.5/5,consts.SIZE_Y-5);
+		
 		return context;
 	} // END of Context.
 

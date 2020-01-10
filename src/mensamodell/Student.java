@@ -10,6 +10,7 @@ import javax.vecmath.Vector2d;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
+import repast.simphony.util.collections.FilteredIterator;
 
 import mensamodell.consts.*;
 import repast.simphony.context.Context;
@@ -38,7 +39,8 @@ public class Student {
 	int aversionradius = 1;
 	Context<Object> context;
 	List<Theke> visitedBars; 		// Liste der Besuchten Theken 
-
+	int waitticks;
+	
 	// choose randomly
 	public Student(ContinuousSpace s, Context c) {
 		this.space = s;
@@ -46,6 +48,7 @@ public class Student {
 		this.velocity = new Vector2d(0,0);
 		this.visitedBars = new ArrayList<>();
 		this.context = c;
+		this.waitticks = 0;
 	}
 
 //	// choose only one preference
@@ -76,7 +79,10 @@ public class Student {
 			if (k instanceof Kasse) {
 				distXY = space.getDisplacement(space.getLocation(this), space.getLocation(k));
 				// falls student in kassen reichweite --> entfernen
-				if (((Kasse) k).pay(this)) context.remove(this);
+				if (((Kasse) k).pay(this)) {
+					context.remove(this);
+					return null;
+				}
 				return distXY;
 			}
 		}
@@ -85,7 +91,7 @@ public class Student {
 	
 	// HIER WIRD GEPRUEFT OB WIR VOR EINER THEKE STEHEN!!! 
 	// RETURN VALUES muessen passen. siehe:StudentGoalOriented.to_next_Ausgabe()
-	public double[] at_bar() {
+	public boolean at_bar() {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
 		double[] distXY = null;
 		ContinuousWithin barInRange;
@@ -93,22 +99,22 @@ public class Student {
 		for (Object b : barInRange.query()) {
 			if (b instanceof Theke && !visitedBars.contains(b)) {
 				visitedBars.add((Theke) b); // DAS MUSS AUCH BLEIBEN 
-				// Du stehst vor einer Theke behalte deine aktuelle Position bei
-				distXY = space.getDisplacement(space.getLocation(this), space.getLocation(this));
-				return distXY; //  == {0.0, 0.0}
+				//in Du stehst vor eer Theke behalte deine aktuelle Position bei
+				return true;
+//				distXY = space.getDisplacement(space.getLocation(this), space.getLocation(this));
+//				return distXY; //  == {0.0, 0.0}
 			}
 		}	
-		return distXY; // == null
+		return false; // == null
 	}
 	
 	public Vector2d avoid_others() {
 		NdPoint lastPos = space.getLocation(this);
-		ContinuousWithin query = new ContinuousWithin(space, this, vision);
+		ContinuousWithin query = new ContinuousWithin(space, this, aversionradius);
 		Vector2d distXY = new Vector2d(0,0);
 		double minStudDist = 99999;
 		NdPoint closestStudPoint = new NdPoint();
 		Student neigh;
-
 		for (Object o : query.query()){
 			if (o instanceof Student){
 				neigh = (Student)o;
@@ -120,8 +126,16 @@ public class Student {
 					distXY = new Vector2d(space.getDisplacement(lastPos, p)[0], space.getDisplacement(lastPos, p)[1]);
 				}
 			}
+		} 
+		if (minStudDist < 99999) {
+			if (distXY.length() == 0) {
+				distXY.x = RandomHelper.nextDouble();
+				distXY.y = RandomHelper.nextDouble();
+				return distXY;
+			} else if (distXY.length() < aversionradius) {
+				return distXY;
+			}
 		}
-		if (distXY.length() < aversionradius) return distXY;
 		return null;
 	}
 
@@ -141,6 +155,10 @@ public class Student {
 	 */
 	@ScheduledMethod(start=0.5, interval=1)
 	public void do_move(){
+		if (waitticks > 0) {
+			waitticks --;
+			return;
+		}
 
 		velocity.normalize();
 		velocity.scale(walking_speed);

@@ -6,6 +6,7 @@ import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
+import repast.simphony.util.collections.FilteredIterator;
 import repast.simphony.context.Context;
 
 public class StudentGoalOriented extends Student {
@@ -21,12 +22,14 @@ public class StudentGoalOriented extends Student {
 			/*
 			 * Return Values:
 			 * distXY == null --> gehe zur Kasse
-			 * distXY == (0,0)--> Wähle dein Essen. Du stehst vor einer Theke.
+			 * distXY == (0,0)--> Wï¿½hle dein Essen. Du stehst vor einer Theke.
 			 * distXY == (X,Y)--> Du bist auf dem Weg.
 			 */
 			
 			// Falls der student vor einer Theke steht
-			if (at_bar() != null) return at_bar();
+			if (at_bar()) {
+				return new double[] {0, 0};
+			}
 						
 			// Suche deinen Weg zur naechsten Theke
 			double[] distXY = null;			
@@ -35,6 +38,7 @@ public class StudentGoalOriented extends Student {
 			double minBarDist = vision;					// kuerzester Abstand zu einer Bar
 			NdPoint closestBarPoint = new NdPoint();	// Punkt mit naechster Bar
 			Theke v = null; 							// zum speichern der besuchten Theke
+			
 			
 			for (Object o : barInVision.query()){			// Durchlaufe die Query des Sichtradius
 				if (o instanceof Theke && !visitedBars.contains(o)){	// falls das Theke und noch nicht besucht
@@ -75,11 +79,14 @@ public class StudentGoalOriented extends Student {
 			} else if (movement == null) {
 				// gehe zur Kasse
 				movement = to_kasse();
-				velocity.setX(movement[0]);
-				velocity.setY(movement[1]);	
+				if (movement != null) {
+					velocity.setX(movement[0]);
+					velocity.setY(movement[1]);
+				}
 			} else {
-				// Wähle dein Essen. Du stehst vor einer Theke.
+				// Wï¿½hle dein Essen. Du stehst vor einer Theke.
 				System.out.println("Essenswahl!");
+				this.waitticks = 5000;
 			}
 		}
 	} 

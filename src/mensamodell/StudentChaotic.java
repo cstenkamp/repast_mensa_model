@@ -7,6 +7,7 @@ import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
+import repast.simphony.util.collections.FilteredIterator;
 import repast.simphony.context.Context;
 
 public class StudentChaotic extends Student {
@@ -16,20 +17,25 @@ public class StudentChaotic extends Student {
 		this.vision = 30; // Sichtweite
 	}
 	
+TODO DIE SUCHEN NICHT PER LOOK-AROUND SONDERN WISSEN DIE POSITIONEN DER THEKEN UND SUCHEN NUR DIE NÃ„CHSTE
+	
 	public double[] move_chaotically() {
 		/*
 		 * Return Values:
 		 * distXY == null --> gehe zur Kasse
-		 * distXY == (0,0)--> Wähle dein Essen. Du stehst vor einer Theke.
+		 * distXY == (0,0)--> Wï¿½hle dein Essen. Du stehst vor einer Theke.
 		 * distXY == (X,Y)--> Du bist auf dem Weg.
 		 */
 		// Falls der student vor einer Theke steht
-		if (at_bar() != null) return at_bar();
+		if (at_bar()) {
+			return new double[] {0, 0};
+		}
 		
 		//waehle zufaellig eine Theke NOCH NICHT GANZ ZUFAELLIG
 		double[] distXY = null;
 		NdPoint lastPos = space.getLocation(this);
 		ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);
+		
 		for (Object o : barInVision.query()){			
 			if (o instanceof Theke && !visitedBars.contains(o)){	
 				distXY = space.getDisplacement(lastPos, space.getLocation(o));	
@@ -56,10 +62,12 @@ public class StudentChaotic extends Student {
 			} else if (movement == null) {
 				// gehe zur Kasse
 				movement = to_kasse();
-				velocity.setX(movement[0]);
-				velocity.setY(movement[1]);	
+				if (movement != null) {
+					velocity.setX(movement[0]);
+					velocity.setY(movement[1]);
+				}
 			} else {
-				// Wähle dein Essen. Du stehst vor einer Theke.
+				// Wï¿½hle dein Essen. Du stehst vor einer Theke.
 				System.out.println("Essenswahl!");
 			}
 		}

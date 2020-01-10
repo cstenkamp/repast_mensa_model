@@ -11,6 +11,10 @@
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
     <entry>
+      <string>mensamodell.MensaEingang</string>
+      <string>styles.EingangStyle</string>
+    </entry>
+    <entry>
       <string>mensamodell.StudentChaotic</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
@@ -27,6 +31,10 @@
     <entry>
       <string>mensamodell.StudentGoalOriented</string>
       <string>mensamodell.StudentGoalOriented.style_0.xml</string>
+    </entry>
+    <entry>
+      <string>mensamodell.MensaEingang</string>
+      <null/>
     </entry>
     <entry>
       <string>mensamodell.StudentChaotic</string>
@@ -47,7 +55,7 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>2125136198</hashCode>
+    <hashCode>463259982</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>
@@ -55,19 +63,23 @@
   <layerOrder>
     <entry>
       <string>mensamodell.Kasse</string>
-      <int>1</int>
-    </entry>
-    <entry>
-      <string>mensamodell.StudentGoalOriented</string>
-      <int>3</int>
-    </entry>
-    <entry>
-      <string>mensamodell.StudentChaotic</string>
       <int>2</int>
     </entry>
     <entry>
-      <string>mensamodell.Theke</string>
+      <string>mensamodell.StudentGoalOriented</string>
+      <int>4</int>
+    </entry>
+    <entry>
+      <string>mensamodell.MensaEingang</string>
       <int>0</int>
+    </entry>
+    <entry>
+      <string>mensamodell.StudentChaotic</string>
+      <int>3</int>
+    </entry>
+    <entry>
+      <string>mensamodell.Theke</string>
+      <int>1</int>
     </entry>
   </layerOrder>
   <projections>
