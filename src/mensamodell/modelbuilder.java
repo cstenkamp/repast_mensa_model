@@ -10,7 +10,8 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.*;
 
 import javax.media.j3d.Shape3D;
-
+import java.util.List; 
+import java.util.ArrayList; 
 
 
 public class modelbuilder implements ContextBuilder<Object>{
@@ -55,9 +56,20 @@ public class modelbuilder implements ContextBuilder<Object>{
 		context.add(kasseR);
 		space.moveTo(kasseR, kasseR.x, kasseR.y);
 
-		MensaEingang eingang = new MensaEingang(initialNumStud, context, space); //TODO darauf achten dass man immer 100 studenten drin hat bspw
+		//get all positions of theken and eingänge here and save them, such that students only need to loop over them instead of all elems
+		List<Kasse> kassen = new ArrayList<Kasse>();
+		for (Object ks: context.getObjects(Kasse.class)) {
+			kassen.add((Kasse) ks);
+		}
+		List<Theke> theken = new ArrayList<Theke>();
+		for (Object th: context.getObjects(Theke.class)) {
+			theken.add((Theke) th);
+		}
+		
+		MensaEingang eingang = new MensaEingang(initialNumStud, context, space, kassen, theken); //TODO darauf achten dass man immer 100 studenten drin hat bspw
 		context.add(eingang);
 		space.moveTo(eingang, consts.SIZE_X*2.5/5,consts.SIZE_Y-5);
+		
 		
 		return context;
 	} // END of Context.

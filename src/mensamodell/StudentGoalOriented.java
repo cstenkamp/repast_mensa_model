@@ -1,5 +1,7 @@
 package mensamodell;
 
+import java.util.List;
+
 import javax.vecmath.Vector2d;
 
 import repast.simphony.engine.schedule.ScheduledMethod;
@@ -11,8 +13,8 @@ import repast.simphony.context.Context;
 
 public class StudentGoalOriented extends Student {
 
-	public StudentGoalOriented(ContinuousSpace s, Context c) {
-		super(s, c);
+	public StudentGoalOriented(ContinuousSpace s, Context c, List<Kasse> kassen, List<Theke> theken) {
+		super(s, c, kassen, theken);
 		this.vision = 300; // Sichtweite
 	}
 	

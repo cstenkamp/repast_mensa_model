@@ -1,5 +1,7 @@
 package mensamodell;
 
+import java.util.List;
+
 import javax.vecmath.Vector2d;
 
 import repast.simphony.engine.schedule.ScheduledMethod;
@@ -12,8 +14,8 @@ import repast.simphony.context.Context;
 
 public class StudentChaotic extends Student {
 
-	public StudentChaotic(ContinuousSpace s, Context c) {
-		super(s, c);
+	public StudentChaotic(ContinuousSpace s, Context c, List<Kasse> kassen, List<Theke> theken) {
+		super(s, c, kassen, theken);
 		this.vision = 30; // Sichtweite
 	}
 	

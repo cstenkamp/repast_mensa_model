@@ -40,15 +40,19 @@ public class Student {
 	Context<Object> context;
 	List<Theke> visitedBars; 		// Liste der Besuchten Theken 
 	int waitticks;
+	List<Kasse> kassen;
+	List<Theke> theken;
 	
 	// choose randomly
-	public Student(ContinuousSpace s, Context c) {
+	public Student(ContinuousSpace s, Context c, List<Kasse> kassen, List<Theke> theken) {
 		this.space = s;
 		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
 		this.velocity = new Vector2d(0,0);
 		this.visitedBars = new ArrayList<>();
 		this.context = c;
 		this.waitticks = 0;
+		this.kassen = kassen;
+		this.theken = theken;
 	}
 
 //	// choose only one preference
