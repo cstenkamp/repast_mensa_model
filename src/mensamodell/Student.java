@@ -40,11 +40,12 @@ public class Student {
 	Context<Object> context;
 	List<Theke> visitedBars; 		// Liste der Besuchten Theken 
 	int waitticks;
-	List<Kasse> kassen;
-	List<Theke> theken;
+	List<Kasse> kassen; //list of all kassen for faster access
+	List<Theke> theken; //list of all theken for faster access
+	int num; //number of the student
 	
 	// choose randomly
-	public Student(ContinuousSpace s, Context c, List<Kasse> kassen, List<Theke> theken) {
+	public Student(ContinuousSpace s, Context c, int num, List<Kasse> kassen, List<Theke> theken) {
 		this.space = s;
 		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
 		this.velocity = new Vector2d(0,0);
@@ -53,6 +54,7 @@ public class Student {
 		this.waitticks = 0;
 		this.kassen = kassen;
 		this.theken = theken;
+		this.num = num;
 	}
 
 //	// choose only one preference
@@ -99,6 +101,7 @@ public class Student {
 		Kasse k = (Kasse) closestkasse[0];
 		if (((Kasse) k).pay(this)) {
 			context.remove(this);
+			System.out.println("Student #"+this.num+" left the Mensa.");
 			return null;
 		}
 		return distance;
@@ -173,16 +176,16 @@ public class Student {
 			waitticks --;
 			return;
 		}
-
 		velocity.normalize();
 		velocity.scale(walking_speed);
 
 		NdPoint pos = space.getLocation(this);
 		Vector2d potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
+		System.out.println("Stuent #"+num+" did something"+pos.getX()+" "+pos.getY());
 
 		if (potentialcoords.x <= 0 || potentialcoords.x >= consts.SIZE_X || potentialcoords.y <= 0 || potentialcoords.y >= consts.SIZE_Y){
 			//throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
-			return;
+			return;	
 		}
 
 		space.moveByDisplacement(this, velocity.x, velocity.y);

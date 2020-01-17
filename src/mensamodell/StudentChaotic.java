@@ -14,8 +14,8 @@ import repast.simphony.context.Context;
 
 public class StudentChaotic extends Student {
 
-	public StudentChaotic(ContinuousSpace s, Context c, List<Kasse> kassen, List<Theke> theken) {
-		super(s, c, kassen, theken);
+	public StudentChaotic(ContinuousSpace s, Context c, int num, List<Kasse> kassen, List<Theke> theken) {
+		super(s, c, num, kassen, theken);
 		this.vision = 30; // Sichtweite
 	}
 	
