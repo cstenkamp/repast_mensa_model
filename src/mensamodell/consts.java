@@ -16,12 +16,20 @@ public class consts {
 	public final static int EINTOPF = 4;
 	public final static int SCHNELLERTELLER = 5;
 	public final static int SALATBAR = 6;
+	public final static int VEGANTHEKE = 7;
 
 	//Foodpreferences
 	public final static int VEGGIE = 0;
-	public final static int VEGAN = 1;
+	public final static int VEGANER = 1;
 	public final static int MEAT = 2;
 	public final static int NOPREFERENCE = 3;
+	
+	//Essen
+	public final static int ESSEN_VEGGIE = 0;
+	public final static int ESSEN_VEGAN = 1;
+	public final static int ESSEN_MEAT = 2;
+	public final static int ESSEN_SALAD = 3;
+	public final static int ESSEN_POMMES = 4;
 	
 	//walking styles
 	public final static int CHAOTIC = 0;

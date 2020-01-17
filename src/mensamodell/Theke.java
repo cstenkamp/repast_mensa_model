@@ -16,16 +16,18 @@ public class Theke {
 	public Vector2d size;
 	private ContinuousSpace space;
 	private double barRange = 5;
+	private int essen;
 	
 	
-	public Theke(int x, int y, int kind, ContinuousSpace s) {
+	public Theke(int x, int y, int kind, ContinuousSpace s, int e) {
 		this.x = x;
 		this.y = y;
 		this.kind = kind;
 		this.space = s;
+		this.essen = e;
 		
 		if (this.kind == consts.AKTIONSTHEKE) 
-			size = new Vector2d(40,100);
+			size = new Vector2d(40,60);
 		else if (this.kind == consts.FLEISCHTHEKE) 
 			size = new Vector2d(50, 20);
 		else if (this.kind == consts.SALATBAR) 
