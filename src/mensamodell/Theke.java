@@ -53,6 +53,10 @@ public class Theke {
 		return false;
 	}
 	
+	public int getEssen() {
+		return this.essen;
+	}
+	
 	
 	
 

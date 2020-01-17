@@ -30,10 +30,12 @@ public class MensaEingang {
 		if (addedStudents < numStudents) {
 			double x, y;
 			Student stud;
-			if (true) //(RandomHelper.nextIntFromTo(0, 1) == 0)
+			if (true) {//(RandomHelper.nextIntFromTo(0, 1) == 0)
 				stud = new StudentGoalOriented(space, context, addedStudents, kassen, theken);
-			else
+			}
+			else {
 				stud = new StudentChaotic(space, context, addedStudents, kassen, theken);
+			}
 			
 			x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);
 			y = consts.SIZE_Y-5;
