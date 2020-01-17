@@ -19,9 +19,7 @@ public class StudentChaotic extends Student {
 		this.vision = 30; // Sichtweite
 	}
 	
-TODO DIE SUCHEN NICHT PER LOOK-AROUND SONDERN WISSEN DIE POSITIONEN DER THEKEN UND SUCHEN NUR DIE NÄCHSTE
-	
-	public double[] move_chaotically() {
+	public Vector2d move_chaotically() {
 		/*
 		 * Return Values:
 		 * distXY == null --> gehe zur Kasse
@@ -30,21 +28,20 @@ TODO DIE SUCHEN NICHT PER LOOK-AROUND SONDERN WISSEN DIE POSITIONEN DER THEKEN U
 		 */
 		// Falls der student vor einer Theke steht
 		if (at_bar()) {
-			return new double[] {0, 0};
+			return new Vector2d(0,0);
 		}
 		
 		//waehle zufaellig eine Theke NOCH NICHT GANZ ZUFAELLIG
-		double[] distXY = null;
+		double[] distXY = new double[] {0,0};
 		NdPoint lastPos = space.getLocation(this);
 		ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);
 		
 		for (Object o : barInVision.query()){			
 			if (o instanceof Theke && !visitedBars.contains(o)){	
 				distXY = space.getDisplacement(lastPos, space.getLocation(o));	
-				
 			}
 		}
-		return distXY;
+		return new Vector2d(distXY[0], distXY[1]);
 	}
 	
 	
@@ -56,21 +53,21 @@ TODO DIE SUCHEN NICHT PER LOOK-AROUND SONDERN WISSEN DIE POSITIONEN DER THEKEN U
 			velocity.setX(-avoidance.x);
 			velocity.setY(-avoidance.y);
 		} else {
-			double[] movement = move_chaotically();
-			if (movement != null && !(movement[0] == 0 && movement[1] == 0)) {
+			Vector2d movement = move_chaotically();
+			if (movement != null && !(movement.x == 0 && movement.y == 0)) {
 				// Du bist auf dem Weg.
-				velocity.setX(movement[0]);
-				velocity.setY(movement[1]);	
+				velocity.setX(movement.x);
+				velocity.setY(movement.y);	
 			} else if (movement == null) {
 				// gehe zur Kasse
 				movement = to_kasse();
 				if (movement != null) {
-					velocity.setX(movement[0]);
-					velocity.setY(movement[1]);
+					velocity.setX(movement.x);
+					velocity.setY(movement.y);
 				}
 			} else {
 				// W�hle dein Essen. Du stehst vor einer Theke.
-				System.out.println("Essenswahl!");
+				//System.out.println("Essenswahl!");
 			}
 		}
 	} 

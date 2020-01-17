@@ -76,30 +76,40 @@ public class Student {
 //		this.movement = move_pref;
 //	}
 	
-	public double[] to_kasse() {
-		double[] distXY = null;
-		ContinuousWithin kasseInRange = new ContinuousWithin(space, this, 1000);
-		for (Object k : kasseInRange.query()) {
-			if (k instanceof Kasse) {
-				distXY = space.getDisplacement(space.getLocation(this), space.getLocation(k));
-				// falls student in kassen reichweite --> entfernen
-				if (((Kasse) k).pay(this)) {
-					context.remove(this);
-					return null;
-				}
-				return distXY;
+	public Object[] get_closest(List lst) {
+		Vector2d distXY = new Vector2d(999999,999999);
+		Vector2d tmpdist = null;
+		double[] tmp;
+		Object res = null;
+		for (Object obj : lst) {
+			tmp = space.getDisplacement(space.getLocation(this), space.getLocation(obj));
+			tmpdist = new Vector2d(tmp[0], tmp[1]);
+			if (tmpdist.length() < distXY.length()) {
+				distXY = tmpdist;
+				res = obj;
 			}
 		}
-		return null;
+		return new Object[]{res, distXY};
+	}
+	
+	public Vector2d to_kasse() {
+		//ContinuousWithin kasseInRange = new ContinuousWithin(space, this, 1000);
+		Object[] closestkasse = get_closest(kassen);
+		Vector2d distance = (Vector2d) closestkasse[1];
+		Kasse k = (Kasse) closestkasse[0];
+		if (((Kasse) k).pay(this)) {
+			context.remove(this);
+			return null;
+		}
+		return distance;
 	}
 	
 	// HIER WIRD GEPRUEFT OB WIR VOR EINER THEKE STEHEN!!! 
 	// RETURN VALUES muessen passen. siehe:StudentGoalOriented.to_next_Ausgabe()
 	public boolean at_bar() {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
-		double[] distXY = null;
-		ContinuousWithin barInRange;
-		barInRange = new ContinuousWithin(space, this, 4);
+		Vector2d distXY = null;
+		ContinuousWithin barInRange = new ContinuousWithin(space, this, 4);
 		for (Object b : barInRange.query()) {
 			if (b instanceof Theke && !visitedBars.contains(b)) {
 				visitedBars.add((Theke) b); // DAS MUSS AUCH BLEIBEN 

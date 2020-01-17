@@ -39,6 +39,7 @@ public class MensaEingang {
 			context.add(stud);	// add the new students to the root context
 			space.moveTo(stud, x, y); // add students to space
 			addedStudents++;
+			System.out.println("Student #"+addedStudents+" x:"+x+" y:"+y);
 		}
 		
 	}
