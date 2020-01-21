@@ -40,7 +40,7 @@ public class MensaGrid {
 //				for (int j = t.y - (int)(t.size.y / 2); j < t.y + (int)(t.size.y / 2); j++) {
 			for (int i = t.x; i < t.x + t.size.x; i++) 
 				for (int j = t.y; j < t.y + t.size.y; j++) {
-						System.out.println("i: "+i+"  j:"+j+"   t.x: "+t.x+" t.y: "+t.y);
+						//System.out.println("i: "+i+"  j:"+j+"   t.x: "+t.x+" t.y: "+t.y);
 						if (i < rows && j < cols)
 							grid[i][j] = consts.GRID_THEKE;
 				}
