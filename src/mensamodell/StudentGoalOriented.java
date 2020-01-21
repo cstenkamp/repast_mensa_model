@@ -45,7 +45,7 @@ public class StudentGoalOriented extends Student {
 			Object[] clostesttheke = get_closest(nonvisited_theken);
 			Vector2d distance = (Vector2d) clostesttheke[1];
 			Theke k = (Theke) clostesttheke[0];
-				return distance;
+			return distance;
 			
 			
 //			// Suche deinen Weg zur naechsten Theke
