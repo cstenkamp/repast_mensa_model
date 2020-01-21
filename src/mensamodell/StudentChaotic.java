@@ -1,5 +1,6 @@
 package mensamodell;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.vecmath.Vector2d;
@@ -31,17 +32,20 @@ public class StudentChaotic extends Student {
 			return new Vector2d(0,0);
 		}
 		
-		//waehle zufaellig eine Theke NOCH NICHT GANZ ZUFAELLIG
-		double[] distXY = new double[] {0,0};
-		NdPoint lastPos = space.getLocation(this);
-		ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);
+		List<Theke> nonvisited_theken = new ArrayList<Theke>();
+		for (Theke t : theken) 
+			if (!visitedBars.contains(t)) 
+				nonvisited_theken.add(t);
 		
-		for (Object o : barInVision.query()){			
-			if (o instanceof Theke && !visitedBars.contains(o)){	
-				distXY = space.getDisplacement(lastPos, space.getLocation(o));	
-			}
-		}
-		return new Vector2d(distXY[0], distXY[1]);
+		if (nonvisited_theken.isEmpty()) {
+			return null;
+			// gehe zur theke
+		} 
+		// suche zufaellig eine Theke aus der Liste
+		int index = nonvisited_theken.size();
+		NdPoint location = space.getLocation(nonvisited_theken.get(RandomHelper.nextIntFromTo(0, index-1)));
+		double[] temp = space.getDisplacement(space.getLocation(this), location);
+		return new Vector2d(temp[0], temp[1]);
 	}
 	
 	
