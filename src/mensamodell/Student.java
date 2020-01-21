@@ -176,12 +176,18 @@ public class Student {
 			waitticks --;
 			return;
 		}
+		
 		velocity.normalize();
 		velocity.scale(walking_speed);
 
+		if (Double.isNaN(velocity.x)) 
+			velocity = new Vector2d(0, velocity.y);
+		if (Double.isNaN(velocity.y)) 
+			velocity = new Vector2d(velocity.x, 0);
+		
 		NdPoint pos = space.getLocation(this);
 		Vector2d potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
-		System.out.println("Stuent #"+num+" did something"+pos.getX()+" "+pos.getY());
+		//System.out.println("Stuent #"+num+" did something"+pos.getX()+" "+pos.getY()+" velocity "+velocity.x+" "+velocity.y);
 
 		if (potentialcoords.x <= 0 || potentialcoords.x >= consts.SIZE_X || potentialcoords.y <= 0 || potentialcoords.y >= consts.SIZE_Y){
 			//throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
