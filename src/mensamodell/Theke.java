@@ -33,7 +33,7 @@ public class Theke {
 		else if (this.kind == consts.SALATBAR) 
 			size = new Vector2d(50,60);
 		else
-			size = null;
+			size = new Vector2d(10,10);
 	}
 	
 	public boolean isLeft() {

@@ -9,7 +9,6 @@ import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.*;
 
-import javax.media.j3d.Shape3D;
 import java.util.List; 
 import java.util.ArrayList; 
 
@@ -24,12 +23,13 @@ public class modelbuilder implements ContextBuilder<Object>{
 		// save the parameters in variables
 		int initialNumStud = (Integer)param.getValue("initialNumStud");
 
-		// create ContinuousSpace, size: 100x70
+		// create ContinuousSpace, size: 100x60
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 		ContinuousSpace<Object> space = spaceFactory.createContinuousSpace("space", context, new SimpleCartesianAdder<Object>(), new StrictBorders(), consts.SIZE_X, consts.SIZE_Y);
 
+		
 		// Theken ##############################################
-		// AKT ist zufällig vegan, veggie, salad oder meat 
+		// AKT ist zufÃ¤llig vegan, veggie, salad oder meat 
 		Theke aktionstheke = new Theke(consts.SIZE_X/2, 10, consts.AKTIONSTHEKE, space, RandomHelper.nextIntFromTo(0, 3));
 		context.add(aktionstheke);
 		space.moveTo(aktionstheke, aktionstheke.x, aktionstheke.y);
@@ -53,7 +53,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 		context.add(vegan);
 		space.moveTo(vegan, vegan.x, vegan.y);
 		
-		// Eintopf ist zufällig vegan, veggie oder meat
+		// Eintopf ist zufï¿½llig vegan, veggie oder meat
 		Theke eintopf = new Theke(consts.SIZE_X-5, consts.SIZE_Y*2/4, consts.EINTOPF, space, RandomHelper.nextIntFromTo(0, 2));
 		context.add(eintopf);
 		space.moveTo(eintopf, eintopf.x, eintopf.y);
@@ -79,8 +79,15 @@ public class modelbuilder implements ContextBuilder<Object>{
 		for (Object th: context.getObjects(Theke.class)) {
 			theken.add((Theke) th);
 		}
-		
-		MensaEingang eingang = new MensaEingang(initialNumStud, context, space, kassen, theken); //TODO darauf achten dass man immer 100 studenten drin hat bspw
+
+		MensaGrid grid = new MensaGrid(consts.SIZE_X, consts.SIZE_Y);
+				
+		for (Object obj: context.getObjects(Object.class))
+			grid.setObj(obj);
+		grid.print();
+
+		SharedStuff sharedstuff = new SharedStuff(context, space, kassen, theken, grid);
+		MensaEingang eingang = new MensaEingang(initialNumStud, context, space, sharedstuff); //TODO darauf achten dass man immer 100 studenten drin hat bspw
 		context.add(eingang);
 		space.moveTo(eingang, consts.SIZE_X*2.5/5,consts.SIZE_Y-5);
 		

@@ -14,8 +14,8 @@ import repast.simphony.context.Context;
 
 public class StudentGoalOriented extends Student {
 
-	public StudentGoalOriented(ContinuousSpace s, Context c, int num, List<Kasse> kassen, List<Theke> theken) {
-		super(s, c, num, kassen, theken);
+	public StudentGoalOriented(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
+		super(s, c, num, sharedstuff);
 		this.vision = 300; // Sichtweite
 	}
 	
@@ -35,7 +35,7 @@ public class StudentGoalOriented extends Student {
 			}
 						
 			List<Theke> nonvisited_theken = new ArrayList<Theke>();
-			for (Theke t : theken) 
+			for (Theke t : sharedstuff.theken) 
 				if (!visitedBars.contains(t)) 
 					nonvisited_theken.add(t);
 			

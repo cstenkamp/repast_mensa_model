@@ -14,8 +14,8 @@ import repast.simphony.context.Context;
 
 public class StudentChaotic extends Student {
 
-	public StudentChaotic(ContinuousSpace s, Context c, int num, List<Kasse> kassen, List<Theke> theken) {
-		super(s, c, num, kassen, theken);
+	public StudentChaotic(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
+		super(s, c, num, sharedstuff);
 		this.vision = 30; // Sichtweite
 	}
 	
@@ -66,7 +66,7 @@ public class StudentChaotic extends Student {
 					velocity.setY(movement.y);
 				}
 			} else {
-				// W�hle dein Essen. Du stehst vor einer Theke.
+				// Wähle dein Essen. Du stehst vor einer Theke.
 				//System.out.println("Essenswahl!");
 			}
 		}

@@ -10,9 +10,7 @@ import javax.vecmath.Vector2d;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
-import repast.simphony.util.collections.FilteredIterator;
 
-import mensamodell.consts.*;
 import repast.simphony.context.Context;
 
 //TODO next:
@@ -40,44 +38,22 @@ public class Student {
 	Context<Object> context;
 	List<Theke> visitedBars; 		// Liste der Besuchten Theken 
 	int waitticks;
-	List<Kasse> kassen; //list of all kassen for faster access
-	List<Theke> theken; //list of all theken for faster access
+	SharedStuff sharedstuff; //among others: list of all kassen & theken for faster access
 	int num; //number of the student
 	
 	// choose randomly
-	public Student(ContinuousSpace s, Context c, int num, List<Kasse> kassen, List<Theke> theken) {
+	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
 		this.space = s;
 		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
 		this.velocity = new Vector2d(0,0);
 		this.visitedBars = new ArrayList<>();
 		this.context = c;
 		this.waitticks = 0;
-		this.kassen = kassen;
-		this.theken = theken;
+		this.sharedstuff = sharedstuff;
 		this.num = num;
 	}
 
-//	// choose only one preference
-//	public Student(ContinuousSpace s, int value, boolean food_pref) {
-//		this.space = s;
-//		// test
-//		// if foodpref: value in 0,1,2,3, else in 0,1,2
-//		if(food_pref) {
-//			this.food_preference = value;
-//			this.movement = RandomHelper.nextIntFromTo(0, 2);
-//		}else {
-//			this.food_preference = RandomHelper.nextIntFromTo(0, 3);
-//			this.movement = value;
-//		}
-//	}
-//
-//	// initialise both preferences
-//	public Student(ContinuousSpace s, int food_pref, int move_pref) {
-//		this.space = s;
-//		this.food_preference = food_pref;
-//		this.movement = move_pref;
-//	}
-	
+
 	public Object[] get_closest(List lst) {
 		Vector2d distXY = new Vector2d(999999,999999);
 		Vector2d tmpdist = null;
@@ -94,9 +70,10 @@ public class Student {
 		return new Object[]{res, distXY};
 	}
 	
+	
 	public Vector2d to_kasse() {
 		//ContinuousWithin kasseInRange = new ContinuousWithin(space, this, 1000);
-		Object[] closestkasse = get_closest(kassen);
+		Object[] closestkasse = get_closest(sharedstuff.kassen);
 		Vector2d distance = (Vector2d) closestkasse[1];
 		Kasse k = (Kasse) closestkasse[0];
 		if (((Kasse) k).pay(this)) {
@@ -107,8 +84,7 @@ public class Student {
 		return distance;
 	}
 	
-	// HIER WIRD GEPRUEFT OB WIR VOR EINER THEKE STEHEN!!! 
-	// RETURN VALUES muessen passen. siehe:StudentGoalOriented.to_next_Ausgabe()
+	// Hier wird geprüft ob wir vor einer Theke stehen.
 	public boolean at_bar() {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
 		Vector2d distXY = null;
@@ -116,13 +92,11 @@ public class Student {
 		for (Object b : barInRange.query()) {
 			if (b instanceof Theke && !visitedBars.contains(b)) {
 				visitedBars.add((Theke) b); // DAS MUSS AUCH BLEIBEN 
-				//in Du stehst vor eer Theke behalte deine aktuelle Position bei
+				//in Du stehst vor einer Theke behalte deine aktuelle Position bei
 				return true;
-//				distXY = space.getDisplacement(space.getLocation(this), space.getLocation(this));
-//				return distXY; //  == {0.0, 0.0}
 			}
 		}	
-		return false; // == null
+		return false;
 	}
 	
 	public Vector2d avoid_others() {

@@ -36,6 +36,10 @@ public class consts {
 	public final static int GOALORIENTED = 1;
 	public final static int PATHORIENTED = 2;
 	
+	//for the mensagrid
+	public final static int GRID_THEKE = 1;
+	public final static int GRID_KASSE = 2;
+	
 
 	
 }

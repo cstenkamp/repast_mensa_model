@@ -11,17 +11,14 @@ public class MensaEingang {
 	Context<Object> context;
 	ContinuousSpace<Object> space;
 	int addedStudents;
-	List<Kasse> kassen;
-	List<Theke> theken;
-
-	public MensaEingang(int numStudents, Context<Object> context, ContinuousSpace<Object> space, List<Kasse> kassen,
-			List<Theke> theken) {
+	SharedStuff sharedstuff;
+	
+	public MensaEingang(int numStudents, Context<Object> context, ContinuousSpace<Object> space, SharedStuff sharedstuff) {
 		this.numStudents = numStudents;
 		this.space = space;
 		this.context = context;
 		this.addedStudents = 0;
-		this.kassen = kassen;
-		this.theken = theken;
+		this.sharedstuff = sharedstuff;
 	}
 
 	@ScheduledMethod(start = 0, interval = 1000)
@@ -30,12 +27,10 @@ public class MensaEingang {
 		if (addedStudents < numStudents) {
 			double x, y;
 			Student stud;
-			if (true) {//(RandomHelper.nextIntFromTo(0, 1) == 0)
-				stud = new StudentGoalOriented(space, context, addedStudents, kassen, theken);
-			}
-			else {
-				stud = new StudentChaotic(space, context, addedStudents, kassen, theken);
-			}
+			if (RandomHelper.nextIntFromTo(0, 1) == 0)
+				stud = new StudentGoalOriented(space, context, addedStudents, sharedstuff);
+			else
+				stud = new StudentChaotic(space, context, addedStudents, sharedstuff);
 			
 			x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);
 			y = consts.SIZE_Y-5;
