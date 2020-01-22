@@ -21,7 +21,12 @@ public class modelbuilder implements ContextBuilder<Object>{
 		// get parameters from the GUI
 		Parameters param = RunEnvironment.getInstance().getParameters();
 		// save the parameters in variables
-		int initialNumStud = (Integer)param.getValue("initialNumStud");
+		int initialNumStud = (Integer) param.getValue("initialNumStud");
+		double veggieProp = (Double) param.getValue("veggieProp");
+		double veganProp = (Double) param.getValue("veganProp");
+		double meatProp = (Double) param.getValue("meatProp");
+		double noPrefProp = (Double) param.getValue("noPrefProp");
+		Object[] proportions = new Object[] {veggieProp, veganProp, meatProp, noPrefProp};
 
 		// create ContinuousSpace, size: 100x60
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
@@ -29,7 +34,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 
 		
 		// Theken ##############################################
-		// AKT ist zufällig vegan, veggie, salad oder meat 
+		// AKT ist zufaellig vegan, veggie, salad oder meat 
 		addThekeAusgabe(consts.SIZE_X/2, 10, -1, 6, consts.AKTIONSTHEKE, space, RandomHelper.nextIntFromTo(0, 3), context);
 		
 		
@@ -46,7 +51,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 		
 		addThekeAusgabe(12, consts.SIZE_Y*2/4, 0, 0, consts.VEGANTHEKE, space, consts.ESSEN_VEGAN, context);
 		
-		// Eintopf ist zufällig vegan, veggie oder meat
+		// Eintopf ist zufaellig vegan, veggie oder meat
 		addThekeAusgabe(consts.SIZE_X-12, consts.SIZE_Y*2/4, 0, 0, consts.EINTOPF, space, RandomHelper.nextIntFromTo(0, 2), context);
 		
 		addThekeAusgabe(consts.SIZE_X-12, consts.SIZE_Y*1/4, 0, 0, consts.POMMES, space, consts.ESSEN_POMMES, context);
@@ -59,7 +64,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 		context.add(kasseR);
 		space.moveTo(kasseR, kasseR.x, kasseR.y);
 
-		//get all positions of theken and eingänge here and save them, such that students only need to loop over them instead of all elems
+		//get all positions of theken and eingaenge here and save them, such that students only need to loop over them instead of all elems
 		List<Kasse> kassen = new ArrayList<Kasse>();
 		for (Object ks: context.getObjects(Kasse.class)) {
 			kassen.add((Kasse) ks);
@@ -96,7 +101,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 		grid.print();
 
 		SharedStuff sharedstuff = new SharedStuff(context, space, kassen, ausgaben, grid);
-		MensaEingang eingang = new MensaEingang(initialNumStud, context, space, sharedstuff); //TODO darauf achten dass man immer 100 studenten drin hat bspw
+		MensaEingang eingang = new MensaEingang(initialNumStud, proportions, context, space, sharedstuff); //TODO darauf achten dass man immer 100 studenten drin hat bspw
 		context.add(eingang);
 		space.moveTo(eingang, consts.SIZE_X*2.5/5,consts.SIZE_Y-5);
 		

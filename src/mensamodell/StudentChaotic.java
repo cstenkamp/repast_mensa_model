@@ -18,8 +18,6 @@ public class StudentChaotic extends Student {
 
 	public StudentChaotic(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
 		super(s, c, num, sharedstuff);
-		this.context = c;
-		this.vision = 30; // Sichtweite
 
 	}
 
@@ -34,7 +32,7 @@ public class StudentChaotic extends Student {
 		if (at_bar()) {
 			if (chooseMeal()) return null;
 			this.tempDestination = null;
-			return new Vector2d(0,0);
+//			return new Vector2d(0,0);
 		}
 		// wenn der Student schon eine theke ausgesucht hat gehe weiter
 		if (this.tempDestination != null) {

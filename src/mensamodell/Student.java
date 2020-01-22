@@ -34,6 +34,18 @@ public class Student {
 	private Object[] closestkasse;
 	
 	// choose randomly
+	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
+		this.space = s;
+		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
+		this.velocity = new Vector2d(0,0);
+		this.visitedAusgaben = new ArrayList<>();
+		this.context = c;
+		this.waitticks = 0;
+		this.sharedstuff = sharedstuff;
+		this.num = num;
+		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
+	}
+	// set food_preference manually
 	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
 		this.space = s;
 		this.food_preference = fp;
@@ -46,10 +58,6 @@ public class Student {
 		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
 	}
 	
-	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
-		
-	}
-
 	// waehle dein Essen
 	public boolean chooseMeal() {
 		// warte vor der Ausgabe
@@ -58,14 +66,32 @@ public class Student {
 		Ausgabe currentBar = this.visitedAusgaben.get(visitedAusgaben.size()-1);
 		int essen = currentBar.getEssen();
 		// VEGGIE
-		if (this.food_preference == 0 && consts.vegetarian.contains(essen)) return true;
+		if (this.food_preference == 0 && consts.vegetarian.contains(essen)) {
+			double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
+			if (essen == 0 && randomNum <= 0.9) return true;
+			if (essen == 1 && randomNum <= 0.5) return true;
+			if (essen == 3 && randomNum <= 0.2) return true;
+			if (essen == 4 && randomNum <= 0.1) return true;
+		}
 		// VEGAN
-		else if (this.food_preference == 1 && consts.vegan.contains(essen)) return true;
+		else if (this.food_preference == 1 && consts.vegan.contains(essen)) {
+			double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
+			if (essen == 1 && randomNum <= 0.9) return true;
+			if (essen == 3 && randomNum <= 0.2) return true;
+			if (essen == 4 && randomNum <= 0.1) return true;
+		}
 		// MEAT
-		else if (this.food_preference == 2 && consts.meatlover.contains(essen)) return true;
+		else if (this.food_preference == 2 && consts.meatlover.contains(essen)) {
+			double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
+			if (essen == 0 && randomNum <= 0.2) return true;
+			if (essen == 1 && randomNum <= 0.1) return true;
+			if (essen == 2 && randomNum <= 0.9) return true;
+			if (essen == 3 && randomNum <= 0.2) return true;
+			if (essen == 4 && randomNum <= 0.1) return true;
+		}
 		// No Preference
 		else if (this.food_preference == 3 && consts.noPref.contains(essen)) return true;
-		else return false;
+		return false;
 	}
 
 
@@ -97,7 +123,7 @@ public class Student {
 	public boolean at_bar() {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
 		Vector2d distXY = null;
-		ContinuousWithin barInRange = new ContinuousWithin(space, this, 4);
+		ContinuousWithin barInRange = new ContinuousWithin(space, this, 5);
 		for (Object b : barInRange.query()) {
 			if (b instanceof Ausgabe && !visitedAusgaben.contains(b)) {
 				visitedAusgaben.add((Ausgabe) b);
@@ -150,10 +176,53 @@ public class Student {
 //		}
 //	}
 
+	@ScheduledMethod(start = 0, interval = 1)
+	public void step() {
+		Vector2d avoidance = avoid_others();
+		if (avoidance != null) {
+			velocity.setX(-avoidance.x);
+			velocity.setY(-avoidance.y);
+		} else {
+			Vector2d movement = move();
+			if (movement != null) {
+				// Du bist auf dem Weg.
+				velocity.setX(movement.x);
+				velocity.setY(movement.y);
+			} else if (movement == null) {
+//				System.out.println(this.directlyToKassa);
+				if (!this.directlyToKassa.equals(check) && this.directlyToKassa != null) {
+					if (tempBar != null && tempBar.pay(this)) {
+						System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
+						context.remove(this);
+					}
+					// nimm die bereits gewaehlte Kasse
+					velocity.setX(this.directlyToKassa.x);
+					velocity.setY(this.directlyToKassa.y);
+				} else {
+					// waehle Kasse
+					//System.out.println("choose Kassa");
+					// gibt Location und Objekt zurueck
+					this.closestkasse = to_kasse();
+					this.tempBar = (Kasse) this.closestkasse[0];
+					this.directlyToKassa = (Vector2d) this.closestkasse[1];
+					if (this.directlyToKassa != null) {
+						velocity.setX(this.directlyToKassa.x);
+						velocity.setY(this.directlyToKassa.y);
+					}
+				}
+			}
+		}
+	}
+	
+	//to be overridden
+		public Vector2d move() {
+			return new Vector2d(0,0);
+		}
+	
 	/*
 	 * Eigentliche Bewegung zwischen den Zeitschritten.
 	 */
-	@ScheduledMethod(start=0.5, interval=1)
+	@ScheduledMethod(start=1, interval=1)
 	public void do_move(){
 		if (waitticks > 0) {
 			waitticks --;
@@ -194,48 +263,9 @@ public class Student {
 	}
 	
 
-	@ScheduledMethod(start = 0, interval = 1)
-	public void step() {
-		Vector2d avoidance = avoid_others();
-		if (avoidance != null) {
-			velocity.setX(-avoidance.x);
-			velocity.setY(-avoidance.y);
-		} else {
-			Vector2d movement = move();
-			if (movement != null) {
-				// Du bist auf dem Weg.
-				velocity.setX(movement.x);
-				velocity.setY(movement.y);
-			} else if (movement == null) {
-//				System.out.println(this.directlyToKassa);
-				if (!this.directlyToKassa.equals(check) && this.directlyToKassa != null) {
-					if (tempBar != null && tempBar.pay(this)) {
-						System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
-						context.remove(this);
-					}
-					// nimm die bereits gewaehlte Kasse
-					velocity.setX(this.directlyToKassa.x);
-					velocity.setY(this.directlyToKassa.y);
-				} else {
-					// waehle Kasse
-					//System.out.println("choose Kassa");
-					// gibt Location und Objekt zurueck
-					this.closestkasse = to_kasse();
-					this.tempBar = (Kasse) this.closestkasse[0];
-					this.directlyToKassa = (Vector2d) this.closestkasse[1];
-					if (this.directlyToKassa != null) {
-						velocity.setX(this.directlyToKassa.x);
-						velocity.setY(this.directlyToKassa.y);
-					}
-				}
-			}
-		}
-	}
 	
-	//to be overridden
-	public Vector2d move() {
-		return new Vector2d();
-	}
+	
+	
 
 
 } // END of Class.

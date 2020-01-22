@@ -13,13 +13,15 @@ public class MensaEingang {
 	int addedStudents;
 	SharedStuff sharedstuff;
 	int passedsteps =  0;
+	Object[] proportions;
 	
-	public MensaEingang(int numStudents, Context<Object> context, ContinuousSpace<Object> space, SharedStuff sharedstuff) {
+	public MensaEingang(int numStudents, Object[] prop, Context<Object> context, ContinuousSpace<Object> space, SharedStuff sharedstuff) {
 		this.numStudents = numStudents;
 		this.space = space;
 		this.context = context;
 		this.addedStudents = 0;
 		this.sharedstuff = sharedstuff;
+		this.proportions = prop;
 	}
 
 	@ScheduledMethod(start = 0, interval = 1000)

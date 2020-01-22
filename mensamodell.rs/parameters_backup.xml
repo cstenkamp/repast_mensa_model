@@ -7,9 +7,33 @@
 									
 		/>
 				<parameter name="initialNumStud" displayName="Anzahl Studenten" type="int" 
-						defaultValue="20" 
+						defaultValue="5" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+				<parameter name="veganProp" displayName="Veganer [Anteil in %]:" type="double" 
+						defaultValue="0.1" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
+				<parameter name="veggieProp" displayName="Vegetarier [Anteil in %]" type="double" 
+						defaultValue="0.3" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
+				<parameter name="meatProp" displayName="Fleischesser [Anteil in %]:" type="double" 
+						defaultValue="0.5" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
+				<parameter name="noPrefProp" displayName="Allesesser [Anteil in %]:" type="double" 
+						defaultValue="0.1" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
 		/>
 		</parameters>

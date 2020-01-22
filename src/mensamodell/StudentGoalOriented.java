@@ -20,11 +20,10 @@ public class StudentGoalOriented extends Student {
 
 	public StudentGoalOriented(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
 		super(s, c, num, sharedstuff);
-		this.vision = 300; // Sichtweite
 	}
 	
 	// Sucht den kuerzesten Weg
-		public Vector2d to_next_ausgabe() {
+		public Vector2d move() {
 			
 			/*
 			 * Return Values:
@@ -36,7 +35,7 @@ public class StudentGoalOriented extends Student {
 			if (at_bar()) {
 				// waehle das Essen
 				if (chooseMeal()) return null;
-				return new Vector2d(0,0);
+//				return new Vector2d(0,0);
 			}
 						
 			List<Ausgabe> nonvisited_ausgaben = new ArrayList<Ausgabe>();
@@ -51,6 +50,7 @@ public class StudentGoalOriented extends Student {
 			Vector2d distance = (Vector2d) clostesttheke[1];
 			Ausgabe k = (Ausgabe) clostesttheke[0];
 			return distance;
+		}
 			
 			
 //			// Suche deinen Weg zur naechsten Theke
@@ -81,11 +81,5 @@ public class StudentGoalOriented extends Student {
 //				// Falls alle Theken besucht oder Essen gefunden.
 //				return null;
 //			}
-			
-		}	
-	
-		public Vector2d move() {
-			return to_next_ausgabe();
-		}
-
+				
 }

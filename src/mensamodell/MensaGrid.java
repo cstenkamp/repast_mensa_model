@@ -41,7 +41,7 @@ public class MensaGrid {
 			Theke t = (Theke) obj;
 			for (int i = t.x - (int)(t.size.x / 8); i < t.x + (int)(t.size.x / 8); i++)
 				for (int j = t.y - (int)(t.size.y / 8); j < t.y + (int)(t.size.y / 8); j++) {
-						System.out.println("i: "+i+"  j:"+j+"   t.x: "+t.x+" t.y: "+t.y);
+//						System.out.println("i: "+i+"  j:"+j+"   t.x: "+t.x+" t.y: "+t.y);
 						if (0 <= i && i < rows && 0 <= j && j < cols)
 							grid[i][j] = consts.GRID_THEKE;
 				}
