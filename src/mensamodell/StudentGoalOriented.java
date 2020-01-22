@@ -84,45 +84,8 @@ public class StudentGoalOriented extends Student {
 			
 		}	
 	
-	/*
-	 * Methode wird jede Runde ausgefuehrt. 
-	 */
-	@ScheduledMethod(start = 0, interval = 1)
-	public void step() {
-		Vector2d avoidance = avoid_others();
-		if (avoidance != null) {
-			velocity.setX(-avoidance.x);
-			velocity.setY(-avoidance.y);
-		} else {
-			Vector2d movement = to_next_ausgabe();
-			if (movement != null) {
-				// Du bist auf dem Weg.
-				velocity.setX(movement.x);
-				velocity.setY(movement.y);	
-			} else if (movement == null) {
-				//System.out.println(this.directlyToKassa);
-				if (!this.directlyToKassa.equals(check) && this.directlyToKassa != null) {
-					if (tempBar != null && tempBar.pay(this)) {
-						System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
-						context.remove(this);
-					}
-					// nimm die bereits gewaehlte Kasse
-					velocity.setX(this.directlyToKassa.x);
-					velocity.setY(this.directlyToKassa.y);	
-				}else {
-					// waehle Kasse
-					//System.out.println("choose Kassa");
-					// gibt Location und Objekt zurueck
-					this.closestkasse = to_kasse();
-					this.tempBar = (Kasse) this.closestkasse[0];
-					this.directlyToKassa = (Vector2d) this.closestkasse[1];
-					if (this.directlyToKassa != null) {
-						velocity.setX(this.directlyToKassa.x);
-						velocity.setY(this.directlyToKassa.y);	
-					}
-				}
-			} 
+		public Vector2d move() {
+			return to_next_ausgabe();
 		}
-	} 
 
 }

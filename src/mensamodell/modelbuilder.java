@@ -30,37 +30,26 @@ public class modelbuilder implements ContextBuilder<Object>{
 		
 		// Theken ##############################################
 		// AKT ist zufällig vegan, veggie, salad oder meat 
-		Theke aktionstheke = new Theke(consts.SIZE_X/2, 10, consts.AKTIONSTHEKE, space, RandomHelper.nextIntFromTo(0, 3));
-		context.add(aktionstheke);
-		space.moveTo(aktionstheke, aktionstheke.x, aktionstheke.y);
-
-		for (double i : new double[]{-consts.SIZE_X/6.0, consts.SIZE_X/5.0}) {
-				Theke fleisch = new Theke((int)(consts.SIZE_X/2.0+i), 5, consts.FLEISCHTHEKE, space, consts.ESSEN_MEAT); //bei 34,5 & 66,5 | size 50,20
-				context.add(fleisch);
-				space.moveTo(fleisch, fleisch.x, fleisch.y);
-		}
-		for (double i : new double[]{-consts.SIZE_X/5.0, consts.SIZE_X/5.0}) {
-			Theke salatbar = new Theke((int)(consts.SIZE_X/2.0+i), consts.SIZE_Y/2, consts.SALATBAR, space, consts.ESSEN_SALAD);
-			context.add(salatbar);
-			space.moveTo(salatbar, salatbar.x, salatbar.y);
-		}
-
-		Theke veggie = new Theke(12, consts.SIZE_Y*1/4, consts.VEGGIETHEKE, space, consts.ESSEN_VEGGIE);
-		context.add(veggie);
-		space.moveTo(veggie, veggie.x, veggie.y);
+		addThekeAusgabe(consts.SIZE_X/2, 10, -1, 6, consts.AKTIONSTHEKE, space, RandomHelper.nextIntFromTo(0, 3), context);
 		
-		Theke vegan = new Theke(12, consts.SIZE_Y*2/4, consts.VEGANTHEKE, space, consts.ESSEN_VEGAN);
-		context.add(vegan);
-		space.moveTo(vegan, vegan.x, vegan.y);
+		
+		for (double i : new double[]{-consts.SIZE_X/6.0, consts.SIZE_X/5.0}) {
+				addThekeAusgabe((int)(consts.SIZE_X/2.0+i), 5, -3, 1, consts.FLEISCHTHEKE, space, consts.ESSEN_MEAT, context); //bei 34,5 & 66,5 | size 50,20
+				//TODO die zweite Ausgabe!
+		}
+		
+		for (double i : new double[]{-consts.SIZE_X/5.0, consts.SIZE_X/5.0}) {
+			addThekeAusgabe((int)(consts.SIZE_X/2.0+i), consts.SIZE_Y/2, -1, 5, consts.SALATBAR, space, consts.ESSEN_SALAD, context);
+		}
+
+		addThekeAusgabe(12, consts.SIZE_Y*1/4, 0, 0, consts.VEGGIETHEKE, space, consts.ESSEN_VEGGIE, context);
+		
+		addThekeAusgabe(12, consts.SIZE_Y*2/4, 0, 0, consts.VEGANTHEKE, space, consts.ESSEN_VEGAN, context);
 		
 		// Eintopf ist zufällig vegan, veggie oder meat
-		Theke eintopf = new Theke(consts.SIZE_X-12, consts.SIZE_Y*2/4, consts.EINTOPF, space, RandomHelper.nextIntFromTo(0, 2));
-		context.add(eintopf);
-		space.moveTo(eintopf, eintopf.x, eintopf.y);
+		addThekeAusgabe(consts.SIZE_X-12, consts.SIZE_Y*2/4, 0, 0, consts.EINTOPF, space, RandomHelper.nextIntFromTo(0, 2), context);
 		
-		Theke pommes = new Theke(consts.SIZE_X-12, consts.SIZE_Y*1/4, consts.POMMES, space, consts.ESSEN_POMMES);
-		context.add(pommes);
-		space.moveTo(pommes, pommes.x, pommes.y);
+		addThekeAusgabe(consts.SIZE_X-12, consts.SIZE_Y*1/4, 0, 0, consts.POMMES, space, consts.ESSEN_POMMES, context);
 
 		// Kassen #################################################
 		Kasse kasseL = new Kasse(consts.SIZE_X*1/4, consts.SIZE_Y-5, space);
@@ -96,10 +85,13 @@ public class modelbuilder implements ContextBuilder<Object>{
 	} // END of Context.
 
 	
-	public void addThekeAusgabe(int x, int y, int kind, ContinuousSpace s, int e, Context context) {
-		Theke theke = new Theke(x, y, kind, s, e);
+	public void addThekeAusgabe(int theke_x, int theke_y, int ausgabe_x_diff, int ausgabe_y_diff, int kind, ContinuousSpace s, int e, Context context) {
+		Ausgabe ausgabe = new Ausgabe(theke_x+ausgabe_x_diff, theke_y+ausgabe_y_diff, kind, s, e);
+		Theke theke = new Theke(theke_x, theke_y, kind, s);
 		context.add(theke);
 		s.moveTo(theke, theke.x, theke.y);
+		context.add(ausgabe);
+		s.moveTo(ausgabe, ausgabe.x, ausgabe.y);
 	}
 
 

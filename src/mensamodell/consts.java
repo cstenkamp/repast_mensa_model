@@ -39,6 +39,7 @@ public class consts {
 	//for the mensagrid
 	public final static int GRID_THEKE = 1;
 	public final static int GRID_KASSE = 2;
+	public final static int GRID_AUSGABE = 4;
 	
 
 	

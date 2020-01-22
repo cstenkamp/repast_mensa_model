@@ -29,7 +29,10 @@ public class Student {
 	public int num; //number of the student
 	public Vector2d directlyToKassa = new Vector2d(-1.0,-1.0); // Speichert die ausgewaehlte Kasse
 	public Vector2d check = new Vector2d(-1.0,-1.0);
-
+	private Kasse tempBar = null;
+	protected Theke tempDestination;
+	private Object[] closestkasse;
+	
 	// choose randomly
 	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
 		this.space = s;
@@ -40,6 +43,7 @@ public class Student {
 		this.waitticks = 0;
 		this.sharedstuff = sharedstuff;
 		this.num = num;
+		this.tempDestination = null; // stellt sicher dass der student bis zur Theke laeuft
 	}
 
 	// waehle dein Essen
@@ -174,6 +178,50 @@ public class Student {
 
 		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, 3);
 		space.moveByDisplacement(this, velocity.x, velocity.y);
+	}
+	
+
+	@ScheduledMethod(start = 0, interval = 1)
+	public void step() {
+		Vector2d avoidance = avoid_others();
+		if (avoidance != null) {
+			velocity.setX(-avoidance.x);
+			velocity.setY(-avoidance.y);
+		} else {
+			Vector2d movement = move();
+			if (movement != null) {
+				// Du bist auf dem Weg.
+				velocity.setX(movement.x);
+				velocity.setY(movement.y);
+			} else if (movement == null) {
+//				System.out.println(this.directlyToKassa);
+				if (!this.directlyToKassa.equals(check) && this.directlyToKassa != null) {
+					if (tempBar != null && tempBar.pay(this)) {
+						System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
+						context.remove(this);
+					}
+					// nimm die bereits gewaehlte Kasse
+					velocity.setX(this.directlyToKassa.x);
+					velocity.setY(this.directlyToKassa.y);
+				} else {
+					// waehle Kasse
+					//System.out.println("choose Kassa");
+					// gibt Location und Objekt zurueck
+					this.closestkasse = to_kasse();
+					this.tempBar = (Kasse) this.closestkasse[0];
+					this.directlyToKassa = (Vector2d) this.closestkasse[1];
+					if (this.directlyToKassa != null) {
+						velocity.setX(this.directlyToKassa.x);
+						velocity.setY(this.directlyToKassa.y);
+					}
+				}
+			}
+		}
+	}
+	
+	//to be overridden
+	public Vector2d move() {
+		return new Vector2d();
 	}
 
 
