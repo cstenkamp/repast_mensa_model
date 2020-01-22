@@ -43,7 +43,7 @@ public class MensaEingang {
 			addedStudents++;
 		}
 		
-		if (passedsteps > 20) {
+		if (passedsteps > 50) {
 			passedsteps = 0;
 			sharedstuff.grid.print();
 		}

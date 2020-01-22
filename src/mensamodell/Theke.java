@@ -17,6 +17,8 @@ public class Theke {
 	private ContinuousSpace space;
 	private double barRange = 5;
 	private int essen;
+	public Vector2d ap1 = null;
+	public Vector2d ap2 = null;
 	
 	
 	public Theke(int x, int y, int kind, ContinuousSpace s, int e) {
@@ -26,14 +28,38 @@ public class Theke {
 		this.space = s;
 		this.essen = e;
 		
-		if (this.kind == consts.AKTIONSTHEKE) 
+		if (this.kind == consts.AKTIONSTHEKE) {
 			size = new Vector2d(40,60);
-		else if (this.kind == consts.FLEISCHTHEKE) 
-			size = new Vector2d(50, 20);
-		else if (this.kind == consts.SALATBAR) 
-			size = new Vector2d(50,60);
-		else
+			ap1 = new Vector2d(this.x-this.size.x/40, this.y+this.size.y/10);
+		}
+		else if (this.kind == consts.FLEISCHTHEKE) {
+			size = new Vector2d(180, 20);
+			ap1 = new Vector2d(this.x-3, this.y+this.size.y/20);
+		}
+		else if (this.kind == consts.SALATBAR) {
+			size = new Vector2d(60,50);
+			ap1 = new Vector2d(this.x-1, this.y+this.size.y/10);
+			ap2 = new Vector2d(this.x-1, this.y+this.size.y/10-11);
+		}
+		else if (this.kind == consts.VEGGIETHEKE) {
+			size = new Vector2d(40,80);
+			//ap1 = new Vector2d(this.x-this.size.x/40, this.y+this.size.y/10);
+		}
+		else if (this.kind == consts.VEGANTHEKE) {
+			size = new Vector2d(40,80);
+			//ap1 = new Vector2d(this.x-this.size.x/40, this.y+this.size.y/10);
+		}
+		else if (this.kind == consts.EINTOPF) {
+			size = new Vector2d(40,80);
+			//ap1 = new Vector2d(this.x-this.size.x/40, this.y+this.size.y/10);
+		}
+		else if (this.kind == consts.POMMES) {
+			size = new Vector2d(40,80);
+			//ap1 = new Vector2d(this.x-this.size.x/40, this.y+this.size.y/10);
+		}
+		else {
 			size = new Vector2d(10,10);
+		}
 	}
 	
 	public boolean isLeft() {
