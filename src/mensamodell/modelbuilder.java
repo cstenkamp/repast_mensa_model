@@ -35,7 +35,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 		space.moveTo(aktionstheke, aktionstheke.x, aktionstheke.y);
 
 		for (double i : new double[]{-consts.SIZE_X/6.0, consts.SIZE_X/6.0}) {
-				Theke fleisch = new Theke((int)(consts.SIZE_X/2.0+i), 5, consts.FLEISCHTHEKE, space, consts.ESSEN_MEAT);
+				Theke fleisch = new Theke((int)(consts.SIZE_X/2.0+i), 5, consts.FLEISCHTHEKE, space, consts.ESSEN_MEAT); //bei 34,5 & 66,5 | size 50,20
 				context.add(fleisch);
 				space.moveTo(fleisch, fleisch.x, fleisch.y);
 		}
@@ -53,7 +53,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 		context.add(vegan);
 		space.moveTo(vegan, vegan.x, vegan.y);
 		
-		// Eintopf ist zuf�llig vegan, veggie oder meat
+		// Eintopf ist zufällig vegan, veggie oder meat
 		Theke eintopf = new Theke(consts.SIZE_X-5, consts.SIZE_Y*2/4, consts.EINTOPF, space, RandomHelper.nextIntFromTo(0, 2));
 		context.add(eintopf);
 		space.moveTo(eintopf, eintopf.x, eintopf.y);

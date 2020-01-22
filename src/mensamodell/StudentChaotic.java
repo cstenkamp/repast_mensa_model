@@ -33,7 +33,7 @@ public class StudentChaotic extends Student {
 		}
 		
 		List<Theke> nonvisited_theken = new ArrayList<Theke>();
-		for (Theke t : theken) 
+		for (Theke t : sharedstuff.theken) 
 			if (!visitedBars.contains(t)) 
 				nonvisited_theken.add(t);
 		

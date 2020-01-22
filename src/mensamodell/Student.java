@@ -34,7 +34,7 @@ public class Student {
 	double vision;					// Sichtradius
 	protected Vector2d velocity;	// Geschwindigkeits- und Ausrichtungsvektor
 	float walking_speed = 0.002f;
-	int aversionradius = 1;
+	int aversionradius = 2;
 	Context<Object> context;
 	List<Theke> visitedBars; 		// Liste der Besuchten Theken 
 	int waitticks;
@@ -160,14 +160,28 @@ public class Student {
 			velocity = new Vector2d(velocity.x, 0);
 		
 		NdPoint pos = space.getLocation(this);
+		
+		
+
 		Vector2d potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
-		//System.out.println("Stuent #"+num+" did something"+pos.getX()+" "+pos.getY()+" velocity "+velocity.x+" "+velocity.y);
+		//System.out.println("Student #"+num+" did something"+pos.getX()+" "+pos.getY()+" velocity "+velocity.x+" "+velocity.y);
 
 		if (potentialcoords.x <= 0 || potentialcoords.x >= consts.SIZE_X || potentialcoords.y <= 0 || potentialcoords.y >= consts.SIZE_Y){
 			//throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
 			return;	
 		}
-
+		
+		int potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y) ;
+		if (potential_grid_pos > 2) {//studenten sind +2, also ist dann shcon wer da
+			//throw new java.lang.RuntimeException("Student läuft auf anderen Studenten!");
+		}
+		
+		if ((potential_grid_pos == 1) || (potential_grid_pos == 2)) { //1 und 2 sind theken und kassen
+			sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 3);
+			return;
+		}
+		
+		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, 3);
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
 

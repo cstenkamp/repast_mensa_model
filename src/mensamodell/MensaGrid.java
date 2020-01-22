@@ -21,9 +21,12 @@ public class MensaGrid {
 	}
 	
 	public void print() {
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++)
-				System.out.print(""+grid[i][j]+" ");
+		for (int j = cols-1; j >= 0; j--) {
+			for (int i = 0; i < rows; i++) 
+				if (grid[i][j] == 0)
+					System.out.print("."+" ");
+				else
+					System.out.print(""+grid[i][j]+" ");
 			System.out.println();
 		}
 	}
@@ -36,12 +39,10 @@ public class MensaGrid {
 			
 		if (obj instanceof Theke) {
 			Theke t = (Theke) obj;
-//			for (int i = t.x - (int)(t.size.x / 2); i < t.x + (int)(t.size.x / 2); i++) 
-//				for (int j = t.y - (int)(t.size.y / 2); j < t.y + (int)(t.size.y / 2); j++) {
-			for (int i = t.x; i < t.x + t.size.x; i++) 
-				for (int j = t.y; j < t.y + t.size.y; j++) {
+			for (int i = t.x - (int)(t.size.x / 8); i < t.x + (int)(t.size.x / 8); i++) 
+				for (int j = t.y - (int)(t.size.y / 8); j < t.y + (int)(t.size.y / 8); j++) {
 						System.out.println("i: "+i+"  j:"+j+"   t.x: "+t.x+" t.y: "+t.y);
-						if (i < rows && j < cols)
+						if (0 <= i && i < rows && 0 <= j && j < cols)
 							grid[i][j] = consts.GRID_THEKE;
 				}
 		}
