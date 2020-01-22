@@ -13,6 +13,10 @@ import repast.simphony.util.collections.FilteredIterator;
 import repast.simphony.context.Context;
 
 public class StudentGoalOriented extends Student {
+	
+	private Theke tempDestination;
+	private Kasse tempBar = null;
+	private Object[] closestkasse;
 
 	public StudentGoalOriented(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
 		super(s, c, num, sharedstuff);
@@ -25,12 +29,13 @@ public class StudentGoalOriented extends Student {
 			/*
 			 * Return Values:
 			 * distXY == null --> gehe zur Kasse
-			 * distXY == (0,0)--> W�hle dein Essen. Du stehst vor einer Theke.
 			 * distXY == (X,Y)--> Du bist auf dem Weg.
 			 */
 			
 			// Falls der student vor einer Theke steht
 			if (at_bar()) {
+				// waehle das Essen
+				if (chooseMeal()) return null;
 				return new Vector2d(0,0);
 			}
 						
@@ -79,7 +84,7 @@ public class StudentGoalOriented extends Student {
 			
 		}	
 	
-	/**
+	/*
 	 * Methode wird jede Runde ausgefuehrt. 
 	 */
 	@ScheduledMethod(start = 0, interval = 1)
@@ -90,22 +95,33 @@ public class StudentGoalOriented extends Student {
 			velocity.setY(-avoidance.y);
 		} else {
 			Vector2d movement = to_next_ausgabe();
-			if (movement != null && !(movement.x == 0 && movement.y == 0)) {
+			if (movement != null) {
 				// Du bist auf dem Weg.
 				velocity.setX(movement.x);
 				velocity.setY(movement.y);	
 			} else if (movement == null) {
-				// gehe zur Kasse
-				movement = to_kasse();
-				if (movement != null) {
-					velocity.setX(movement.x);
-					velocity.setY(movement.y);
+				//System.out.println(this.directlyToKassa);
+				if (!this.directlyToKassa.equals(check) && this.directlyToKassa != null) {
+					if (tempBar != null && tempBar.pay(this)) {
+						System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
+						context.remove(this);
+					}
+					// nimm die bereits gewaehlte Kasse
+					velocity.setX(this.directlyToKassa.x);
+					velocity.setY(this.directlyToKassa.y);	
+				}else {
+					// waehle Kasse
+					//System.out.println("choose Kassa");
+					// gibt Location und Objekt zurueck
+					this.closestkasse = to_kasse();
+					this.tempBar = (Kasse) this.closestkasse[0];
+					this.directlyToKassa = (Vector2d) this.closestkasse[1];
+					if (this.directlyToKassa != null) {
+						velocity.setX(this.directlyToKassa.x);
+						velocity.setY(this.directlyToKassa.y);	
+					}
 				}
-			} else {
-				// W�hle dein Essen. Du stehst vor einer Theke.
-				//System.out.println("Essenswahl!");
-				this.waitticks = 5000;
-			}
+			} 
 		}
 	} 
 

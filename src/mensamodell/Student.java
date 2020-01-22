@@ -13,19 +13,6 @@ import repast.simphony.space.continuous.NdPoint;
 
 import repast.simphony.context.Context;
 
-//TODO next:
-//-Studenten gehen nicht auf die Theke drauf SO HALB GELOEST
-//-Studenten gehen theke nach theke ab DONE
-//-Studenten haben listen welche theken sie schon besucht haben DONE
-//-Vor einer Theke gehen studenten in ordentliche Reihen
-//-Chaotische Studenten gehen zu Theke falls in Sichtweite
-
-
-/*
- * Studenten Klasse. Der Student laeuft durch die Mensa und erkennt innerhalb seines Sichtradius verschiedene Theken anhand der Schlange und
- * seines movement_pref entscheidet er wohin er laeuft.
- */
-
 public class Student {
 
 	// Class variables
@@ -36,11 +23,13 @@ public class Student {
 	float walking_speed = 0.002f;
 	int aversionradius = 2;
 	Context<Object> context;
-	List<Theke> visitedBars; 		// Liste der Besuchten Theken 
+	List<Theke> visitedBars; 		// Liste der Besuchten Theken
 	int waitticks;
 	SharedStuff sharedstuff; //among others: list of all kassen & theken for faster access
-	int num; //number of the student
-	
+	public int num; //number of the student
+	public Vector2d directlyToKassa = new Vector2d(-1.0,-1.0); // Speichert die ausgewaehlte Kasse
+	public Vector2d check = new Vector2d(-1.0,-1.0);
+
 	// choose randomly
 	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
 		this.space = s;
@@ -53,7 +42,24 @@ public class Student {
 		this.num = num;
 	}
 
+	// waehle dein Essen
+	public boolean chooseMeal() {
+		// warte vor der Theke
+		this.waitticks = 5000;
+		return false;
+	}
 
+
+
+	// der student geht zur Kasse
+	public Object[] to_kasse() {
+		//ContinuousWithin kasseInRange = new ContinuousWithin(space, this, 1000);
+		Object[] closestkasse = get_closest(sharedstuff.kassen);
+//		Vector2d distance = (Vector2d) closestkasse[1];
+//		Kasse k = (Kasse) closestkasse[0];
+		return closestkasse;
+	}
+	// sucht die naechste kasse
 	public Object[] get_closest(List lst) {
 		Vector2d distXY = new Vector2d(999999,999999);
 		Vector2d tmpdist = null;
@@ -69,36 +75,23 @@ public class Student {
 		}
 		return new Object[]{res, distXY};
 	}
-	
-	
-	public Vector2d to_kasse() {
-		//ContinuousWithin kasseInRange = new ContinuousWithin(space, this, 1000);
-		Object[] closestkasse = get_closest(sharedstuff.kassen);
-		Vector2d distance = (Vector2d) closestkasse[1];
-		Kasse k = (Kasse) closestkasse[0];
-		if (((Kasse) k).pay(this)) {
-			context.remove(this);
-			System.out.println("Student #"+this.num+" left the Mensa.");
-			return null;
-		}
-		return distance;
-	}
-	
-	// Hier wird geprüft ob wir vor einer Theke stehen.
+
+	// Hier wird geprueft ob wir vor einer Theke stehen.
 	public boolean at_bar() {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
 		Vector2d distXY = null;
 		ContinuousWithin barInRange = new ContinuousWithin(space, this, 4);
 		for (Object b : barInRange.query()) {
 			if (b instanceof Theke && !visitedBars.contains(b)) {
-				visitedBars.add((Theke) b); // DAS MUSS AUCH BLEIBEN 
-				//in Du stehst vor einer Theke behalte deine aktuelle Position bei
+				visitedBars.add((Theke) b);
+				//System.out.println("new bar");
 				return true;
 			}
-		}	
+		}
 		return false;
 	}
-	
+
+	// gehe anderen Studenten aus dem Weg
 	public Vector2d avoid_others() {
 		NdPoint lastPos = space.getLocation(this);
 		ContinuousWithin query = new ContinuousWithin(space, this, aversionradius);
@@ -117,7 +110,7 @@ public class Student {
 					distXY = new Vector2d(space.getDisplacement(lastPos, p)[0], space.getDisplacement(lastPos, p)[1]);
 				}
 			}
-		} 
+		}
 		if (minStudDist < 99999) {
 			if (distXY.length() == 0) {
 				distXY.x = RandomHelper.nextDouble();
@@ -130,18 +123,17 @@ public class Student {
 		return null;
 	}
 
-	// Standard Student weicht nur aus. 
-	@ScheduledMethod(start = 0, interval = 1)
-	public void step() {
-		Vector2d avoidance = avoid_others();
-		if (avoidance != null) {
-			velocity.setX(-avoidance.x);
-			velocity.setY(-avoidance.y);
-		}
-	}
+//	// Standard Student weicht nur aus.
+//	@ScheduledMethod(start = 0, interval = 1)
+//	public void step() {
+//		Vector2d avoidance = avoid_others();
+//		if (avoidance != null) {
+//			velocity.setX(-avoidance.x);
+//			velocity.setY(-avoidance.y);
+//		}
+//	}
 
-
-	/**
+	/*
 	 * Eigentliche Bewegung zwischen den Zeitschritten.
 	 */
 	@ScheduledMethod(start=0.5, interval=1)
@@ -150,18 +142,18 @@ public class Student {
 			waitticks --;
 			return;
 		}
-		
+
 		velocity.normalize();
 		velocity.scale(walking_speed);
 
-		if (Double.isNaN(velocity.x)) 
+		if (Double.isNaN(velocity.x))
 			velocity = new Vector2d(0, velocity.y);
-		if (Double.isNaN(velocity.y)) 
+		if (Double.isNaN(velocity.y))
 			velocity = new Vector2d(velocity.x, 0);
-		
+
 		NdPoint pos = space.getLocation(this);
 		sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 0);
-		
+
 
 		Vector2d potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
 		//System.out.println("Student #"+num+" did something"+pos.getX()+" "+pos.getY()+" velocity "+velocity.x+" "+velocity.y);
@@ -169,17 +161,17 @@ public class Student {
 		if (potentialcoords.x <= 0 || potentialcoords.x >= consts.SIZE_X || potentialcoords.y <= 0 || potentialcoords.y >= consts.SIZE_Y){
 			throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
 		}
-		
+
 		int potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y) ;
 		if (potential_grid_pos > 2) {//studenten sind +2, also ist dann shcon wer da
 			//throw new java.lang.RuntimeException("Student läuft auf anderen Studenten!");
 		}
-		
+
 		if ((potential_grid_pos == 1) || (potential_grid_pos == 2) || (potential_grid_pos == 4)) { //theken, kassen, accesspoints
 			sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 3);
 			return;
 		}
-		
+
 		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, 3);
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
