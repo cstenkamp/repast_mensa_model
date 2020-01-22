@@ -1,6 +1,8 @@
 package mensamodell;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class consts {
@@ -30,6 +32,27 @@ public class consts {
 	public final static int ESSEN_MEAT = 2;
 	public final static int ESSEN_SALAD = 3;
 	public final static int ESSEN_POMMES = 4;
+	
+	// Listen mit Essenswahl
+	public final static List<Integer> vegetarian = new ArrayList<>();
+	vegetarian.add(ESSEN_VEGGIE);
+	vegetarian.add(ESSEN_VEGAN);
+	vegetarian.add(ESSEN_SALAD);
+	vegetarian.add(ESSEN_POMMES);
+	public final static List<Integer> vegan = new ArrayList<>();
+	vegan.add(ESSEN_VEGAN);
+	vegan.add(ESSEN_SALAD);
+	vegan.add(ESSEN_POMMES);
+	public final static List<Integer> meatlover = new ArrayList<>();
+	meatlover.add(ESSEN_VEGGIE);
+	meatlover.add(ESSEN_VEGAN);
+	meatlover.add(ESSEN_SALAD);
+	meatlover.add(ESSEN_POMMES);
+	public final static List<Integer> noPref = new ArrayList<>();
+	noPref.add(ESSEN_VEGGIE);
+	noPref.add(ESSEN_VEGAN);
+	noPref.add(ESSEN_SALAD);
+	noPref.add(ESSEN_POMMES);
 	
 	//walking styles
 	public final static int CHAOTIC = 0;
