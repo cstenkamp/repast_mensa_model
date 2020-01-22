@@ -34,7 +34,7 @@ public class consts {
 	public final static int ESSEN_POMMES = 4;
 	
 	// Listen mit Essenswahl
-	public static List<Integer> vegetarian = new ArrayList<>();
+	public static List<Integer> vegetarian = new ArrayList<>() ;
 	public static List<Integer> vegan = new ArrayList<>();
 	public static List<Integer> meatlover = new ArrayList<>();
 	public static List<Integer> noPref = new ArrayList<>();

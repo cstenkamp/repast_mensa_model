@@ -79,7 +79,27 @@ public class modelbuilder implements ContextBuilder<Object>{
 		for (Object th: context.getObjects(Theke.class)) {
 			theken.add((Theke) th);
 		}
-
+		// ##########################################################
+		// Speicher die Essen für jede Pref in der jeweiligen Liste
+		consts.vegetarian.add(consts.ESSEN_VEGGIE);
+		consts.vegetarian.add(consts.ESSEN_VEGAN);
+		consts.vegetarian.add(consts.ESSEN_SALAD);
+		consts.vegetarian.add(consts.ESSEN_POMMES);
+		consts.vegan.add(consts.ESSEN_VEGAN);
+		consts.vegan.add(consts.ESSEN_SALAD);
+		consts.vegan.add(consts.ESSEN_POMMES);
+		consts.meatlover.add(consts.ESSEN_VEGGIE);
+		consts.meatlover.add(consts.ESSEN_VEGAN);
+		consts.meatlover.add(consts.ESSEN_SALAD);
+		consts.meatlover.add(consts.ESSEN_POMMES);
+		consts.meatlover.add(consts.ESSEN_MEAT);
+		consts.noPref.add(consts.ESSEN_VEGGIE);
+		consts.noPref.add(consts.ESSEN_VEGAN);
+		consts.noPref.add(consts.ESSEN_SALAD);
+		consts.noPref.add(consts.ESSEN_POMMES);
+		consts.noPref.add(consts.ESSEN_MEAT);
+		// #########################################################
+		
 		MensaGrid grid = new MensaGrid(consts.SIZE_X, consts.SIZE_Y);
 				
 		for (Object obj: context.getObjects(Object.class))
