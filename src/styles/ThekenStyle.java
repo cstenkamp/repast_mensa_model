@@ -14,7 +14,7 @@ public class ThekenStyle extends DefaultStyleOGL2D {
 
 	@Override
 	public Color getColor(Object o){
-		return Color.YELLOW;
+		return Color.BLUE;
 	}	
 	
 	@Override

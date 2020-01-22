@@ -2,15 +2,12 @@ package mensamodell;
 
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.vecmath.Vector2d;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
-
 import repast.simphony.context.Context;
 
 public class Student {
@@ -18,7 +15,6 @@ public class Student {
 	// Class variables
 	ContinuousSpace space;	// Der kontinuierliche Raum wird in dieser Variablen gespeichert.
 	int food_preference; 			// 0=veggie, 1=vegan, 2=meat, 3=no_preference
-	double vision;					// Sichtradius
 	protected Vector2d velocity;	// Geschwindigkeits- und Ausrichtungsvektor
 	float walking_speed = 0.002f;
 	int aversionradius = 2;
@@ -34,18 +30,6 @@ public class Student {
 	private Object[] closestkasse;
 	
 	// choose randomly
-	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
-		this.space = s;
-		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
-		this.velocity = new Vector2d(0,0);
-		this.visitedAusgaben = new ArrayList<>();
-		this.context = c;
-		this.waitticks = 0;
-		this.sharedstuff = sharedstuff;
-		this.num = num;
-		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
-	}
-	// set food_preference manually
 	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
 		this.space = s;
 		this.food_preference = fp;

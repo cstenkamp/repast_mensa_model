@@ -16,8 +16,8 @@ import repast.simphony.context.Context;
 public class StudentChaotic extends Student {
 
 
-	public StudentChaotic(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
-		super(s, c, num, sharedstuff);
+	public StudentChaotic(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
+		super(s, c, num, sharedstuff, fp);
 
 	}
 

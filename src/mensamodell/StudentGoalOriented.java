@@ -18,8 +18,8 @@ public class StudentGoalOriented extends Student {
 	private Kasse tempBar = null;
 	private Object[] closestkasse;
 
-	public StudentGoalOriented(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
-		super(s, c, num, sharedstuff);
+	public StudentGoalOriented(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
+		super(s, c, num, sharedstuff, fp);
 	}
 	
 	// Sucht den kuerzesten Weg

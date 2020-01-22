@@ -14,27 +14,78 @@ public class MensaEingang {
 	SharedStuff sharedstuff;
 	int passedsteps =  0;
 	Object[] proportions;
+	int fp;
+	int numVeggie;
+	int numVegan;
+	int numMeat;
+	int numNoPref;
+	boolean stillVeggie = false;
+	boolean stillVegan = false;
+	boolean stillMeat = false;
+	boolean stillNoPref = false;
 	
-	public MensaEingang(int numStudents, Object[] prop, Context<Object> context, ContinuousSpace<Object> space, SharedStuff sharedstuff) {
-		this.numStudents = numStudents;
+	public MensaEingang(int numStud, Object[] prop, Context<Object> context, ContinuousSpace<Object> space, SharedStuff sharedstuff) {
+		this.numStudents = numStud;
 		this.space = space;
 		this.context = context;
 		this.addedStudents = 0;
 		this.sharedstuff = sharedstuff;
 		this.proportions = prop;
+		
+		numVeggie = (int) (this.numStudents * (double) proportions[0]);
+		numVegan = (int) (this.numStudents * (double) proportions[1]);
+		numMeat = (int) (this.numStudents * (double) proportions[2]);
+		numNoPref = (int) (this.numStudents * (double) proportions[3]);
+		
+		if (numStudents > (numVeggie+numVegan+numMeat+numNoPref)) {
+			do {
+				int random = RandomHelper.nextIntFromTo(0, 3);
+				if (random == 0) numVeggie++;
+				if (random == 1) numVegan++;
+				if (random == 2) numMeat++;
+				if (random == 3) numNoPref++;
+			} while (numStudents != (numVeggie+numVegan+numMeat+numNoPref));
+		}
+		if (numStudents < (numVeggie+numVegan+numMeat+numNoPref)) {
+			do {
+				int random = RandomHelper.nextIntFromTo(0, 3);
+				if (random == 0) numVeggie--;
+				if (random == 1) numVegan--;
+				if (random == 2) numMeat--;
+				if (random == 3) numNoPref--;
+			} while (numStudents != (numVeggie+numVegan+numMeat+numNoPref));
+		}
+		
+		if (numVeggie > 0) stillVeggie = true; 
+		if (numVegan > 0) stillVegan = true; 
+		if (numMeat > 0) stillMeat = true; 
+		if (numNoPref > 0) stillNoPref = true; 
 	}
 
 	@ScheduledMethod(start = 0, interval = 1000)
 	public void step() {
 		passedsteps++;
-
-		if (addedStudents < numStudents) {
+		fp = -1;
+		
+		if (numVeggie <= 0) stillVeggie = false; 
+		if (numVegan <= 0) stillVegan = false; 
+		if (numMeat <= 0) stillMeat = false; 
+		if (numNoPref <= 0) stillNoPref = false; 
+		
+		int random = RandomHelper.nextIntFromTo(0,3);
+		if (random == 0 && stillVeggie) {fp = 0; numVeggie--;}
+		if (random == 1 && stillVegan) {fp = 1; numVegan--;}
+		if (random == 2 && stillMeat) {fp = 2; numMeat--;}
+		if (random == 3 && stillNoPref) {fp = 3; numNoPref--;}
+		
+		if (fp != -1 && addedStudents < numStudents) {
+				
 			double x, y;
 			Student stud;
 			if (RandomHelper.nextIntFromTo(0, 1) == 0)
-				stud = new StudentGoalOriented(space, context, addedStudents, sharedstuff);
+				stud = new StudentGoalOriented(space, context, addedStudents, sharedstuff, fp);
 			else
-				stud = new StudentChaotic(space, context, addedStudents, sharedstuff);
+				stud = new StudentChaotic(space, context, addedStudents, sharedstuff, fp);
 			
 			x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);
 			y = consts.SIZE_Y-5;
