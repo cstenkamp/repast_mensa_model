@@ -64,9 +64,9 @@ public class modelbuilder implements ContextBuilder<Object>{
 		for (Object ks: context.getObjects(Kasse.class)) {
 			kassen.add((Kasse) ks);
 		}
-		List<Theke> theken = new ArrayList<Theke>();
-		for (Object th: context.getObjects(Theke.class)) {
-			theken.add((Theke) th);
+		List<Ausgabe> ausgaben = new ArrayList<Ausgabe>();
+		for (Object th: context.getObjects(Ausgabe.class)) {
+			ausgaben.add((Ausgabe) th);
 		}
 
 		MensaGrid grid = new MensaGrid(consts.SIZE_X, consts.SIZE_Y);
@@ -75,7 +75,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 			grid.setObj(obj);
 		grid.print();
 
-		SharedStuff sharedstuff = new SharedStuff(context, space, kassen, theken, grid);
+		SharedStuff sharedstuff = new SharedStuff(context, space, kassen, ausgaben, grid);
 		MensaEingang eingang = new MensaEingang(initialNumStud, context, space, sharedstuff); //TODO darauf achten dass man immer 100 studenten drin hat bspw
 		context.add(eingang);
 		space.moveTo(eingang, consts.SIZE_X*2.5/5,consts.SIZE_Y-5);

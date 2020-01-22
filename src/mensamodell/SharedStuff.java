@@ -13,15 +13,15 @@ public class SharedStuff {
 	public Context<Object> context;
 	public ContinuousSpace<Object> space;
 	public List<Kasse> kassen;
-	public List<Theke> theken;
+	public List<Ausgabe> ausgaben;
 	public MensaGrid grid;
 
-	public SharedStuff(Context<Object> context, ContinuousSpace<Object> space, List<Kasse> kassen, List<Theke> theken,
+	public SharedStuff(Context<Object> context, ContinuousSpace<Object> space, List<Kasse> kassen, List<Ausgabe> ausgaben,
 			MensaGrid grid) {
 		this.context = context;
 		this.space = space;
 		this.kassen = kassen;
-		this.theken = theken;
+		this.ausgaben = ausgaben;
 		this.grid = grid;
 		
 	}

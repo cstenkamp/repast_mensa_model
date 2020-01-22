@@ -27,10 +27,10 @@ public class StudentChaotic extends Student {
 		/*
 		 * Return Values:
 		 * distXY == null --> gehe zur Kasse
-		 * distXY == (0,0)--> Waehle dein Essen. Du stehst vor einer Theke.
+		 * distXY == (0,0)--> Waehle dein Essen. Du stehst vor einer Ausgabe.
 		 * distXY == (X,Y)--> Du bist auf dem Weg.
 		 */
-		// Falls der student vor einer Theke steht
+		// Falls der student vor einer Ausgabe steht
 		if (at_bar()) {
 			if (chooseMeal()) return null;
 			this.tempDestination = null;
@@ -42,20 +42,20 @@ public class StudentChaotic extends Student {
 			return new Vector2d(temp[0], temp[1]);
 		// falls er noch keine theke erkoren hat suche eine neue
 		} else {
-			List<Theke> nonvisited_theken = new ArrayList<Theke>();
-			for (Theke t : sharedstuff.theken) {
-				if (!visitedBars.contains(t)) {
-					nonvisited_theken.add(t);
+			List<Ausgabe> nonvisited_ausgaben = new ArrayList<Ausgabe>();
+			for (Ausgabe t : sharedstuff.ausgaben) {
+				if (!visitedAusgaben.contains(t)) {
+					nonvisited_ausgaben.add(t);
 					//System.out.println("da war ich nicht "+ t);
 				}
 			}
-			if (nonvisited_theken.isEmpty()) {
+			if (nonvisited_ausgaben.isEmpty()) {
 				return null;
 				// gehe zur kasse, der Student will heute nichts zu essen
 			}
-			// suche zufaellig eine Theke aus der Liste und speichere sie als tempDestination
-			int index = nonvisited_theken.size();
-			Theke randomBar = nonvisited_theken.get(RandomHelper.nextIntFromTo(0, index-1));
+			// suche zufaellig eine Ausgabe aus der Liste und speichere sie als tempDestination
+			int index = nonvisited_ausgaben.size();
+			Ausgabe randomBar = nonvisited_ausgaben.get(RandomHelper.nextIntFromTo(0, index-1));
 			this.tempDestination = randomBar;
 			NdPoint location = space.getLocation(randomBar);
 			double[] temp = space.getDisplacement(space.getLocation(this), location);

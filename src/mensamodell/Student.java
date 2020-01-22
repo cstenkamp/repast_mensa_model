@@ -23,14 +23,14 @@ public class Student {
 	float walking_speed = 0.002f;
 	int aversionradius = 2;
 	Context<Object> context;
-	List<Theke> visitedBars; 		// Liste der Besuchten Theken
+	List<Ausgabe> visitedAusgaben; 		// Liste der Besuchten Ausgaben
 	int waitticks;
 	SharedStuff sharedstuff; //among others: list of all kassen & theken for faster access
 	public int num; //number of the student
 	public Vector2d directlyToKassa = new Vector2d(-1.0,-1.0); // Speichert die ausgewaehlte Kasse
 	public Vector2d check = new Vector2d(-1.0,-1.0);
 	private Kasse tempBar = null;
-	protected Theke tempDestination;
+	protected Ausgabe tempDestination;
 	private Object[] closestkasse;
 	
 	// choose randomly
@@ -38,20 +38,20 @@ public class Student {
 		this.space = s;
 		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
 		this.velocity = new Vector2d(0,0);
-		this.visitedBars = new ArrayList<>();
+		this.visitedAusgaben = new ArrayList<>();
 		this.context = c;
 		this.waitticks = 0;
 		this.sharedstuff = sharedstuff;
 		this.num = num;
-		this.tempDestination = null; // stellt sicher dass der student bis zur Theke laeuft
+		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
 	}
 
 	// waehle dein Essen
 	public boolean chooseMeal() {
-		// warte vor der Theke
+		// warte vor der Ausgabe
 		this.waitticks = 10000;
-		// speicher die letzte Theke
-		Theke currentBar = this.visitedBars.get(visitedBars.size()-1);
+		// speicher die letzte Ausgabe
+		Ausgabe currentBar = this.visitedAusgaben.get(visitedAusgaben.size()-1);
 		int essen = currentBar.getEssen();
 		// VEGGIE
 		if (this.food_preference == 0 && consts.vegetarian.contains(essen)) return true;
@@ -91,14 +91,14 @@ public class Student {
 		return new Object[]{res, distXY};
 	}
 
-	// Hier wird geprueft ob wir vor einer Theke stehen.
+	// Hier wird geprueft ob wir vor einer Ausgabe stehen.
 	public boolean at_bar() {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
 		Vector2d distXY = null;
 		ContinuousWithin barInRange = new ContinuousWithin(space, this, 4);
 		for (Object b : barInRange.query()) {
-			if (b instanceof Theke && !visitedBars.contains(b)) {
-				visitedBars.add((Theke) b);
+			if (b instanceof Ausgabe && !visitedAusgaben.contains(b)) {
+				visitedAusgaben.add((Ausgabe) b);
 				//System.out.println("new bar");
 				return true;
 			}

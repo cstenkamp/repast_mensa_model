@@ -14,7 +14,7 @@ import repast.simphony.context.Context;
 
 public class StudentGoalOriented extends Student {
 	
-	private Theke tempDestination;
+	private Ausgabe tempDestination;
 	private Kasse tempBar = null;
 	private Object[] closestkasse;
 
@@ -32,24 +32,24 @@ public class StudentGoalOriented extends Student {
 			 * distXY == (X,Y)--> Du bist auf dem Weg.
 			 */
 			
-			// Falls der student vor einer Theke steht
+			// Falls der student vor einer Ausgabe steht
 			if (at_bar()) {
 				// waehle das Essen
 				if (chooseMeal()) return null;
 				return new Vector2d(0,0);
 			}
 						
-			List<Theke> nonvisited_theken = new ArrayList<Theke>();
-			for (Theke t : sharedstuff.theken) 
-				if (!visitedBars.contains(t)) 
-					nonvisited_theken.add(t);
+			List<Ausgabe> nonvisited_ausgaben = new ArrayList<Ausgabe>();
+			for (Ausgabe t : sharedstuff.ausgaben) 
+				if (!visitedAusgaben.contains(t)) 
+					nonvisited_ausgaben.add(t);
 			
-			if (nonvisited_theken.isEmpty())
+			if (nonvisited_ausgaben.isEmpty())
 				return null;
 			
-			Object[] clostesttheke = get_closest(nonvisited_theken);
+			Object[] clostesttheke = get_closest(nonvisited_ausgaben);
 			Vector2d distance = (Vector2d) clostesttheke[1];
-			Theke k = (Theke) clostesttheke[0];
+			Ausgabe k = (Ausgabe) clostesttheke[0];
 			return distance;
 			
 			

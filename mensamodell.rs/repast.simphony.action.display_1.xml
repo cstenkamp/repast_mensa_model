@@ -7,6 +7,10 @@
       <string>styles.KassenStyle</string>
     </entry>
     <entry>
+      <string>mensamodell.Ausgabe</string>
+      <string>repast.simphony.visualizationOGL2D.DefaultStyleOGL2D</string>
+    </entry>
+    <entry>
       <string>mensamodell.StudentGoalOriented</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
@@ -26,6 +30,10 @@
   <editedStyles>
     <entry>
       <string>mensamodell.Kasse</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>mensamodell.Ausgabe</string>
       <null/>
     </entry>
     <entry>
@@ -55,7 +63,7 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>463259982</hashCode>
+    <hashCode>-2034546442</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>
@@ -64,6 +72,10 @@
     <entry>
       <string>mensamodell.Kasse</string>
       <int>2</int>
+    </entry>
+    <entry>
+      <string>mensamodell.Ausgabe</string>
+      <int>5</int>
     </entry>
     <entry>
       <string>mensamodell.StudentGoalOriented</string>
