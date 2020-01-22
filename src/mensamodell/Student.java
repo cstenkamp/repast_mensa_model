@@ -175,7 +175,7 @@ public class Student {
 			//throw new java.lang.RuntimeException("Student läuft auf anderen Studenten!");
 		}
 		
-		if ((potential_grid_pos == 1) || (potential_grid_pos == 2)) { //1 und 2 sind theken und kassen
+		if ((potential_grid_pos == 1) || (potential_grid_pos == 2) || (potential_grid_pos == 4)) { //theken, kassen, accesspoints
 			sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 3);
 			return;
 		}

@@ -95,6 +95,12 @@ public class modelbuilder implements ContextBuilder<Object>{
 		return context;
 	} // END of Context.
 
+	
+	public void addThekeAusgabe(int x, int y, int kind, ContinuousSpace s, int e, Context context) {
+		Theke theke = new Theke(x, y, kind, s, e);
+		context.add(theke);
+		s.moveTo(theke, theke.x, theke.y);
+	}
 
 
 
