@@ -49,7 +49,19 @@ public class Student {
 	// waehle dein Essen
 	public boolean chooseMeal() {
 		// warte vor der Theke
-		this.waitticks = 5000;
+		this.waitticks = 10000;
+		// speicher die letzte Theke
+		Theke currentBar = this.visitedBars.get(visitedBars.size()-1);
+		int essen = currentBar.getEssen();
+		// VEGGIE
+		if (this.food_preference == 0 && consts.vegetarian.contains(essen)) return true;
+		// VEGAN
+		else if (this.food_preference == 0 && consts.vegan.contains(essen)) return true;
+		// MEAT
+		else if (this.food_preference == 0 && consts.meatlover.contains(essen)) return true;
+		// No Preference
+		else if (this.food_preference == 0 && consts.noPref.contains(essen)) return true;
+		
 		return false;
 	}
 
@@ -57,7 +69,6 @@ public class Student {
 
 	// der student geht zur Kasse
 	public Object[] to_kasse() {
-		//ContinuousWithin kasseInRange = new ContinuousWithin(space, this, 1000);
 		Object[] closestkasse = get_closest(sharedstuff.kassen);
 //		Vector2d distance = (Vector2d) closestkasse[1];
 //		Kasse k = (Kasse) closestkasse[0];
