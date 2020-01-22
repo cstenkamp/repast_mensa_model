@@ -24,10 +24,10 @@ public class Student {
 	SharedStuff sharedstuff; //among others: list of all kassen & theken for faster access
 	public int num; //number of the student
 	public Vector2d directlyToKassa = new Vector2d(-1.0,-1.0); // Speichert die ausgewaehlte Kasse
-	public Vector2d check = new Vector2d(-1.0,-1.0);
-	private Kasse tempBar = null;
+	protected Kasse tempBar = null;
 	protected Ausgabe tempDestination;
-	private Object[] closestkasse;
+	protected Object[] closestkasse;
+
 	
 	// choose randomly
 	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
@@ -49,9 +49,9 @@ public class Student {
 		// speicher die letzte Ausgabe
 		Ausgabe currentBar = this.visitedAusgaben.get(visitedAusgaben.size()-1);
 		int essen = currentBar.getEssen();
+		double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
 		// VEGGIE
 		if (this.food_preference == 0 && consts.vegetarian.contains(essen)) {
-			double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
 			if (essen == 0 && randomNum <= 0.9) return true;
 			if (essen == 1 && randomNum <= 0.5) return true;
 			if (essen == 3 && randomNum <= 0.2) return true;
@@ -59,14 +59,12 @@ public class Student {
 		}
 		// VEGAN
 		else if (this.food_preference == 1 && consts.vegan.contains(essen)) {
-			double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
 			if (essen == 1 && randomNum <= 0.9) return true;
 			if (essen == 3 && randomNum <= 0.2) return true;
 			if (essen == 4 && randomNum <= 0.1) return true;
 		}
 		// MEAT
 		else if (this.food_preference == 2 && consts.meatlover.contains(essen)) {
-			double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
 			if (essen == 0 && randomNum <= 0.2) return true;
 			if (essen == 1 && randomNum <= 0.1) return true;
 			if (essen == 2 && randomNum <= 0.9) return true;
@@ -90,7 +88,7 @@ public class Student {
 	public Object[] get_closest(List lst) {
 		Vector2d distXY = new Vector2d(999999,999999);
 		Vector2d tmpdist = null;
-		double[] tmp;
+		double[] tmp = null;
 		Object res = null;
 		for (Object obj : lst) {
 			tmp = space.getDisplacement(space.getLocation(this), space.getLocation(obj));
@@ -100,6 +98,9 @@ public class Student {
 				res = obj;
 			}
 		}
+		// prueft ob space.getLocation(this) NaN wirft
+		if (Double.isNaN(tmp[0]) || Double.isNaN(tmp[1])) return new Object[]{res, new Vector2d(0,0)};
+
 		return new Object[]{res, distXY};
 	}
 
@@ -107,7 +108,7 @@ public class Student {
 	public boolean at_bar() {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
 		Vector2d distXY = null;
-		ContinuousWithin barInRange = new ContinuousWithin(space, this, 5);
+		ContinuousWithin barInRange = new ContinuousWithin(space, this, 4);
 		for (Object b : barInRange.query()) {
 			if (b instanceof Ausgabe && !visitedAusgaben.contains(b)) {
 				visitedAusgaben.add((Ausgabe) b);
@@ -168,23 +169,18 @@ public class Student {
 			velocity.setY(-avoidance.y);
 		} else {
 			Vector2d movement = move();
+//			if (movement != null) System.out.println(movement.x + " " + movement.y + " " + this);
 			if (movement != null) {
 				// Du bist auf dem Weg.
 				velocity.setX(movement.x);
 				velocity.setY(movement.y);
 			} else if (movement == null) {
-//				System.out.println(this.directlyToKassa);
-				if (!this.directlyToKassa.equals(check) && this.directlyToKassa != null) {
-					if (tempBar != null && tempBar.pay(this)) {
-						System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
-						context.remove(this);
-					}
-					// nimm die bereits gewaehlte Kasse
-					velocity.setX(this.directlyToKassa.x);
-					velocity.setY(this.directlyToKassa.y);
+				if (tempBar != null && tempBar.pay(this)) {
+					System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
+					context.remove(this);
 				} else {
 					// waehle Kasse
-					//System.out.println("choose Kassa");
+//					System.out.println("choose Kassa");
 					// gibt Location und Objekt zurueck
 					this.closestkasse = to_kasse();
 					this.tempBar = (Kasse) this.closestkasse[0];
@@ -216,10 +212,10 @@ public class Student {
 		velocity.normalize();
 		velocity.scale(walking_speed);
 
-		if (Double.isNaN(velocity.x))
-			velocity = new Vector2d(0, velocity.y);
-		if (Double.isNaN(velocity.y))
-			velocity = new Vector2d(velocity.x, 0);
+//		if (Double.isNaN(velocity.x))
+//			velocity = new Vector2d(0, velocity.y);
+//		if (Double.isNaN(velocity.y))
+//			velocity = new Vector2d(velocity.x, 0);
 
 		NdPoint pos = space.getLocation(this);
 		sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 0);
@@ -233,14 +229,14 @@ public class Student {
 		}
 
 		int potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y) ;
-		if (potential_grid_pos > 2) {//studenten sind +2, also ist dann shcon wer da
-			//throw new java.lang.RuntimeException("Student läuft auf anderen Studenten!");
+		if (potential_grid_pos > 2) {//studenten sind +2, also ist dann schon wer da
+			//throw new java.lang.RuntimeException("Student laeuft auf anderen Studenten!");
 		}
 
-		if ((potential_grid_pos == 1) || (potential_grid_pos == 2) || (potential_grid_pos == 4)) { //theken, kassen, accesspoints
-			sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 3);
-			return;
-		}
+//		if ((potential_grid_pos == 1) || (potential_grid_pos == 2) || (potential_grid_pos == 4)) { //theken, kassen, accesspoints
+//			sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 3);
+//			return;
+//		}
 
 		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, 3);
 		space.moveByDisplacement(this, velocity.x, velocity.y);

@@ -32,11 +32,13 @@ public class MensaEingang {
 		this.sharedstuff = sharedstuff;
 		this.proportions = prop;
 		
+		// berechne die Anzahl der einzelnen Food Preferences
 		numVeggie = (int) (this.numStudents * (double) proportions[0]);
 		numVegan = (int) (this.numStudents * (double) proportions[1]);
 		numMeat = (int) (this.numStudents * (double) proportions[2]);
 		numNoPref = (int) (this.numStudents * (double) proportions[3]);
 		
+		// falls die anzahl der initialNumStud noch nicht passt fuelle die werte zufaellig nach
 		if (numStudents > (numVeggie+numVegan+numMeat+numNoPref)) {
 			do {
 				int random = RandomHelper.nextIntFromTo(0, 3);
@@ -55,7 +57,7 @@ public class MensaEingang {
 				if (random == 3) numNoPref--;
 			} while (numStudents != (numVeggie+numVegan+numMeat+numNoPref));
 		}
-		
+		// flag
 		if (numVeggie > 0) stillVeggie = true; 
 		if (numVegan > 0) stillVegan = true; 
 		if (numMeat > 0) stillMeat = true; 
@@ -65,13 +67,15 @@ public class MensaEingang {
 	@ScheduledMethod(start = 0, interval = 1000)
 	public void step() {
 		passedsteps++;
+		// check
 		fp = -1;
-		
+		// falls einzele food prevs ausgelassen werden sollen setze flag auf false
 		if (numVeggie <= 0) stillVeggie = false; 
 		if (numVegan <= 0) stillVegan = false; 
 		if (numMeat <= 0) stillMeat = false; 
 		if (numNoPref <= 0) stillNoPref = false; 
 		
+		// fuege zufaellig eine food prev ein
 		int random = RandomHelper.nextIntFromTo(0,3);
 		if (random == 0 && stillVeggie) {fp = 0; numVeggie--;}
 		if (random == 1 && stillVegan) {fp = 1; numVegan--;}

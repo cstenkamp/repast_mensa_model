@@ -98,7 +98,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 				
 		for (Object obj: context.getObjects(Object.class))
 			grid.setObj(obj);
-		grid.print();
+//		grid.print();
 
 		SharedStuff sharedstuff = new SharedStuff(context, space, kassen, ausgaben, grid);
 		MensaEingang eingang = new MensaEingang(initialNumStud, proportions, context, space, sharedstuff); //TODO darauf achten dass man immer 100 studenten drin hat bspw

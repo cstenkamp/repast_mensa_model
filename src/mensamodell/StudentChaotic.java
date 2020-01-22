@@ -25,13 +25,12 @@ public class StudentChaotic extends Student {
 		/*
 		 * Return Values:
 		 * distXY == null --> gehe zur Kasse
-		 * distXY == (0,0)--> Waehle dein Essen. Du stehst vor einer Ausgabe.
 		 * distXY == (X,Y)--> Du bist auf dem Weg.
 		 */
 		// Falls der student vor einer Ausgabe steht
 		if (at_bar()) {
-			if (chooseMeal()) return null;
 			this.tempDestination = null;
+			if (chooseMeal()) return null;
 //			return new Vector2d(0,0);
 		}
 		// wenn der Student schon eine theke ausgesucht hat gehe weiter
@@ -56,7 +55,8 @@ public class StudentChaotic extends Student {
 			Ausgabe randomBar = nonvisited_ausgaben.get(RandomHelper.nextIntFromTo(0, index-1));
 			this.tempDestination = randomBar;
 			NdPoint location = space.getLocation(randomBar);
-			double[] temp = space.getDisplacement(space.getLocation(this), location);
+//			System.out.println(space.getLocation(this).getX() + " " + space.getLocation(this).getY());
+			double[] temp = space.getDisplacement(space.getLocation(this), location); // TODO CAUSES NaN: space.getLocation(this) Nur am Eingang
 			return new Vector2d(temp[0], temp[1]);
 		}
 
