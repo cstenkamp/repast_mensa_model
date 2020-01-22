@@ -14,7 +14,7 @@ import repast.simphony.util.collections.FilteredIterator;
 import repast.simphony.context.Context;
 
 public class StudentChaotic extends Student {
-	
+
 	private Theke tempDestination;
 	private Kasse tempBar = null;
 	private Object[] closestkasse;
@@ -24,9 +24,9 @@ public class StudentChaotic extends Student {
 		this.context = c;
 		this.vision = 30; // Sichtweite
 		this.tempDestination = null; // stellt sicher dass der student bis zur Theke laeuft
-		
+
 	}
-	
+
 	public Vector2d move_chaotically() {
 		/*
 		 * Return Values:
@@ -44,10 +44,10 @@ public class StudentChaotic extends Student {
 		if (this.tempDestination != null) {
 			double[] temp = space.getDisplacement(space.getLocation(this), space.getLocation(this.tempDestination));
 			return new Vector2d(temp[0], temp[1]);
-		// falls er noch keine theke erkoren hat suche eine neue	
+		// falls er noch keine theke erkoren hat suche eine neue
 		} else {
 			List<Theke> nonvisited_theken = new ArrayList<Theke>();
-			for (Theke t : sharedstuff.theken) { 
+			for (Theke t : sharedstuff.theken) {
 				if (!visitedBars.contains(t)) {
 					nonvisited_theken.add(t);
 					//System.out.println("da war ich nicht "+ t);
@@ -56,7 +56,7 @@ public class StudentChaotic extends Student {
 			if (nonvisited_theken.isEmpty()) {
 				return null;
 				// gehe zur kasse, der Student will heute nichts zu essen
-			} 
+			}
 			// suche zufaellig eine Theke aus der Liste und speichere sie als tempDestination
 			int index = nonvisited_theken.size();
 			Theke randomBar = nonvisited_theken.get(RandomHelper.nextIntFromTo(0, index-1));
@@ -65,10 +65,10 @@ public class StudentChaotic extends Student {
 			double[] temp = space.getDisplacement(space.getLocation(this), location);
 			return new Vector2d(temp[0], temp[1]);
 		}
-		
+
 	}
-	
-	
+
+
 	@ScheduledMethod(start = 0, interval = 1)
 	public void step() {
 		Vector2d avoidance = avoid_others();
@@ -80,7 +80,7 @@ public class StudentChaotic extends Student {
 			if (movement != null) {
 				// Du bist auf dem Weg.
 				velocity.setX(movement.x);
-				velocity.setY(movement.y);	
+				velocity.setY(movement.y);
 			} else if (movement == null) {
 //				System.out.println(this.directlyToKassa);
 				if (!this.directlyToKassa.equals(check) && this.directlyToKassa != null) {
@@ -90,7 +90,7 @@ public class StudentChaotic extends Student {
 					}
 					// nimm die bereits gewaehlte Kasse
 					velocity.setX(this.directlyToKassa.x);
-					velocity.setY(this.directlyToKassa.y);	
+					velocity.setY(this.directlyToKassa.y);
 				} else {
 					// waehle Kasse
 					//System.out.println("choose Kassa");
@@ -100,12 +100,12 @@ public class StudentChaotic extends Student {
 					this.directlyToKassa = (Vector2d) this.closestkasse[1];
 					if (this.directlyToKassa != null) {
 						velocity.setX(this.directlyToKassa.x);
-						velocity.setY(this.directlyToKassa.y);	
+						velocity.setY(this.directlyToKassa.y);
 					}
 				}
-			} 
+			}
 		}
-	} 
-	
+	}
+
 
 }

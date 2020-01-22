@@ -12,6 +12,7 @@ public class MensaEingang {
 	ContinuousSpace<Object> space;
 	int addedStudents;
 	SharedStuff sharedstuff;
+	int passedsteps =  0;
 	
 	public MensaEingang(int numStudents, Context<Object> context, ContinuousSpace<Object> space, SharedStuff sharedstuff) {
 		this.numStudents = numStudents;
@@ -23,6 +24,7 @@ public class MensaEingang {
 
 	@ScheduledMethod(start = 0, interval = 1000)
 	public void step() {
+		passedsteps++;
 
 		if (addedStudents < numStudents) {
 			double x, y;
@@ -39,6 +41,11 @@ public class MensaEingang {
 			
 			System.out.println("Student #"+addedStudents+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented": "Chaotic"));
 			addedStudents++;
+		}
+		
+		if (passedsteps > 50) {
+			passedsteps = 0;
+			sharedstuff.grid.print();
 		}
 		
 	}

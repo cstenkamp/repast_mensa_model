@@ -21,15 +21,15 @@ public class Student {
 	double vision;					// Sichtradius
 	protected Vector2d velocity;	// Geschwindigkeits- und Ausrichtungsvektor
 	float walking_speed = 0.002f;
-	int aversionradius = 1;
+	int aversionradius = 2;
 	Context<Object> context;
-	List<Theke> visitedBars; 		// Liste der Besuchten Theken 
+	List<Theke> visitedBars; 		// Liste der Besuchten Theken
 	int waitticks;
 	SharedStuff sharedstuff; //among others: list of all kassen & theken for faster access
 	public int num; //number of the student
 	public Vector2d directlyToKassa = new Vector2d(-1.0,-1.0); // Speichert die ausgewaehlte Kasse
 	public Vector2d check = new Vector2d(-1.0,-1.0);
-	
+
 	// choose randomly
 	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
 		this.space = s;
@@ -41,15 +41,8 @@ public class Student {
 		this.sharedstuff = sharedstuff;
 		this.num = num;
 	}
-	/*
-	 * ESSEN_VEGGIE = 0;
-	 * ESSEN_VEGAN = 1;
-	 * ESSEN_MEAT = 2;
-	 * ESSEN_SALAD = 3;
-	 * ESSEN_POMMES = 4;
-	 */
-	
-	// waehle dein Essen 
+
+	// waehle dein Essen
 	public boolean chooseMeal() {
 		// warte vor der Theke
 		this.waitticks = 10000;
@@ -67,9 +60,9 @@ public class Student {
 		
 		return false;
 	}
-	
-	
-	
+
+
+
 	// der student geht zur Kasse
 	public Object[] to_kasse() {
 		Object[] closestkasse = get_closest(sharedstuff.kassen);
@@ -93,7 +86,7 @@ public class Student {
 		}
 		return new Object[]{res, distXY};
 	}
-	
+
 	// Hier wird geprueft ob wir vor einer Theke stehen.
 	public boolean at_bar() {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
@@ -101,14 +94,14 @@ public class Student {
 		ContinuousWithin barInRange = new ContinuousWithin(space, this, 4);
 		for (Object b : barInRange.query()) {
 			if (b instanceof Theke && !visitedBars.contains(b)) {
-				visitedBars.add((Theke) b); 
+				visitedBars.add((Theke) b);
 				//System.out.println("new bar");
 				return true;
 			}
-		}	
+		}
 		return false;
 	}
-	
+
 	// gehe anderen Studenten aus dem Weg
 	public Vector2d avoid_others() {
 		NdPoint lastPos = space.getLocation(this);
@@ -128,7 +121,7 @@ public class Student {
 					distXY = new Vector2d(space.getDisplacement(lastPos, p)[0], space.getDisplacement(lastPos, p)[1]);
 				}
 			}
-		} 
+		}
 		if (minStudDist < 99999) {
 			if (distXY.length() == 0) {
 				distXY.x = RandomHelper.nextDouble();
@@ -141,7 +134,7 @@ public class Student {
 		return null;
 	}
 
-//	// Standard Student weicht nur aus. 
+//	// Standard Student weicht nur aus.
 //	@ScheduledMethod(start = 0, interval = 1)
 //	public void step() {
 //		Vector2d avoidance = avoid_others();
@@ -160,23 +153,37 @@ public class Student {
 			waitticks --;
 			return;
 		}
-		
+
 		velocity.normalize();
 		velocity.scale(walking_speed);
 
-		if (Double.isNaN(velocity.x)) 
+		if (Double.isNaN(velocity.x))
 			velocity = new Vector2d(0, velocity.y);
-		if (Double.isNaN(velocity.y)) 
+		if (Double.isNaN(velocity.y))
 			velocity = new Vector2d(velocity.x, 0);
-		
+
 		NdPoint pos = space.getLocation(this);
+		sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 0);
+
+
 		Vector2d potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
-		//System.out.println("Stuent #"+num+" did something"+pos.getX()+" "+pos.getY()+" velocity "+velocity.x+" "+velocity.y);
+		//System.out.println("Student #"+num+" did something"+pos.getX()+" "+pos.getY()+" velocity "+velocity.x+" "+velocity.y);
 
 		if (potentialcoords.x <= 0 || potentialcoords.x >= consts.SIZE_X || potentialcoords.y <= 0 || potentialcoords.y >= consts.SIZE_Y){
-			return;	
+			throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
 		}
 
+		int potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y) ;
+		if (potential_grid_pos > 2) {//studenten sind +2, also ist dann shcon wer da
+			//throw new java.lang.RuntimeException("Student läuft auf anderen Studenten!");
+		}
+
+		if ((potential_grid_pos == 1) || (potential_grid_pos == 2) || (potential_grid_pos == 4)) { //theken, kassen, accesspoints
+			sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 3);
+			return;
+		}
+
+		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, 3);
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
 

@@ -34,8 +34,8 @@ public class modelbuilder implements ContextBuilder<Object>{
 		context.add(aktionstheke);
 		space.moveTo(aktionstheke, aktionstheke.x, aktionstheke.y);
 
-		for (double i : new double[]{-consts.SIZE_X/6.0, consts.SIZE_X/6.0}) {
-				Theke fleisch = new Theke((int)(consts.SIZE_X/2.0+i), 5, consts.FLEISCHTHEKE, space, consts.ESSEN_MEAT);
+		for (double i : new double[]{-consts.SIZE_X/6.0, consts.SIZE_X/5.0}) {
+				Theke fleisch = new Theke((int)(consts.SIZE_X/2.0+i), 5, consts.FLEISCHTHEKE, space, consts.ESSEN_MEAT); //bei 34,5 & 66,5 | size 50,20
 				context.add(fleisch);
 				space.moveTo(fleisch, fleisch.x, fleisch.y);
 		}
@@ -45,20 +45,20 @@ public class modelbuilder implements ContextBuilder<Object>{
 			space.moveTo(salatbar, salatbar.x, salatbar.y);
 		}
 
-		Theke veggie = new Theke(5, consts.SIZE_Y*1/4, consts.VEGGIETHEKE, space, consts.ESSEN_VEGGIE);
+		Theke veggie = new Theke(12, consts.SIZE_Y*1/4, consts.VEGGIETHEKE, space, consts.ESSEN_VEGGIE);
 		context.add(veggie);
 		space.moveTo(veggie, veggie.x, veggie.y);
 		
-		Theke vegan = new Theke(5, consts.SIZE_Y*2/4, consts.VEGANTHEKE, space, consts.ESSEN_VEGAN);
+		Theke vegan = new Theke(12, consts.SIZE_Y*2/4, consts.VEGANTHEKE, space, consts.ESSEN_VEGAN);
 		context.add(vegan);
 		space.moveTo(vegan, vegan.x, vegan.y);
 		
-		// Eintopf ist zuf�llig vegan, veggie oder meat
-		Theke eintopf = new Theke(consts.SIZE_X-5, consts.SIZE_Y*2/4, consts.EINTOPF, space, RandomHelper.nextIntFromTo(0, 2));
+		// Eintopf ist zufällig vegan, veggie oder meat
+		Theke eintopf = new Theke(consts.SIZE_X-12, consts.SIZE_Y*2/4, consts.EINTOPF, space, RandomHelper.nextIntFromTo(0, 2));
 		context.add(eintopf);
 		space.moveTo(eintopf, eintopf.x, eintopf.y);
 		
-		Theke pommes = new Theke(consts.SIZE_X-5, consts.SIZE_Y*1/4, consts.POMMES, space, consts.ESSEN_POMMES);
+		Theke pommes = new Theke(consts.SIZE_X-12, consts.SIZE_Y*1/4, consts.POMMES, space, consts.ESSEN_POMMES);
 		context.add(pommes);
 		space.moveTo(pommes, pommes.x, pommes.y);
 
@@ -95,6 +95,12 @@ public class modelbuilder implements ContextBuilder<Object>{
 		return context;
 	} // END of Context.
 
+	
+	public void addThekeAusgabe(int x, int y, int kind, ContinuousSpace s, int e, Context context) {
+		Theke theke = new Theke(x, y, kind, s, e);
+		context.add(theke);
+		s.moveTo(theke, theke.x, theke.y);
+	}
 
 
 
