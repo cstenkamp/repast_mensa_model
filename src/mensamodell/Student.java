@@ -34,9 +34,9 @@ public class Student {
 	private Object[] closestkasse;
 	
 	// choose randomly
-	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
+	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
 		this.space = s;
-		this.food_preference = RandomHelper.nextIntFromTo(0, 3);
+		this.food_preference = fp;
 		this.velocity = new Vector2d(0,0);
 		this.visitedAusgaben = new ArrayList<>();
 		this.context = c;
@@ -44,6 +44,10 @@ public class Student {
 		this.sharedstuff = sharedstuff;
 		this.num = num;
 		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
+	}
+	
+	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
+		
 	}
 
 	// waehle dein Essen
@@ -56,15 +60,13 @@ public class Student {
 		// VEGGIE
 		if (this.food_preference == 0 && consts.vegetarian.contains(essen)) return true;
 		// VEGAN
-		else if (this.food_preference == 0 && consts.vegan.contains(essen)) return true;
+		else if (this.food_preference == 1 && consts.vegan.contains(essen)) return true;
 		// MEAT
-		else if (this.food_preference == 0 && consts.meatlover.contains(essen)) return true;
+		else if (this.food_preference == 2 && consts.meatlover.contains(essen)) return true;
 		// No Preference
-		else if (this.food_preference == 0 && consts.noPref.contains(essen)) return true;
-		
-		return false;
+		else if (this.food_preference == 3 && consts.noPref.contains(essen)) return true;
+		else return false;
 	}
-
 
 
 	// der student geht zur Kasse
