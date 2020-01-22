@@ -15,19 +15,15 @@ import repast.simphony.context.Context;
 
 public class StudentChaotic extends Student {
 
-	private Theke tempDestination;
-	private Kasse tempBar = null;
-	private Object[] closestkasse;
 
 	public StudentChaotic(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff) {
 		super(s, c, num, sharedstuff);
 		this.context = c;
 		this.vision = 30; // Sichtweite
-		this.tempDestination = null; // stellt sicher dass der student bis zur Theke laeuft
 
 	}
 
-	public Vector2d move_chaotically() {
+	public Vector2d move() {
 		/*
 		 * Return Values:
 		 * distXY == null --> gehe zur Kasse
@@ -69,43 +65,6 @@ public class StudentChaotic extends Student {
 	}
 
 
-	@ScheduledMethod(start = 0, interval = 1)
-	public void step() {
-		Vector2d avoidance = avoid_others();
-		if (avoidance != null) {
-			velocity.setX(-avoidance.x);
-			velocity.setY(-avoidance.y);
-		} else {
-			Vector2d movement = move_chaotically();
-			if (movement != null) {
-				// Du bist auf dem Weg.
-				velocity.setX(movement.x);
-				velocity.setY(movement.y);
-			} else if (movement == null) {
-//				System.out.println(this.directlyToKassa);
-				if (!this.directlyToKassa.equals(check) && this.directlyToKassa != null) {
-					if (tempBar != null && tempBar.pay(this)) {
-						System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
-						context.remove(this);
-					}
-					// nimm die bereits gewaehlte Kasse
-					velocity.setX(this.directlyToKassa.x);
-					velocity.setY(this.directlyToKassa.y);
-				} else {
-					// waehle Kasse
-					//System.out.println("choose Kassa");
-					// gibt Location und Objekt zurueck
-					this.closestkasse = to_kasse();
-					this.tempBar = (Kasse) this.closestkasse[0];
-					this.directlyToKassa = (Vector2d) this.closestkasse[1];
-					if (this.directlyToKassa != null) {
-						velocity.setX(this.directlyToKassa.x);
-						velocity.setY(this.directlyToKassa.y);
-					}
-				}
-			}
-		}
-	}
 
 
 }

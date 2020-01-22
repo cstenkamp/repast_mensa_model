@@ -45,11 +45,13 @@ public class MensaGrid {
 						if (0 <= i && i < rows && 0 <= j && j < cols)
 							grid[i][j] = consts.GRID_THEKE;
 				}
-			if (t.ap1 != null)
-				grid[(int)t.ap1.x][(int)t.ap1.y] = 4;
-			if (t.ap2 != null)
-				grid[(int)t.ap2.x][(int)t.ap2.y] = 4;
+		}
+
+		if (obj instanceof Ausgabe) {
+			Ausgabe a = (Ausgabe) obj;
+			grid[a.x][a.y] = consts.GRID_AUSGABE;
 		}
 	}
+	
 
 }
