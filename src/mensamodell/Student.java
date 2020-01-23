@@ -27,8 +27,8 @@ public class Student {
 	protected Kasse tempBar = null;
 	protected Ausgabe tempDestination;
 	protected Object[] closestkasse;
-	private int notStudents = 0; // DATA
-	int payStud = 0; //DATA
+	static private int notStudents = 0; // DATA
+	static int payStud = 0; //DATA
 
 	
 	// choose randomly
@@ -178,9 +178,9 @@ public class Student {
 				velocity.setY(movement.y);
 			} else if (movement == null) {
 				if (tempBar != null && tempBar.pay(this)) {
-					System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
-					payStud++;
+//					System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
 					context.remove(this);
+					payStud++;
 				} else {
 					// waehle Kasse
 //					System.out.println("choose Kassa");
@@ -260,7 +260,7 @@ public class Student {
 		Iterable allObj = space.getObjects();
 		int stud = 0;
 		for (Object o : allObj) {
-			if (!(o instanceof StudentChaotic)) stud++;
+			if ((o instanceof StudentChaotic)) stud++;
 		}
 		return stud;
 	}
@@ -269,12 +269,13 @@ public class Student {
 		Iterable allObj = space.getObjects();
 		int stud = 0;
 		for (Object o : allObj) {
-			if (!(o instanceof StudentGoalOriented)) stud++;
+			if ((o instanceof StudentGoalOriented)) stud++;
 		}
 		return stud;
 	}
-	
+	// TODO payStud speichert die Zahl solange bis das Projekt wieder geschlossen wird
 	public int getPayStud() {
+//		System.out.println(payStud);
 		return payStud;
 	}
 

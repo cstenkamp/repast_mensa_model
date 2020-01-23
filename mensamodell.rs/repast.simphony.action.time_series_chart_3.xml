@@ -1,0 +1,37 @@
+<repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.7.0">
+  <name>Time Series Chart</name>
+  <dataSet>Current Number of Students</dataSet>
+  <xAxisLabel>Tick Count</xAxisLabel>
+  <yAxisLabel>Students</yAxisLabel>
+  <chartTitle>TimeSeries_StudentCountData</chartTitle>
+  <type>TIME_SERIES</type>
+  <background>
+    <red>192</red>
+    <green>192</green>
+    <blue>192</blue>
+    <alpha>255</alpha>
+  </background>
+  <gridLineColor>
+    <red>255</red>
+    <green>255</green>
+    <blue>255</blue>
+    <alpha>255</alpha>
+  </gridLineColor>
+  <showGrid>true</showGrid>
+  <showLegend>true</showLegend>
+  <seriesIds>
+    <entry>
+      <string>PayStud</string>
+      <SeriesData>
+        <label></label>
+      </SeriesData>
+    </entry>
+  </seriesIds>
+  <dataValueIds>
+    <string>CurNumStud</string>
+    <string>CurNumStudChaos</string>
+    <string>CurNumStudGoal</string>
+    <string>PayStud</string>
+  </dataValueIds>
+  <plotRangeLength>-1</plotRangeLength>
+</repast.simphony.chart2.engine.TimeSeriesChartDescriptor>

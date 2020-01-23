@@ -82,7 +82,7 @@ public class MensaEingang {
 		if (random == 2 && stillMeat) {fp = 2; numMeat--;}
 		if (random == 3 && stillNoPref) {fp = 3; numNoPref--;}
 		
-		if (fp != -1 && addedStudents < numStudents) {
+		if (fp != -1 && addedStudents <= numStudents) {
 				
 			double x, y;
 			Student stud;
