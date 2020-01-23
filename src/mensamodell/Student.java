@@ -27,6 +27,8 @@ public class Student {
 	protected Kasse tempBar = null;
 	protected Ausgabe tempDestination;
 	protected Object[] closestkasse;
+	private int notStudents = 0; // DATA
+	int payStud = 0; //DATA
 
 	
 	// choose randomly
@@ -177,6 +179,7 @@ public class Student {
 			} else if (movement == null) {
 				if (tempBar != null && tempBar.pay(this)) {
 					System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
+					payStud++;
 					context.remove(this);
 				} else {
 					// waehle Kasse
@@ -242,10 +245,37 @@ public class Student {
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
 	
+//// COLLECT DATA:
+	public int getCurNumStud() {
+		Iterable allObj = space.getObjects();
+		if (notStudents == 0) {
+			for (Object o : allObj) {
+				if (!(o instanceof Student)) notStudents++;
+			}
+		}
+		return space.size()-notStudents;
+	}
+	
+	public int getCurNumStudChaos() {
+		Iterable allObj = space.getObjects();
+		int stud = 0;
+		for (Object o : allObj) {
+			if (!(o instanceof StudentChaotic)) stud++;
+		}
+		return stud;
+	}
 
+	public int getCurNumStudGoal() {
+		Iterable allObj = space.getObjects();
+		int stud = 0;
+		for (Object o : allObj) {
+			if (!(o instanceof StudentGoalOriented)) stud++;
+		}
+		return stud;
+	}
 	
-	
-	
-
+	public int getPayStud() {
+		return payStud;
+	}
 
 } // END of Class.
