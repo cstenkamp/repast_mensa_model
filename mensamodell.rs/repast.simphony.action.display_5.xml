@@ -11,6 +11,10 @@
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
     <entry>
+      <string>mensamodell.StudentPathfinder</string>
+      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+    </entry>
+    <entry>
       <string>mensamodell.StudentGoalOriented</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
@@ -37,6 +41,10 @@
       <string>mensamodell.Ausgabe.style_2.xml</string>
     </entry>
     <entry>
+      <string>mensamodell.StudentPathfinder</string>
+      <string>mensamodell.StudentPathfinder.style_1.xml</string>
+    </entry>
+    <entry>
       <string>mensamodell.StudentGoalOriented</string>
       <string>mensamodell.StudentGoalOriented.style_0.xml</string>
     </entry>
@@ -59,11 +67,11 @@
   <schedParams>
     <start>1.0</start>
     <interval>1.0</interval>
-    <priority>-Infinity</priority>
-    <pType>LAST</pType>
+    <priority>Infinity</priority>
+    <pType>FIRST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>133750494</hashCode>
+    <hashCode>1387572632</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>
@@ -76,6 +84,10 @@
     <entry>
       <string>mensamodell.Ausgabe</string>
       <int>3</int>
+    </entry>
+    <entry>
+      <string>mensamodell.StudentPathfinder</string>
+      <int>6</int>
     </entry>
     <entry>
       <string>mensamodell.StudentGoalOriented</string>

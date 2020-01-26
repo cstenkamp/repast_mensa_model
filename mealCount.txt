@@ -1,0 +1,2 @@
+"tick","CountEssenVeggie","CountEssenVegan","CountEssenMeat","CountEssenSALAD","CountEssenPOMMES"
+518401.0,3,0,4,3,0
