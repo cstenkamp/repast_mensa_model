@@ -1,10 +1,12 @@
 package mensamodell;
 
 import repast.simphony.context.Context;
+import java.util.Arrays;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.*;
 import java.util.List;
+import java.util.Collections;
 
 public class MensaEingang {
 	int numStudents;
@@ -19,10 +21,7 @@ public class MensaEingang {
 	int numVegan;
 	int numMeat;
 	int numNoPref;
-	boolean stillVeggie = false;
-	boolean stillVegan = false;
-	boolean stillMeat = false;
-	boolean stillNoPref = false;
+	Integer[] foodPrefArray;
 	
 	public MensaEingang(int numStud, Object[] prop, Context<Object> context, ContinuousSpace<Object> space, SharedStuff sharedstuff) {
 		this.numStudents = numStud;
@@ -33,56 +32,48 @@ public class MensaEingang {
 		this.proportions = prop;
 		
 		// berechne die Anzahl der einzelnen Food Preferences
-		numVeggie = (int) (this.numStudents * (double) proportions[0]);
-		numVegan = (int) (this.numStudents * (double) proportions[1]);
-		numMeat = (int) (this.numStudents * (double) proportions[2]);
-		numNoPref = (int) (this.numStudents * (double) proportions[3]);
-		
+		numVeggie = (int) Math.floor(this.numStudents * (double) proportions[0]);
+		numVegan = (int) Math.floor(this.numStudents * (double) proportions[1]);
+		numMeat = (int) Math.floor(this.numStudents * (double) proportions[2]);
+		numNoPref = (int) Math.floor(this.numStudents * (double) proportions[3]);
+				
 		// falls die anzahl der initialNumStud noch nicht passt fuelle die werte zufaellig nach
-		if (numStudents > (numVeggie+numVegan+numMeat+numNoPref)) {
-			do {
+		while (numStudents != (numVeggie+numVegan+numMeat+numNoPref)) {
 				int random = RandomHelper.nextIntFromTo(0, 3);
 				if (random == 0) numVeggie++;
 				if (random == 1) numVegan++;
 				if (random == 2) numMeat++;
 				if (random == 3) numNoPref++;
-			} while (numStudents != (numVeggie+numVegan+numMeat+numNoPref));
+		};
+
+		foodPrefArray = new Integer[this.numStudents];
+		for (int i = 0; i < numStudents; i++) {
+			if (i < numVeggie)
+				foodPrefArray[i] = 0;
+			else if (i < numVeggie+numVegan)
+				foodPrefArray[i] = 1;
+			else if (i < numVeggie+numVegan+numMeat)
+				foodPrefArray[i] = 2;
+			else if (i < numVeggie+numVegan+numMeat+numNoPref)
+				foodPrefArray[i] = 3;
 		}
-		if (numStudents < (numVeggie+numVegan+numMeat+numNoPref)) {
-			do {
-				int random = RandomHelper.nextIntFromTo(0, 3);
-				if (random == 0) numVeggie--;
-				if (random == 1) numVegan--;
-				if (random == 2) numMeat--;
-				if (random == 3) numNoPref--;
-			} while (numStudents != (numVeggie+numVegan+numMeat+numNoPref));
-		}
-		// flag
-		if (numVeggie > 0) stillVeggie = true; 
-		if (numVegan > 0) stillVegan = true; 
-		if (numMeat > 0) stillMeat = true; 
-		if (numNoPref > 0) stillNoPref = true; 
+		System.out.println(Arrays.toString(foodPrefArray));
+		List<Integer> intList = Arrays.asList(foodPrefArray);
+		Collections.shuffle(intList);
+		intList.toArray(foodPrefArray);
+		System.out.println(Arrays.toString(foodPrefArray));
 	}
 
 	@ScheduledMethod(start = 0, interval = 1000)
 	public void step() {
 		passedsteps++;
 		// check
-		fp = -1;
-		// falls einzele food prevs ausgelassen werden sollen setze flag auf false
-		if (numVeggie <= 0) stillVeggie = false; 
-		if (numVegan <= 0) stillVegan = false; 
-		if (numMeat <= 0) stillMeat = false; 
-		if (numNoPref <= 0) stillNoPref = false; 
-		
+
 		// fuege zufaellig eine food prev ein
-		int random = RandomHelper.nextIntFromTo(0,3);
-		if (random == 0 && stillVeggie) {fp = 0; numVeggie--;}
-		if (random == 1 && stillVegan) {fp = 1; numVegan--;}
-		if (random == 2 && stillMeat) {fp = 2; numMeat--;}
-		if (random == 3 && stillNoPref) {fp = 3; numNoPref--;}
-		
-		if (fp != -1 && addedStudents <= numStudents) {
+		// FIX: mit der alten version hat er wenn random == 0 aber !stillVeggie halt keinen studenten hinzugefügt!
+		// FIX am anfang liste generieren mit jeder preference hintereinander, shufflen, nächstes elemtn hziehen
+		if (fp != -1 && addedStudents < numStudents) {
+			fp = foodPrefArray[addedStudents];
 				
 			double x, y;
 			Student stud;

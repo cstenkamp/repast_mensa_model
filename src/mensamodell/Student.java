@@ -205,7 +205,7 @@ public class Student {
 	/*
 	 * Eigentliche Bewegung zwischen den Zeitschritten.
 	 */
-	@ScheduledMethod(start=1, interval=1)
+	@ScheduledMethod(start=0.5, interval=1)
 	public void do_move(){
 		if (waitticks > 0) {
 			waitticks --;
@@ -215,10 +215,10 @@ public class Student {
 		velocity.normalize();
 		velocity.scale(walking_speed);
 
-//		if (Double.isNaN(velocity.x))
-//			velocity = new Vector2d(0, velocity.y);
-//		if (Double.isNaN(velocity.y))
-//			velocity = new Vector2d(velocity.x, 0);
+		if (Double.isNaN(velocity.x))
+			velocity = new Vector2d(0, velocity.y);
+		if (Double.isNaN(velocity.y))
+			velocity = new Vector2d(velocity.x, 0);
 
 		NdPoint pos = space.getLocation(this);
 		sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 0);
@@ -236,10 +236,10 @@ public class Student {
 			//throw new java.lang.RuntimeException("Student laeuft auf anderen Studenten!");
 		}
 
-//		if ((potential_grid_pos == 1) || (potential_grid_pos == 2) || (potential_grid_pos == 4)) { //theken, kassen, accesspoints
-//			sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 3);
-//			return;
-//		}
+		//if ((potential_grid_pos == 1) || (potential_grid_pos == 2) || (potential_grid_pos == 4)) { //theken, kassen, accesspoints
+		//	sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 3);
+		//	return;
+		//}
 
 		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, 3);
 		space.moveByDisplacement(this, velocity.x, velocity.y);
