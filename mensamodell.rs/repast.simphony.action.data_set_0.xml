@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.7.0">
-  <name>mealCOUNT</name>
+  <name>Current Number of Students</name>
   <type>NON_AGGREGATE</type>
   <sourceType>mensamodell.Student</sourceType>
   <inclTick>true</inclTick>
@@ -17,43 +17,35 @@
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>CountEssenVeggie</string>
+      <string>CurNumStud</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>CountEssenVeggie</id>
+        <id>CurNumStud</id>
         <className>mensamodell.Student</className>
-        <methodName>getCountEssenVeggie</methodName>
+        <methodName>getCurNumStud</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>CountEssenVegan</string>
+      <string>CurNumStudChaos</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>CountEssenVegan</id>
+        <id>CurNumStudChaos</id>
         <className>mensamodell.Student</className>
-        <methodName>getCountEssenVegan</methodName>
+        <methodName>getCurNumStudChaos</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>CountEssenMeat</string>
+      <string>CurNumStudGoal</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>CountEssenMeat</id>
+        <id>CurNumStudGoal</id>
         <className>mensamodell.Student</className>
-        <methodName>getCountEssenMeat</methodName>
+        <methodName>getCurNumStudGoal</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>CountEssenSALAD</string>
+      <string>PayStud</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>CountEssenSALAD</id>
+        <id>PayStud</id>
         <className>mensamodell.Student</className>
-        <methodName>getCountEssenSALAD</methodName>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>CountEssenPOMMES</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>CountEssenPOMMES</id>
-        <className>mensamodell.Student</className>
-        <methodName>getCountEssenPOMMES</methodName>
+        <methodName>getPayStud</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

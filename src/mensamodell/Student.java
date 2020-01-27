@@ -29,10 +29,14 @@ public class Student {
 	protected Object[] closestkasse;
 	private Vector2d keepWalkingdirection =  new Vector2d(0, 0); //wenn er gegen wände läuft läuft er in eine zufällige richtung. damit die nicht jigglet muss er sie speichern.
 	static private int notStudents = 0; // DATA
-	static int payStud = 0; //DATA
-	
+	static int payStud = 0; // DATA
+	static int countEssenVeggie = 0; // DATA
+	static int countEssenVegan = 0; // DATA
+	static int countEssenMeat = 0; // DATA
+	static int countEssenSALAD = 0; // DATA
+	static int countEssenPOMMES = 0; // DATA
 
-	
+
 	// choose randomly
 	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
 		this.space = s;
@@ -45,7 +49,7 @@ public class Student {
 		this.num = num;
 		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
 	}
-	
+
 	// waehle dein Essen
 	public boolean chooseMeal() {
 		// warte vor der Ausgabe
@@ -56,27 +60,34 @@ public class Student {
 		double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
 		// VEGGIE
 		if (this.food_preference == 0 && consts.vegetarian.contains(essen)) {
-			if (essen == 0 && randomNum <= 0.9) return true;
-			if (essen == 1 && randomNum <= 0.5) return true;
-			if (essen == 3 && randomNum <= 0.2) return true;
-			if (essen == 4 && randomNum <= 0.1) return true;
+			if (essen == 0 && randomNum <= 0.9) {countEssenVeggie++; return true;}
+			if (essen == 1 && randomNum <= 0.5) {countEssenVegan++; return true;}
+			if (essen == 3 && randomNum <= 0.2) {countEssenSALAD++; return true;}
+			if (essen == 4 && randomNum <= 0.1) {countEssenPOMMES++; return true;}
 		}
 		// VEGAN
 		else if (this.food_preference == 1 && consts.vegan.contains(essen)) {
-			if (essen == 1 && randomNum <= 0.9) return true;
-			if (essen == 3 && randomNum <= 0.2) return true;
-			if (essen == 4 && randomNum <= 0.1) return true;
+			if (essen == 1 && randomNum <= 0.9) {countEssenVegan++; return true;}
+			if (essen == 3 && randomNum <= 0.2) {countEssenSALAD++; return true;}
+			if (essen == 4 && randomNum <= 0.1) {countEssenPOMMES++; return true;}
 		}
 		// MEAT
 		else if (this.food_preference == 2 && consts.meatlover.contains(essen)) {
-			if (essen == 0 && randomNum <= 0.2) return true;
-			if (essen == 1 && randomNum <= 0.1) return true;
-			if (essen == 2 && randomNum <= 0.9) return true;
-			if (essen == 3 && randomNum <= 0.2) return true;
-			if (essen == 4 && randomNum <= 0.1) return true;
+			if (essen == 0 && randomNum <= 0.2) {countEssenVeggie++; return true;}
+			if (essen == 1 && randomNum <= 0.1) {countEssenVegan++; return true;}
+			if (essen == 2 && randomNum <= 0.9) {countEssenMeat++; return true;}
+			if (essen == 3 && randomNum <= 0.2) {countEssenSALAD++; return true;}
+			if (essen == 4 && randomNum <= 0.1) {countEssenPOMMES++; return true;}
 		}
 		// No Preference
-		else if (this.food_preference == 3 && consts.noPref.contains(essen)) return true;
+		else if (this.food_preference == 3 && consts.noPref.contains(essen)) {
+			if (essen == 0) {countEssenVeggie++;}
+			if (essen == 1) {countEssenVegan++;}
+			if (essen == 2) {countEssenMeat++;}
+			if (essen == 3) {countEssenSALAD++;}
+			if (essen == 4) {countEssenPOMMES++;}
+			return true;
+		}
 		return false;
 	}
 
@@ -180,7 +191,7 @@ public class Student {
 				velocity.setY(movement.y);
 			} else if (movement == null) {
 				if (tempBar != null && tempBar.pay(this)) {
-//					System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
+					System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
 					context.remove(this);
 					payStud++;
 				} else {
@@ -198,12 +209,12 @@ public class Student {
 			}
 		}
 	}
-	
+
 	//to be overridden
 		public Vector2d move() {
 			return new Vector2d(0,0);
 		}
-	
+
 	/*
 	 * Eigentliche Bewegung zwischen den Zeitschritten.
 	 */
@@ -237,7 +248,7 @@ public class Student {
 		if (potential_grid_pos == consts.GRID_STUDENT) {//studenten sind +2, also ist dann schon wer da
 			//throw new java.lang.RuntimeException("Student laeuft auf anderen Studenten!");
 		}
-		
+
 		boolean triedkeepwalking = false;
 		while ((potential_grid_pos > consts.GRID_STUDENT) || ((velocity.x == 0) && (velocity.y == 0))) { //theken, kassen, accesspoints
 			if (triedkeepwalking) {
@@ -255,7 +266,7 @@ public class Student {
 				} else {
 					velocity = keepWalkingdirection;
 					triedkeepwalking = true;
-				}				
+				}
 			} else {
 				int leftofthat  = sharedstuff.grid.get((int)potentialcoords.x-1, (int)potentialcoords.y);
 				int rightofthat = sharedstuff.grid.get((int)potentialcoords.x+1, (int)potentialcoords.y);
@@ -263,7 +274,7 @@ public class Student {
 				int bottomofthat = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y+1); //TODO fehler fangen
 				if ((leftofthat > consts.GRID_STUDENT) || (rightofthat > consts.GRID_STUDENT)) {
 					velocity.y = 0;
-				} 
+				}
 				if ((topofthat > consts.GRID_STUDENT) || (bottomofthat > consts.GRID_STUDENT)) {
 					velocity.x = 0;
 				}
@@ -275,13 +286,13 @@ public class Student {
 			potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
 			potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
 		}
-		
+
 		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, 3);
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
-	
+
 //// COLLECT DATA:
-	//TODO das sollte keine object-methode sein. Wenn in Student dann eher static, aber ggf auch ganz wonaders	
+	//TODO das sollte keine object-methode sein. Wenn in Student dann eher static, aber ggf auch ganz wonaders
 	public int getCurNumStud() {
 		Iterable allObj = space.getObjects();
 		if (notStudents == 0) {
@@ -291,7 +302,7 @@ public class Student {
 		}
 		return space.size()-notStudents;
 	}
-	
+
 	public int getCurNumStudChaos() {
 		Iterable allObj = space.getObjects();
 		int stud = 0;
@@ -314,5 +325,29 @@ public class Student {
 //		System.out.println(payStud);
 		return payStud;
 	}
+
+	public int getCountEssenVeggie() {
+		return countEssenVeggie;
+	}
+
+	public int getCountEssenVegan() {
+		return countEssenVegan;
+	}
+
+	public int getCountEssenMeat() {
+		return countEssenMeat;
+	}
+
+	public int getCountEssenSALAD() {
+		return countEssenSALAD;
+	}
+
+	public int getCountEssenPOMMES() {
+		return countEssenPOMMES;
+	}
+
+//	public int[] getMealCount() {
+//		return new int[] {countEssenVeggie, countEssenVegan,countEssenMeat, countEssenSALAD, countEssenPOMMES};
+//	}
 
 } // END of Class.

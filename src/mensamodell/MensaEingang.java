@@ -22,7 +22,7 @@ public class MensaEingang {
 	int numMeat;
 	int numNoPref;
 	Integer[] foodPrefArray;
-	
+
 	public MensaEingang(int numStud, Object[] prop, Context<Object> context, ContinuousSpace<Object> space, SharedStuff sharedstuff) {
 		this.numStudents = numStud;
 		this.space = space;
@@ -30,13 +30,13 @@ public class MensaEingang {
 		this.addedStudents = 0;
 		this.sharedstuff = sharedstuff;
 		this.proportions = prop;
-		
+
 		// berechne die Anzahl der einzelnen Food Preferences
 		numVeggie = (int) Math.floor(this.numStudents * (double) proportions[0]);
 		numVegan = (int) Math.floor(this.numStudents * (double) proportions[1]);
 		numMeat = (int) Math.floor(this.numStudents * (double) proportions[2]);
 		numNoPref = (int) Math.floor(this.numStudents * (double) proportions[3]);
-				
+
 		// falls die anzahl der initialNumStud noch nicht passt fuelle die werte zufaellig nach
 		while (numStudents != (numVeggie+numVegan+numMeat+numNoPref)) {
 				int random = RandomHelper.nextIntFromTo(0, 3);
@@ -74,28 +74,28 @@ public class MensaEingang {
 		// FIX am anfang liste generieren mit jeder preference hintereinander, shufflen, nächstes elemtn hziehen
 		if (fp != -1 && addedStudents < numStudents) {
 			fp = foodPrefArray[addedStudents];
-				
+
 			double x, y;
 			Student stud;
-			if (true) //(RandomHelper.nextIntFromTo(0, 1) == 0)
-				stud = new StudentGoalOriented(space, context, addedStudents, sharedstuff, fp);
-			else
-				stud = new StudentChaotic(space, context, addedStudents, sharedstuff, fp);
-			
+			int rand = RandomHelper.nextIntFromTo(0, 2);
+			if (rand == 0) stud = new StudentGoalOriented(space, context, addedStudents, sharedstuff, fp);
+			else if (rand == 1) stud = new StudentChaotic(space, context, addedStudents, sharedstuff, fp);
+			else stud = new StudentPathfinder(space, context, addedStudents, sharedstuff, fp);
+
 			x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);
 			y = consts.SIZE_Y-5;
 			context.add(stud);	// add the new students to the root context
 			space.moveTo(stud, x, y); // add students to space
-			
-			System.out.println("Student #"+addedStudents+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented": "Chaotic"));
+
 			addedStudents++;
+			System.out.println("Student #"+addedStudents+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented" : stud instanceof StudentChaotic ? "Chaotic" : "Pathfinder"));
 		}
-		
-		if (passedsteps > 50) {
-			passedsteps = 0;
-			sharedstuff.grid.print();
-		}
-		
+
+//		if (passedsteps > 50) {
+//			passedsteps = 0;
+//			sharedstuff.grid.print();
+//		}
+
 	}
 
 }
