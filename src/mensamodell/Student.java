@@ -231,21 +231,67 @@ public class Student {
 			throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
 		}
 
-		int potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y) ;
-		if (potential_grid_pos > 2) {//studenten sind +2, also ist dann schon wer da
+		int potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
+		if (potential_grid_pos == consts.GRID_STUDENT) {//studenten sind +2, also ist dann schon wer da
 			//throw new java.lang.RuntimeException("Student laeuft auf anderen Studenten!");
 		}
 
-		//if ((potential_grid_pos == 1) || (potential_grid_pos == 2) || (potential_grid_pos == 4)) { //theken, kassen, accesspoints
-		//	sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 3);
-		//	return;
-		//}
+		while ((potential_grid_pos > consts.GRID_STUDENT)) { //theken, kassen, accesspoints
+			//sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), consts.GRID_STUDENT);
+			//return;
 
+			if (velocity.x < 00.1*walking_speed && velocity.y < 00.1*walking_speed) {
+				//remove me
+//				System.out.println("\n\n\n");
+//				int tmp1 = sharedstuff.grid.get((int)pos.getX(), (int)pos.getY());
+//				int tmp2 = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
+//				sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 8);
+//				sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, 9);
+//				sharedstuff.grid.print();
+//				sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), tmp1);
+//				sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, tmp2);
+//				
+//				System.out.println("curr pos: x: " + pos.getX() + " | y: " + pos.getY());
+//				System.out.println("Attempted velocity - velocity x: " + velocity.x + " | y: " + velocity.y);
+//				System.out.println("poetential GRID pos (rounded): x: " + (int)potentialcoords.x + " | y: " + (int)potentialcoords.y);
+				// /remove me
+				do {
+					velocity.x = RandomHelper.nextIntFromTo(-1, 1);
+					velocity.y = RandomHelper.nextIntFromTo(-1, 1);
+					velocity.normalize();
+					velocity.scale(walking_speed);
+				} while ((Double.isNaN(velocity.x)) || (Double.isNaN(velocity.y)));
+			//remove me
+//				potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
+//				potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
+//				System.out.println("New trial - velocity - velocity x: " + velocity.x + " | y: " + velocity.y);
+//				System.out.println("New trial - poetential GRID pos (rounded): x: " + (int)potentialcoords.x + " | y: " + (int)potentialcoords.y);
+				System.out.println("nooo");
+				// /remove me
+				
+			} else {
+				int leftofthat  = sharedstuff.grid.get((int)potentialcoords.x-1, (int)potentialcoords.y);
+				int rightofthat = sharedstuff.grid.get((int)potentialcoords.x+1, (int)potentialcoords.y);
+				int topofthat    = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y-1);
+				int bottomofthat = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y+1); //TODO fehler fangen
+				if ((leftofthat > consts.GRID_STUDENT) || (rightofthat > consts.GRID_STUDENT)) {
+					velocity.y = 0;
+				} else if ((topofthat > consts.GRID_STUDENT) || (bottomofthat > consts.GRID_STUDENT)) {
+					velocity.x = 0;
+				}
+			}
+			velocity.normalize();
+			velocity.scale(walking_speed);
+			potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
+			potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
+		}
+		
 		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, 3);
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
 	
 //// COLLECT DATA:
+	//TODO das sollte keine object-methode sein. Wenn in Student dann eher static, aber ggf auch ganz wonaders	
 	public int getCurNumStud() {
 		Iterable allObj = space.getObjects();
 		if (notStudents == 0) {
