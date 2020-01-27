@@ -7,6 +7,7 @@ import javax.vecmath.Vector2d;
 
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.query.space.continuous.ContinuousWithin;
+import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.util.collections.FilteredIterator;
@@ -52,8 +53,39 @@ public class StudentGoalOriented extends Student {
 			between = between.subList(1, between.size()-1);
 
 			//between sind die grid-punkte die er crossen müsste um dahin zu kommen).
-			if (between.get(0) > consts.GRID_STUDENT)
-				return new Vector2d(0,0);
+			if (between.get(0) > consts.GRID_STUDENT) {
+				if ((keepZwischenziel.x != 0) || (keepZwischenziel.y != 0)) {
+					distance = keepZwischenziel;
+//					Vector2d tmp = new Vector2d((int)mypos.getX(), (int)mypos.getY());
+//					if (tmp.equals(keepZwischenziel_mypos)) {
+//						keepZwischenziel_stoodfor++;
+//					} 
+					keepZwischenziel_stoodfor++; //das hier weg, dafür das oben hin, und hier drunter stattdessen more like > 50
+					if (keepZwischenziel_stoodfor > 50000) {
+						keepZwischenziel = new Vector2d(0, 0);
+						keepZwischenziel_mypos = new Vector2d(0, 0);
+						keepZwischenziel_stoodfor = 0;
+					}
+					
+				} else {
+					if (Math.abs((int)mypos.getX()-(int)thatpos.getX()) > Math.abs((int)mypos.getY()-(int)thatpos.getY())) {
+						//wenn also die x-differenz relevanter ist als die y-differenz -> mache schlenker in y-diff.
+						distance.y = distance.getX()*10*(RandomHelper.nextIntFromTo(0, 1)-0.5);
+						//distance.x = 0;
+					} else {
+					//wenn also die y-differenz relevanter ist als die x-differenz -> mache schlenker in x-diff
+						distance.x = distance.getY()*10*(RandomHelper.nextIntFromTo(0, 1)-0.5);
+						//distance.y = 0;
+					}
+					distance.normalize();
+					keepZwischenziel = distance;
+					keepZwischenziel_mypos = new Vector2d((int)mypos.getX(), (int)mypos.getY());
+				}
+			} else {
+				keepZwischenziel = new Vector2d(0, 0);
+				keepZwischenziel_mypos = new Vector2d(0, 0);
+				keepZwischenziel_stoodfor = 0;
+			}
 
 			return distance;
 			//TODO wenn da halt was zwischen ist gehe außen rum

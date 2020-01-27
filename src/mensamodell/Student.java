@@ -27,7 +27,12 @@ public class Student {
 	protected Kasse tempBar = null;
 	protected Ausgabe tempDestination;
 	protected Object[] closestkasse;
+	
 	private Vector2d keepWalkingdirection =  new Vector2d(0, 0); //wenn er gegen wände läuft läuft er in eine zufällige richtung. damit die nicht jigglet muss er sie speichern.
+	protected Vector2d keepZwischenziel = new Vector2d(0, 0);
+	protected Vector2d keepZwischenziel_mypos = new Vector2d(0, 0);
+	protected int keepZwischenziel_stoodfor = 0;
+	
 	static private int notStudents = 0; // DATA
 	static int payStud = 0; // DATA
 	static int countEssenVeggie = 0; // DATA
@@ -225,14 +230,7 @@ public class Student {
 			return;
 		}
 
-		velocity.normalize();
-		velocity.scale(walking_speed);
-
-		if (Double.isNaN(velocity.x))
-			velocity = new Vector2d(0, velocity.y);
-		if (Double.isNaN(velocity.y))
-			velocity = new Vector2d(velocity.x, 0);
-
+		velocity = scaleAndNormalize(velocity);		
 		NdPoint pos = space.getLocation(this);
 		sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 0);
 
@@ -259,12 +257,12 @@ public class Student {
 					do {
 						velocity.x = RandomHelper.nextIntFromTo(-1, 1);
 						velocity.y = RandomHelper.nextIntFromTo(-1, 1);
-						velocity.normalize();
-						velocity.scale(walking_speed);
+						velocity = scaleAndNormalize(velocity);
 					} while ((Double.isNaN(velocity.x)) || (Double.isNaN(velocity.y)) || ((velocity.x == 0) && (velocity.y == 0)) );
 					keepWalkingdirection = velocity;
 				} else {
 					velocity = keepWalkingdirection;
+					velocity = scaleAndNormalize(velocity);
 					triedkeepwalking = true;
 				}
 			} else {
@@ -279,10 +277,7 @@ public class Student {
 					velocity.x = 0;
 				}
 			}
-			velocity.normalize();
-			if ((Double.isNaN(velocity.x)) || (Double.isNaN(velocity.y)))
-				velocity = new Vector2d(0, 0);
-			velocity.scale(walking_speed);
+			velocity = scaleAndNormalize(velocity);
 			potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
 			potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
 		}
@@ -291,6 +286,17 @@ public class Student {
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
 
+	public Vector2d scaleAndNormalize(Vector2d vel) {
+		vel.normalize();
+		if (Double.isNaN(vel.x))
+			vel = new Vector2d(0, vel.y);
+		if (Double.isNaN(vel.y))
+			vel = new Vector2d(vel.x, 0);
+		vel.scale(walking_speed);
+		return vel;
+	}
+	
+	
 //// COLLECT DATA:
 	//TODO das sollte keine object-methode sein. Wenn in Student dann eher static, aber ggf auch ganz wonaders
 	public int getCurNumStud() {

@@ -77,7 +77,7 @@ public class MensaEingang {
 
 			double x, y;
 			Student stud;
-			int rand = RandomHelper.nextIntFromTo(0, 2);
+			int rand = RandomHelper.nextIntFromTo(0, 0); //TODO
 			if (rand == 0) stud = new StudentGoalOriented(space, context, addedStudents, sharedstuff, fp);
 			else if (rand == 1) stud = new StudentChaotic(space, context, addedStudents, sharedstuff, fp);
 			else stud = new StudentPathfinder(space, context, addedStudents, sharedstuff, fp);

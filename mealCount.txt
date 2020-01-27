@@ -1,2 +1,0 @@
-"tick","CountEssenVeggie","CountEssenVegan","CountEssenMeat","CountEssenSALAD","CountEssenPOMMES"
-493569.0,0,0,0,0,0

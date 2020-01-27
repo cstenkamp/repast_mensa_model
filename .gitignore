@@ -1,5 +1,7 @@
 #Repast.settings contains absolute directories
 *CountData*
+*countData*
+mealCount*
 Repast.settings
 *.log
 *.log.*
