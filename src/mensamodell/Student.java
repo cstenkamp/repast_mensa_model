@@ -27,8 +27,10 @@ public class Student {
 	protected Kasse tempBar = null;
 	protected Ausgabe tempDestination;
 	protected Object[] closestkasse;
+	private Vector2d keepWalkingdirection =  new Vector2d(0, 0); //wenn er gegen wände läuft läuft er in eine zufällige richtung. damit die nicht jigglet muss er sie speichern.
 	static private int notStudents = 0; // DATA
 	static int payStud = 0; //DATA
+	
 
 	
 	// choose randomly
@@ -235,40 +237,25 @@ public class Student {
 		if (potential_grid_pos == consts.GRID_STUDENT) {//studenten sind +2, also ist dann schon wer da
 			//throw new java.lang.RuntimeException("Student laeuft auf anderen Studenten!");
 		}
-
-		while ((potential_grid_pos > consts.GRID_STUDENT)) { //theken, kassen, accesspoints
-			//sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), consts.GRID_STUDENT);
-			//return;
-
+		
+		boolean triedkeepwalking = false;
+		while ((potential_grid_pos > consts.GRID_STUDENT) || ((velocity.x == 0) && (velocity.y == 0))) { //theken, kassen, accesspoints
+			if (triedkeepwalking) {
+				keepWalkingdirection = new Vector2d(0, 0);
+			}
 			if (velocity.x < 00.1*walking_speed && velocity.y < 00.1*walking_speed) {
-				//remove me
-//				System.out.println("\n\n\n");
-//				int tmp1 = sharedstuff.grid.get((int)pos.getX(), (int)pos.getY());
-//				int tmp2 = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
-//				sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 8);
-//				sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, 9);
-//				sharedstuff.grid.print();
-//				sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), tmp1);
-//				sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, tmp2);
-//				
-//				System.out.println("curr pos: x: " + pos.getX() + " | y: " + pos.getY());
-//				System.out.println("Attempted velocity - velocity x: " + velocity.x + " | y: " + velocity.y);
-//				System.out.println("poetential GRID pos (rounded): x: " + (int)potentialcoords.x + " | y: " + (int)potentialcoords.y);
-				// /remove me
-				do {
-					velocity.x = RandomHelper.nextIntFromTo(-1, 1);
-					velocity.y = RandomHelper.nextIntFromTo(-1, 1);
-					velocity.normalize();
-					velocity.scale(walking_speed);
-				} while ((Double.isNaN(velocity.x)) || (Double.isNaN(velocity.y)));
-			//remove me
-//				potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
-//				potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
-//				System.out.println("New trial - velocity - velocity x: " + velocity.x + " | y: " + velocity.y);
-//				System.out.println("New trial - poetential GRID pos (rounded): x: " + (int)potentialcoords.x + " | y: " + (int)potentialcoords.y);
-				System.out.println("nooo");
-				// /remove me
-				
+				if (((keepWalkingdirection.x == 0) && (keepWalkingdirection.y == 0))) { //wenn er also nicht vorher schon gegen 'ne Wand gelaufen wäre
+					do {
+						velocity.x = RandomHelper.nextIntFromTo(-1, 1);
+						velocity.y = RandomHelper.nextIntFromTo(-1, 1);
+						velocity.normalize();
+						velocity.scale(walking_speed);
+					} while ((Double.isNaN(velocity.x)) || (Double.isNaN(velocity.y)) || ((velocity.x == 0) && (velocity.y == 0)) );
+					keepWalkingdirection = velocity;
+				} else {
+					velocity = keepWalkingdirection;
+					triedkeepwalking = true;
+				}				
 			} else {
 				int leftofthat  = sharedstuff.grid.get((int)potentialcoords.x-1, (int)potentialcoords.y);
 				int rightofthat = sharedstuff.grid.get((int)potentialcoords.x+1, (int)potentialcoords.y);
@@ -276,11 +263,14 @@ public class Student {
 				int bottomofthat = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y+1); //TODO fehler fangen
 				if ((leftofthat > consts.GRID_STUDENT) || (rightofthat > consts.GRID_STUDENT)) {
 					velocity.y = 0;
-				} else if ((topofthat > consts.GRID_STUDENT) || (bottomofthat > consts.GRID_STUDENT)) {
+				} 
+				if ((topofthat > consts.GRID_STUDENT) || (bottomofthat > consts.GRID_STUDENT)) {
 					velocity.x = 0;
 				}
 			}
 			velocity.normalize();
+			if ((Double.isNaN(velocity.x)) || (Double.isNaN(velocity.y)))
+				velocity = new Vector2d(0, 0);
 			velocity.scale(walking_speed);
 			potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
 			potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
