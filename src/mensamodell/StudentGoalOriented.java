@@ -7,8 +7,8 @@ import javax.vecmath.Vector2d;
 
 import org.apache.commons.math3.exception.NullArgumentException;
 
-import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.context.Context;
+import repast.simphony.space.continuous.ContinuousSpace;
 
 public class StudentGoalOriented extends Student {
 

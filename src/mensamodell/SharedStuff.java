@@ -3,9 +3,7 @@ package mensamodell;
 import java.util.List;
 
 import repast.simphony.context.Context;
-import repast.simphony.space.continuous.ContinuousSpace;
-
-import java.util.ArrayList; 
+import repast.simphony.space.continuous.ContinuousSpace; 
 
 
 public class SharedStuff {

@@ -1,10 +1,9 @@
 package mensamodell;
 
-import mensamodell.consts.*;
+import javax.vecmath.Vector2d;
+
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
-
-import javax.vecmath.Vector2d;
 
 //student laeuft rum, sieht theke, called enqueueInTheke, ab dann geht er in jedem zeitschritt ggf nen schlangenplatz vor
 //wenn er die theke sieht sieht er aber auch die länge der schlange und reiht sich nur ggf ein

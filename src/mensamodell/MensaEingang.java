@@ -1,12 +1,13 @@
 package mensamodell;
 
-import repast.simphony.context.Context;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import repast.simphony.context.Context;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
-import repast.simphony.space.continuous.*;
-import java.util.List;
-import java.util.Collections;
+import repast.simphony.space.continuous.ContinuousSpace;
 
 public class MensaEingang {
 	int numStudents;

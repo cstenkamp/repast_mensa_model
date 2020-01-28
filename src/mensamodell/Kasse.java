@@ -4,7 +4,6 @@ import javax.media.j3d.Shape3D;
 
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
-import repast.simphony.util.collections.FilteredIterator;
 import repast.simphony.visualization.visualization3D.ShapeFactory;
 
 public class Kasse {

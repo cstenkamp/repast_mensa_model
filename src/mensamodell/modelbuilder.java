@@ -1,5 +1,8 @@
 package mensamodell;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import repast.simphony.context.Context;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactory;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactoryFinder;
@@ -7,10 +10,9 @@ import repast.simphony.dataLoader.ContextBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
-import repast.simphony.space.continuous.*;
-
-import java.util.List; 
-import java.util.ArrayList; 
+import repast.simphony.space.continuous.ContinuousSpace;
+import repast.simphony.space.continuous.SimpleCartesianAdder;
+import repast.simphony.space.continuous.StrictBorders; 
 
 
 public class modelbuilder implements ContextBuilder<Object>{
