@@ -28,7 +28,7 @@ public class StudentPathfinder extends Student {
 		
 		if (at_bar()) {
 			if (this.hungry && chooseMeal()) {this.hungry = false; return null;}
-			else return null;
+			else if (!this.hungry) return null;
 		}
 		
 		try {

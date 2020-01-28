@@ -22,7 +22,7 @@ public class StudentGoalOriented extends Student {
 		// Falls der student vor einer Ausgabe steht
 		if (at_bar()) {
 			if (this.hungry && chooseMeal()) {this.hungry = false; return null;}
-			else return null;
+			else if (!this.hungry) return null;
 		}
 
 		List<Ausgabe> nonvisited_ausgaben = new ArrayList<Ausgabe>();
