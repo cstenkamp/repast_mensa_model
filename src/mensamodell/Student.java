@@ -164,7 +164,7 @@ public class Student {
 //					keepZwischenziel_stoodfor++;
 //				} 
 				keepZwischenziel_stoodfor++; //das hier weg, dafür das oben hin, und hier drunter stattdessen more like > 50
-				if (keepZwischenziel_stoodfor > 100000) { //TODO statt das ne gewisse Zeit zu machen soll der gucken ob's erfolgreich ist
+				if (keepZwischenziel_stoodfor > 200000) { //TODO statt das ne gewisse Zeit zu machen soll der gucken ob's erfolgreich ist
 					keepZwischenziel = new Vector2d(0, 0);
 					keepZwischenziel_mypos = new Vector2d(0, 0);
 					keepZwischenziel_stoodfor = 0;
@@ -173,14 +173,21 @@ public class Student {
 			} else {
 				if (Math.abs((int)mypos.getX()-(int)thatpos.getX()) > Math.abs((int)mypos.getY()-(int)thatpos.getY())) {
 					//wenn also die x-differenz relevanter ist als die y-differenz -> mache schlenker in y-diff.
-					distance.y = distance.getX()*10*(RandomHelper.nextIntFromTo(0, 1)-0.5);
+					//hard-coden dass wenn sie vor der aktionstheke stehen nicht gegen die Wand laufen sollen
+					if (mypos.getY() < 18 && mypos.getY() > 12 && mypos.getX() < 60 && mypos.getX() > 50)
+						distance.y = distance.getX()*10*(-0.5);
+					else if (mypos.getY() < 18 && mypos.getY() > 12 && mypos.getX() < 50 && mypos.getX() > 40)
+						distance.y = distance.getX()*10*(+0.5);
+					else
+						distance.y = distance.getX()*10*(RandomHelper.nextIntFromTo(0, 1)-0.5);
 					//distance.x = 0;
+					Vector2d tmp = new Vector2d(mypos.getX(), mypos.getY()+distance.y);
 				} else {
 				//wenn also die y-differenz relevanter ist als die x-differenz -> mache schlenker in x-diff
 					distance.x = distance.getY()*10*(RandomHelper.nextIntFromTo(0, 1)-0.5);
 					//distance.y = 0;
 				}
-				distance.normalize();
+				//distance.normalize();
 				keepZwischenziel = distance;
 				keepZwischenziel_mypos = new Vector2d((int)mypos.getX(), (int)mypos.getY());
 			}
