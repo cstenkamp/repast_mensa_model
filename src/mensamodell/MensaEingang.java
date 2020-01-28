@@ -72,9 +72,9 @@ public class MensaEingang {
 		// fuege zufaellig eine food prev ein
 		// FIX: mit der alten version hat er wenn random == 0 aber !stillVeggie halt keinen studenten hinzugefügt!
 		// FIX am anfang liste generieren mit jeder preference hintereinander, shufflen, nächstes elemtn hziehen
-		if (addedStudents < numStudents) {
+		if (fp != -1 && addedStudents < numStudents) {
 			fp = foodPrefArray[addedStudents];
-			addedStudents++;
+
 			double x, y;
 			Student stud;
 			int rand = RandomHelper.nextIntFromTo(0, 2); //TODO
@@ -87,7 +87,7 @@ public class MensaEingang {
 			context.add(stud);	// add the new students to the root context
 			space.moveTo(stud, x, y); // add students to space
 
-			
+			addedStudents++;
 			System.out.println("Student #"+addedStudents+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented" : stud instanceof StudentChaotic ? "Chaotic" : "Pathfinder"));
 		}
 

@@ -1,0 +1,15 @@
+<repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.7.0">
+  <name>StudentCountData</name>
+  <dataSet>Current Number of Students</dataSet>
+  <delimiter>,</delimiter>
+  <format>TABULAR</format>
+  <sourceIds class="linked-hash-set">
+    <string>CurNumStud</string>
+    <string>CurNumStudChaos</string>
+    <string>CurNumStudGoal</string>
+    <string>PayStud</string>
+    <string>tick</string>
+  </sourceIds>
+  <fileName>StudentCountData</fileName>
+  <addTimeStamp>false</addTimeStamp>
+</repast.simphony.data2.engine.FileSinkDescriptor>
