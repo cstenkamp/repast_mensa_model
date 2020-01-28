@@ -113,8 +113,8 @@ public class MensaEingang {
 			double x, y;
 			Student stud;
 			int walkingStyle = studNumArray[addedStudents];
-			if (walkingStyle == 0) stud = new StudentGoalOriented(space, context, addedStudents, sharedstuff, fp);
-			else if (walkingStyle == 1) stud = new StudentChaotic(space, context, addedStudents, sharedstuff, fp);
+			if (walkingStyle == 1) stud = new StudentGoalOriented(space, context, addedStudents, sharedstuff, fp);
+			else if (walkingStyle == 0) stud = new StudentChaotic(space, context, addedStudents, sharedstuff, fp);
 			else stud = new StudentPathfinder(space, context, addedStudents, sharedstuff, fp);
 
 			x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);

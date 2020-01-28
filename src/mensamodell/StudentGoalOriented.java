@@ -21,12 +21,17 @@ public class StudentGoalOriented extends Student {
 
 		// Falls der student vor einer Ausgabe steht
 		if (at_bar()) {
+<<<<<<< HEAD
 			if (this.hungry) {
 				if (chooseMeal()) {
 					this.hungry = false; 
 					return null;
 				}
 			}
+=======
+			if (this.hungry && chooseMeal()) {this.hungry = false; return null;}
+			else if (!this.hungry) return null;
+>>>>>>> 80598b576a0a2db8cce6aab9c88bb4ed8f08ad55
 		}
 		if (!this.hungry)
 			return null;
