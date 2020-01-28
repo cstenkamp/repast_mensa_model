@@ -26,10 +26,17 @@ public class StudentPathfinder extends Student {
 	
 	public Vector2d move() {
 		
+		// Falls der student vor einer Ausgabe steht
 		if (at_bar()) {
-			if (this.hungry && chooseMeal()) {this.hungry = false; return null;}
-			else return null;
+			if (this.hungry) {
+				if (chooseMeal()) {
+					this.hungry = false; 
+					return null;
+				}
+			}
 		}
+		if (!this.hungry)
+			return null;
 		
 		try {
 			Ausgabe closesttheke = (Ausgabe) next_aim();

@@ -7,7 +7,7 @@
 									
 		/>
 				<parameter name="initialNumStud" displayName="Anzahl Studenten" type="int" 
-						defaultValue="1" 
+						defaultValue="15" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									

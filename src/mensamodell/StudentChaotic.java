@@ -26,12 +26,21 @@ public class StudentChaotic extends Student {
 		 * distXY == (X,Y)--> Du bist auf dem Weg.
 		 */
 		// Falls der student vor einer Ausgabe steht
+		
+		// Falls der student vor einer Ausgabe steht
 		if (at_bar()) {
 			this.tempDestination = null;
-			if (this.hungry && chooseMeal()) {this.hungry = false; return null;}
-			else return null;
-//			return new Vector2d(0,0);
+			if (this.hungry) {
+				if (chooseMeal()) {
+					this.hungry = false; 
+					return null;
+				}
+			}
 		}
+		if (!this.hungry)
+			return null;
+		
+		
 		// wenn der Student schon eine theke ausgesucht hat gehe weiter
 		if (this.tempDestination != null) {
 			return walk_but_dont_bump(this.tempDestination);

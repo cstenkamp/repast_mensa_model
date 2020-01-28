@@ -53,7 +53,7 @@ public class Student {
 	}
 
 	// waehle dein Essen
-	public boolean chooseMeal() {
+	public boolean chooseMeal_2() {
 		// warte vor der Ausgabe
 		this.waitticks = 10000;
 		// speicher die letzte Ausgabe
@@ -93,6 +93,13 @@ public class Student {
 		return false;
 	}
 
+	public boolean chooseMeal() {
+		boolean tmp = chooseMeal_2();
+		if (tmp)
+			System.out.println("Student #" + this.num + " hat sich ein Essen gesucht.");
+		return tmp;
+	}
+	
 
 	// der student geht zur Kasse
 	public Object to_kasse() {
@@ -142,12 +149,10 @@ public class Student {
 	
 	public Vector2d walk_but_dont_bump(Object to_obj) {
 		Vector2d distance = get_dist_to(to_obj);
-
 		NdPoint mypos = space.getLocation(this);
 		NdPoint thatpos = space.getLocation(to_obj);
 		List<Integer> between = sharedstuff.grid.Bresenham((int)mypos.getX(), (int)mypos.getY(), (int)thatpos.getX(), (int)thatpos.getY());
 		between = between.subList(1, between.size()-1);
-
 		//between sind die grid-punkte die er crossen müsste um dahin zu kommen).
 		if (between.get(0) > consts.GRID_STUDENT) {
 			if ((keepZwischenziel.x != 0) || (keepZwischenziel.y != 0)) {
@@ -162,7 +167,6 @@ public class Student {
 					keepZwischenziel_mypos = new Vector2d(0, 0);
 					keepZwischenziel_stoodfor = 0;
 				}
-				
 			} else {
 				if (Math.abs((int)mypos.getX()-(int)thatpos.getX()) > Math.abs((int)mypos.getY()-(int)thatpos.getY())) {
 					//wenn also die x-differenz relevanter ist als die y-differenz -> mache schlenker in y-diff.
@@ -174,7 +178,6 @@ public class Student {
 					else
 						distance.y = distance.getX()*10*(RandomHelper.nextIntFromTo(0, 1)-0.5);
 					//distance.x = 0;
-					Vector2d tmp = new Vector2d(mypos.getX(), mypos.getY()+distance.y);
 				} else {
 				//wenn also die y-differenz relevanter ist als die x-differenz -> mache schlenker in x-diff
 					distance.x = distance.getY()*10*(RandomHelper.nextIntFromTo(0, 1)-0.5);
@@ -189,9 +192,7 @@ public class Student {
 			keepZwischenziel_mypos = new Vector2d(0, 0);
 			keepZwischenziel_stoodfor = 0;
 		}
-
 		return distance;
-
 	}
 	
 	
@@ -202,9 +203,8 @@ public class Student {
 	// Hier wird geprueft ob wir vor einer Ausgabe stehen.
 	public boolean at_bar() {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
-		Vector2d distXY = null;
-		ContinuousWithin barInRange = new ContinuousWithin(space, this, 4);
-		for (Object b : barInRange.query()) {
+		ContinuousWithin ausgabeInRange = new ContinuousWithin(space, this, 4);
+		for (Object b : ausgabeInRange.query()) {
 			if (b instanceof Ausgabe && !visitedAusgaben.contains(b)) {
 				visitedAusgaben.add((Ausgabe) b);
 				//System.out.println("new bar");
@@ -220,7 +220,6 @@ public class Student {
 		ContinuousWithin query = new ContinuousWithin(space, this, aversionradius);
 		Vector2d distXY = new Vector2d(0,0);
 		double minStudDist = 99999;
-		NdPoint closestStudPoint = new NdPoint();
 		Student neigh;
 		for (Object o : query.query()){
 			if (o instanceof Student){
@@ -229,7 +228,6 @@ public class Student {
 				double dist = space.getDistance(lastPos, p);
 				if (dist < minStudDist){
 					minStudDist = dist;
-					closestStudPoint = p;
 					distXY = new Vector2d(space.getDisplacement(lastPos, p)[0], space.getDisplacement(lastPos, p)[1]);
 				}
 			}
@@ -246,50 +244,44 @@ public class Student {
 		return null;
 	}
 
-//	// Standard Student weicht nur aus.
-//	@ScheduledMethod(start = 0, interval = 1)
-//	public void step() {
-//		Vector2d avoidance = avoid_others();
-//		if (avoidance != null) {
-//			velocity.setX(-avoidance.x);
-//			velocity.setY(-avoidance.y);
-//		}
-//	}
 
 	@ScheduledMethod(start = 0, interval = 1)
 	public void step() {
+		
+		//Priorität 1) Laufe nicht gegen andere
 		Vector2d avoidance = avoid_others();
 		if (avoidance != null) {
 			velocity.setX(-avoidance.x);
 			velocity.setY(-avoidance.y);
+			return;
+		} 
+		
+		//Priorität 2) Laufe zu Ausgaben		
+		Vector2d movement = move();
+//	if (movement != null) System.out.println(movement.x + " " + movement.y + " " + this);
+		if (movement != null) {
+			// Du bist auf dem Weg.
+			velocity.setX(movement.x);
+			velocity.setY(movement.y);
+			return;
+		} 
+			
+		if (tempBar != null && tempBar.pay(this)) {
+			System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
+			context.remove(this);
 		} else {
-			Vector2d movement = move();
-//			if (movement != null) System.out.println(movement.x + " " + movement.y + " " + this);
-			if (movement != null) {
-				// Du bist auf dem Weg.
-				velocity.setX(movement.x);
-				velocity.setY(movement.y);
-			} else if (movement == null) {
-				if (tempBar != null && tempBar.pay(this)) {
-					System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
-					context.remove(this);
-				} else {
-					// waehle Kasse
+			// waehle Kasse
 //					System.out.println("choose Kassa");
-					// gibt Location und Objekt zurueck
-					
-					
-					try {
-						this.tempBar = (Kasse) to_kasse();
-						this.directlyToKassa = walk_but_dont_bump(this.tempBar);
-						if (this.directlyToKassa != null) {
-							velocity.setX(this.directlyToKassa.x);
-							velocity.setY(this.directlyToKassa.y);
-						}
-					} catch (NullArgumentException e) {
-						//dont set velocity 
-					}
+			// gibt Location und Objekt zurueck
+			try {
+				this.tempBar = (Kasse) to_kasse();
+				this.directlyToKassa = walk_but_dont_bump(this.tempBar);
+				if (this.directlyToKassa != null) {
+					velocity.setX(this.directlyToKassa.x);
+					velocity.setY(this.directlyToKassa.y);
 				}
+			} catch (NullArgumentException e) {
+				//dont set velocity 
 			}
 		}
 	}
@@ -308,63 +300,67 @@ public class Student {
 			waitticks --;
 			return;
 		}
-
 		velocity = scaleAndNormalize(velocity);		
 		NdPoint pos = space.getLocation(this);
 		sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 0);
-
-
 		Vector2d potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
 		//System.out.println("Student #"+num+" did something"+pos.getX()+" "+pos.getY()+" velocity "+velocity.x+" "+velocity.y);
-
 		if (potentialcoords.x <= 0 || potentialcoords.x >= consts.SIZE_X || potentialcoords.y <= 0 || potentialcoords.y >= consts.SIZE_Y){
 			throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
 		}
-
 		int potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
 		if (potential_grid_pos == consts.GRID_STUDENT) {//studenten sind +2, also ist dann schon wer da
 			//throw new java.lang.RuntimeException("Student laeuft auf anderen Studenten!");
 		}
-
 		boolean triedkeepwalking = false;
+		int durchlauf = 0;
 		while ((potential_grid_pos > consts.GRID_STUDENT) || ((velocity.x == 0) && (velocity.y == 0))) { //theken, kassen, accesspoints
 			if (triedkeepwalking) {
 				keepWalkingdirection = new Vector2d(0, 0);
 			}
-			if (velocity.x < 00.1*walking_speed && velocity.y < 00.1*walking_speed) {
-				if (((keepWalkingdirection.x == 0) && (keepWalkingdirection.y == 0))) { //wenn er also nicht vorher schon gegen 'ne Wand gelaufen wäre
-					do {
-						velocity.x = RandomHelper.nextIntFromTo(-1, 1);
-						velocity.y = RandomHelper.nextIntFromTo(-1, 1);
-						velocity = scaleAndNormalize(velocity);
-					} while ((Double.isNaN(velocity.x)) || (Double.isNaN(velocity.y)) || ((velocity.x == 0) && (velocity.y == 0)) );
-					keepWalkingdirection = velocity;
-				} else {
-					velocity = keepWalkingdirection;
+			if (durchlauf++ > 50) {
+				do {
+					velocity.x = RandomHelper.nextIntFromTo(-1, 1);
+					velocity.y = RandomHelper.nextIntFromTo(-1, 1);
 					velocity = scaleAndNormalize(velocity);
-					triedkeepwalking = true;
-				}
+				} while ((Double.isNaN(velocity.x)) || (Double.isNaN(velocity.y)) || ((velocity.x == 0) && (velocity.y == 0)) );
 			} else {
-				int leftofthat  = sharedstuff.grid.get((int)potentialcoords.x-1, (int)potentialcoords.y);
-				int rightofthat = sharedstuff.grid.get((int)potentialcoords.x+1, (int)potentialcoords.y);
-				int topofthat    = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y-1);
-				int bottomofthat = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y+1); //TODO fehler fangen
-				if ((leftofthat > consts.GRID_STUDENT) || (rightofthat > consts.GRID_STUDENT)) {
-					velocity.y = 0;
-				}
-				if ((topofthat > consts.GRID_STUDENT) || (bottomofthat > consts.GRID_STUDENT)) {
-					velocity.x = 0;
+				if (velocity.x < 00.1*walking_speed && velocity.y < 00.1*walking_speed) {
+					if (((keepWalkingdirection.x == 0) && (keepWalkingdirection.y == 0))) { //wenn er also nicht vorher schon gegen 'ne Wand gelaufen wäre
+						do {
+							velocity.x = RandomHelper.nextIntFromTo(-1, 1);
+							velocity.y = RandomHelper.nextIntFromTo(-1, 1);
+							velocity = scaleAndNormalize(velocity);
+						} while ((Double.isNaN(velocity.x)) || (Double.isNaN(velocity.y)) || ((velocity.x == 0) && (velocity.y == 0)) );
+						keepWalkingdirection = velocity;
+					} else {
+						velocity = keepWalkingdirection;
+						velocity = scaleAndNormalize(velocity);
+						triedkeepwalking = true;
+					}
+				} else {
+					int leftofthat  = sharedstuff.grid.get((int)potentialcoords.x-1, (int)potentialcoords.y);
+					int rightofthat = sharedstuff.grid.get((int)potentialcoords.x+1, (int)potentialcoords.y);
+					int topofthat    = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y-1);
+					int bottomofthat = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y+1); //TODO fehler fangen
+					if ((leftofthat > consts.GRID_STUDENT) || (rightofthat > consts.GRID_STUDENT)) {
+						velocity.y = 0;
+					}
+					if ((topofthat > consts.GRID_STUDENT) || (bottomofthat > consts.GRID_STUDENT)) {
+						velocity.x = 0;
+					}
 				}
 			}
 			velocity = scaleAndNormalize(velocity);
 			potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
 			potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
 		}
-
 		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, 3);
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
 
+	
+	
 	public Vector2d scaleAndNormalize(Vector2d vel) {
 		vel.normalize();
 		if (Double.isNaN(vel.x))

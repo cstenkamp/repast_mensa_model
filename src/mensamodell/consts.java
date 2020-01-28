@@ -44,9 +44,9 @@ public class consts {
 	public final static int PATHORIENTED = 2;
 	
 	//for the mensagrid
-	public final static int GRID_STUDENT = 1;
-	public final static int GRID_THEKE = 2;
-	public final static int GRID_KASSE = 3;
+	public final static int GRID_KASSE = 1;
+	public final static int GRID_STUDENT = 2;
+	public final static int GRID_THEKE = 3;
 	public final static int GRID_AUSGABE = 4;
 	
 
