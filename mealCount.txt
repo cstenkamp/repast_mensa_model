@@ -1,2 +1,6 @@
 "tick","CountEssenVeggie","CountEssenVegan","CountEssenMeat","CountEssenSALAD","CountEssenPOMMES"
-493569.0,0,0,0,0,0
+3966511.0,1,0,2,1,0
+3966511.0,1,0,2,1,0
+3966511.0,1,0,2,1,0
+3966511.0,1,0,2,1,0
+3966511.0,1,0,2,1,0

@@ -1,0 +1,1 @@
+"tick","CountEssenVeggie","CountEssenVegan","CountEssenMeat","CountEssenSALAD","CountEssenPOMMES"
