@@ -247,16 +247,6 @@ public class Student {
 		return null;
 	}
 
-//	// Standard Student weicht nur aus.
-//	@ScheduledMethod(start = 0, interval = 1)
-//	public void step() {
-//		Vector2d avoidance = avoid_others();
-//		if (avoidance != null) {
-//			velocity.setX(-avoidance.x);
-//			velocity.setY(-avoidance.y);
-//		}
-//	}
-
 	@ScheduledMethod(start = 0, interval = 1)
 	public void step() {
 		Vector2d avoidance = avoid_others();
@@ -380,58 +370,58 @@ public class Student {
 	
 //// COLLECT DATA:
 	//TODO das sollte keine object-methode sein. Wenn in Student dann eher static, aber ggf auch ganz wonaders
-	public int getCurNumStud() {
-		Iterable allObj = space.getObjects();
-		if (notStudents == 0) {
-			for (Object o : allObj) {
-				if (!(o instanceof Student)) notStudents++;
-			}
-		}
-		return space.size()-notStudents;
-	}
-
-	public int getCurNumStudChaos() {
-		Iterable allObj = space.getObjects();
-		int stud = 0;
-		for (Object o : allObj) {
-			if ((o instanceof StudentChaotic)) stud++;
-		}
-		return stud;
-	}
-
-	public int getCurNumStudGoal() {
-		Iterable allObj = space.getObjects();
-		int stud = 0;
-		for (Object o : allObj) {
-			if ((o instanceof StudentGoalOriented)) stud++;
-		}
-		return stud;
-	}
-	// TODO payStud speichert die Zahl solange bis das Projekt wieder geschlossen wird
-	public int getPayStud() {
-//		System.out.println(payStud);
-		return payStud;
-	}
-
-	public int getCountEssenVeggie() {
-		return countEssenVeggie;
-	}
-
-	public int getCountEssenVegan() {
-		return countEssenVegan;
-	}
-
-	public int getCountEssenMeat() {
-		return countEssenMeat;
-	}
-
-	public int getCountEssenSALAD() {
-		return countEssenSALAD;
-	}
-
-	public int getCountEssenPOMMES() {
-		return countEssenPOMMES;
-	}
+//	public int getCurNumStud() {
+//		Iterable allObj = space.getObjects();
+//		if (notStudents == 0) {
+//			for (Object o : allObj) {
+//				if (!(o instanceof Student)) notStudents++;
+//			}
+//		}
+//		return space.size()-notStudents;
+//	}
+//
+//	public int getCurNumStudChaos() {
+//		Iterable allObj = space.getObjects();
+//		int stud = 0;
+//		for (Object o : allObj) {
+//			if ((o instanceof StudentChaotic)) stud++;
+//		}
+//		return stud;
+//	}
+//
+//	public int getCurNumStudGoal() {
+//		Iterable allObj = space.getObjects();
+//		int stud = 0;
+//		for (Object o : allObj) {
+//			if ((o instanceof StudentGoalOriented)) stud++;
+//		}
+//		return stud;
+//	}
+//	// TODO payStud speichert die Zahl solange bis das Projekt wieder geschlossen wird
+//	public int getPayStud() {
+////		System.out.println(payStud);
+//		return payStud;
+//	}
+//
+//	public int getCountEssenVeggie() {
+//		return countEssenVeggie;
+//	}
+//
+//	public int getCountEssenVegan() {
+//		return countEssenVegan;
+//	}
+//
+//	public int getCountEssenMeat() {
+//		return countEssenMeat;
+//	}
+//
+//	public int getCountEssenSALAD() {
+//		return countEssenSALAD;
+//	}
+//
+//	public int getCountEssenPOMMES() {
+//		return countEssenPOMMES;
+//	}
 
 //	public int[] getMealCount() {
 //		return new int[] {countEssenVeggie, countEssenVegan,countEssenMeat, countEssenSALAD, countEssenPOMMES};

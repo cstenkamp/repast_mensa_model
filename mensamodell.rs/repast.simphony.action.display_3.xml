@@ -8,7 +8,7 @@
     </entry>
     <entry>
       <string>mensamodell.Ausgabe</string>
-      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string> <!--TODO hier einfach null draus um sie wieder auszublenden -->
+      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
     <entry>
       <string>mensamodell.StudentPathfinder</string>
