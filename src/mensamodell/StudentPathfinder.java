@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.vecmath.Vector2d;
 
+import org.apache.commons.math3.exception.NullArgumentException;
+
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.random.RandomHelper;
@@ -30,6 +32,16 @@ public class StudentPathfinder extends Student {
 		
 		if (at_bar() && chooseMeal()) return null;
 		
+		try {
+			Ausgabe closesttheke = (Ausgabe) next_aim();
+			return walk_but_dont_bump(closesttheke);
+		} catch (NullArgumentException e) {
+			return null;
+		}
+	}
+	
+	
+	public Object next_aim() {
 		List<Ausgabe> nonvisited_ausgaben = new ArrayList<Ausgabe>();
 		for (Ausgabe t : this.ausgaben) {
 			if (!visitedAusgaben.contains(t)) nonvisited_ausgaben.add(t);
@@ -37,9 +49,10 @@ public class StudentPathfinder extends Student {
 		if (nonvisited_ausgaben.isEmpty()) return null;
 		
 		Ausgabe nextBar = nonvisited_ausgaben.get(0);
-		double[] temp = space.getDisplacement(space.getLocation(this), space.getLocation(nextBar));
-		return new Vector2d(temp[0], temp[1]);
+
+		return nextBar;
 	}
+	
 	
 	private void generatePath() {
 		if (this.random == 0) {

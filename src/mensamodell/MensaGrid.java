@@ -1,5 +1,8 @@
 package mensamodell;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MensaGrid {
 	private int[][] grid;
 	private int rows;
@@ -54,6 +57,32 @@ public class MensaGrid {
 	}
 	
 	
+
+	public List<Integer> Bresenham(int x0, int y0, int x1, int y1) {
+		List<Integer> res = new ArrayList<Integer>();
+    int dx =  Math.abs(x1-x0);
+    int sx = x0<x1 ? 1 : -1;
+    int dy = -Math.abs(y1-y0);
+    int sy = y0<y1 ? 1 : -1;
+    int err = dx+dy;
+    while (true) {
+        res.add(get(x0, y0));
+        if (x0==x1 && y0==y1)
+        	break;
+        int e2 = 2*err;
+        if (e2 >= dy) {
+            err += dy; /* e_xy+e_x > 0 */
+            x0 += sx;
+        }
+        if (e2 <= dx) {  /* e_xy+e_y < 0 */
+            err += dx;
+            y0 += sy;
+        }
+    }
+    return res;
+	}
+
+
 	
 
 }

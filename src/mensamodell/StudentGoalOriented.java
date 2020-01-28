@@ -5,12 +5,9 @@ import java.util.List;
 
 import javax.vecmath.Vector2d;
 
-import repast.simphony.engine.schedule.ScheduledMethod;
-import repast.simphony.query.space.continuous.ContinuousWithin;
-import repast.simphony.random.RandomHelper;
+import org.apache.commons.math3.exception.NullArgumentException;
+
 import repast.simphony.space.continuous.ContinuousSpace;
-import repast.simphony.space.continuous.NdPoint;
-import repast.simphony.util.collections.FilteredIterator;
 import repast.simphony.context.Context;
 
 public class StudentGoalOriented extends Student {
@@ -19,6 +16,23 @@ public class StudentGoalOriented extends Student {
 	public StudentGoalOriented(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
 		super(s, c, num, sharedstuff, fp);
 	}
+	
+	public Object next_aim() {
+
+		// Falls der student vor einer Ausgabe steht
+		if (at_bar() && chooseMeal()) return null;
+
+		List<Ausgabe> nonvisited_ausgaben = new ArrayList<Ausgabe>();
+		for (Ausgabe t : sharedstuff.ausgaben) {
+			if (!visitedAusgaben.contains(t)) nonvisited_ausgaben.add(t);
+		}
+		if (nonvisited_ausgaben.isEmpty()) return null;
+
+		Ausgabe closesttheke = (Ausgabe) get_closest(nonvisited_ausgaben);
+		
+		return closesttheke;
+	}
+	
 
 	// Sucht den kuerzesten Weg
 		public Vector2d move() {
@@ -28,94 +42,15 @@ public class StudentGoalOriented extends Student {
 			 * distXY == null --> gehe zur Kasse
 			 * distXY == (X,Y)--> Du bist auf dem Weg.
 			 */
-
-			// Falls der student vor einer Ausgabe steht
-			if (at_bar() && chooseMeal()) return null;
-
-			List<Ausgabe> nonvisited_ausgaben = new ArrayList<Ausgabe>();
-			for (Ausgabe t : sharedstuff.ausgaben) {
-				if (!visitedAusgaben.contains(t)) nonvisited_ausgaben.add(t);
+			try {
+				Ausgabe closesttheke = (Ausgabe) next_aim();
+				return walk_but_dont_bump(closesttheke);
+			} catch (NullArgumentException e) {
+				return null;
 			}
-			if (nonvisited_ausgaben.isEmpty()) return null;
-
-			Object[] clostesttheke = get_closest(nonvisited_ausgaben);
-			Vector2d distance = (Vector2d) clostesttheke[1];
-			Ausgabe k = (Ausgabe) clostesttheke[0];
-
-
-			NdPoint mypos = space.getLocation(this);
-			NdPoint thatpos = space.getLocation(k);
-//		System.out.println("my pos: "+mypos);
-//		System.out.println("that pos: "+thatpos);
-//		sharedstuff.grid.set((int)thatpos.getX(), (int)thatpos.getY(), 9);
-//		sharedstuff.grid.print();
-			List<Integer> between = Bresenham((int)mypos.getX(), (int)mypos.getY(), (int)thatpos.getX(), (int)thatpos.getY());
-			between = between.subList(1, between.size()-1);
-
-			//between sind die grid-punkte die er crossen müsste um dahin zu kommen).
-			if (between.get(0) > consts.GRID_STUDENT) {
-				if ((keepZwischenziel.x != 0) || (keepZwischenziel.y != 0)) {
-					distance = keepZwischenziel;
-//					Vector2d tmp = new Vector2d((int)mypos.getX(), (int)mypos.getY());
-//					if (tmp.equals(keepZwischenziel_mypos)) {
-//						keepZwischenziel_stoodfor++;
-//					} 
-					keepZwischenziel_stoodfor++; //das hier weg, dafür das oben hin, und hier drunter stattdessen more like > 50
-					if (keepZwischenziel_stoodfor > 50000) {
-						keepZwischenziel = new Vector2d(0, 0);
-						keepZwischenziel_mypos = new Vector2d(0, 0);
-						keepZwischenziel_stoodfor = 0;
-					}
-					
-				} else {
-					if (Math.abs((int)mypos.getX()-(int)thatpos.getX()) > Math.abs((int)mypos.getY()-(int)thatpos.getY())) {
-						//wenn also die x-differenz relevanter ist als die y-differenz -> mache schlenker in y-diff.
-						distance.y = distance.getX()*10*(RandomHelper.nextIntFromTo(0, 1)-0.5);
-						//distance.x = 0;
-					} else {
-					//wenn also die y-differenz relevanter ist als die x-differenz -> mache schlenker in x-diff
-						distance.x = distance.getY()*10*(RandomHelper.nextIntFromTo(0, 1)-0.5);
-						//distance.y = 0;
-					}
-					distance.normalize();
-					keepZwischenziel = distance;
-					keepZwischenziel_mypos = new Vector2d((int)mypos.getX(), (int)mypos.getY());
-				}
-			} else {
-				keepZwischenziel = new Vector2d(0, 0);
-				keepZwischenziel_mypos = new Vector2d(0, 0);
-				keepZwischenziel_stoodfor = 0;
-			}
-
-			return distance;
-			//TODO wenn da halt was zwischen ist gehe außen rum
-
-
 		}
-
-		public List<Integer> Bresenham(int x0, int y0, int x1, int y1) {
-			List<Integer> res = new ArrayList<Integer>();
-	    int dx =  Math.abs(x1-x0);
-	    int sx = x0<x1 ? 1 : -1;
-	    int dy = -Math.abs(y1-y0);
-	    int sy = y0<y1 ? 1 : -1;
-	    int err = dx+dy;
-	    while (true) {
-	        res.add(sharedstuff.grid.get(x0, y0));
-	        if (x0==x1 && y0==y1)
-	        	break;
-	        int e2 = 2*err;
-	        if (e2 >= dy) {
-	            err += dy; /* e_xy+e_x > 0 */
-	            x0 += sx;
-	        }
-	        if (e2 <= dx) {  /* e_xy+e_y < 0 */
-	            err += dx;
-	            y0 += sy;
-	        }
-	    }
-	    return res;
-		}
+		
+		
 
 
 
