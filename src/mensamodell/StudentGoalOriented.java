@@ -20,7 +20,10 @@ public class StudentGoalOriented extends Student {
 	public Object next_aim() {
 
 		// Falls der student vor einer Ausgabe steht
-		if (at_bar() && chooseMeal()) return null;
+		if (at_bar()) {
+			if (this.hungry && chooseMeal()) {this.hungry = false; return null;}
+			else return null;
+		}
 
 		List<Ausgabe> nonvisited_ausgaben = new ArrayList<Ausgabe>();
 		for (Ausgabe t : sharedstuff.ausgaben) {

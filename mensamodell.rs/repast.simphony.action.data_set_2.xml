@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.7.0">
-  <name>Students</name>
+  <name>Food</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -11,37 +11,51 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1862763583</hashCode>
+    <hashCode>-1190894264</hashCode>
   </scheduleParams>
-  <atEnd>true</atEnd>
+  <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map"/>
   <countSources class="linked-hash-map">
     <entry>
-      <string>Students</string>
+      <string>Veggie</string>
       <repast.simphony.data2.engine.CountSourceDefinition>
-        <typeName>mensamodell.Student</typeName>
-        <id>Students</id>
+        <typeName>mensamodell.VeggieObj</typeName>
+        <id>Veggie</id>
       </repast.simphony.data2.engine.CountSourceDefinition>
     </entry>
     <entry>
-      <string>Chaotic</string>
+      <string>Pommes</string>
       <repast.simphony.data2.engine.CountSourceDefinition>
-        <typeName>mensamodell.StudentChaotic</typeName>
-        <id>Chaotic</id>
+        <typeName>mensamodell.PommesObj</typeName>
+        <id>Pommes</id>
       </repast.simphony.data2.engine.CountSourceDefinition>
     </entry>
     <entry>
-      <string>Pathfinder</string>
+      <string>Salad</string>
       <repast.simphony.data2.engine.CountSourceDefinition>
-        <typeName>mensamodell.StudentPathfinder</typeName>
-        <id>Pathfinder</id>
+        <typeName>mensamodell.SaladObj</typeName>
+        <id>Salad</id>
       </repast.simphony.data2.engine.CountSourceDefinition>
     </entry>
     <entry>
-      <string>GoalOriented</string>
+      <string>Vegan</string>
       <repast.simphony.data2.engine.CountSourceDefinition>
-        <typeName>mensamodell.StudentGoalOriented</typeName>
-        <id>GoalOriented</id>
+        <typeName>mensamodell.VeganObj</typeName>
+        <id>Vegan</id>
+      </repast.simphony.data2.engine.CountSourceDefinition>
+    </entry>
+    <entry>
+      <string>Meat</string>
+      <repast.simphony.data2.engine.CountSourceDefinition>
+        <typeName>mensamodell.MeatObj</typeName>
+        <id>Meat</id>
+      </repast.simphony.data2.engine.CountSourceDefinition>
+    </entry>
+    <entry>
+      <string>Total</string>
+      <repast.simphony.data2.engine.CountSourceDefinition>
+        <typeName>mensamodell.Food</typeName>
+        <id>Total</id>
       </repast.simphony.data2.engine.CountSourceDefinition>
     </entry>
   </countSources>

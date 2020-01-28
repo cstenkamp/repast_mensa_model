@@ -7,7 +7,7 @@
 									
 		/>
 				<parameter name="initialNumStud" displayName="Anzahl Studenten" type="int" 
-						defaultValue="5" 
+						defaultValue="1" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
@@ -32,6 +32,18 @@
 		/>
 				<parameter name="noPrefProp" displayName="Allesesser [Anteil in %]:" type="double" 
 						defaultValue="0.1" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
+				<parameter name="goalProp" displayName="Zielorientiert [Anteil in %]:" type="double" 
+						defaultValue="0.3" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
+				<parameter name="chaoticProp" displayName="Chaotische [Anteil in %]:" type="double" 
+						defaultValue="0.3" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
