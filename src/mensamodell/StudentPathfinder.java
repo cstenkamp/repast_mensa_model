@@ -26,7 +26,10 @@ public class StudentPathfinder extends Student {
 	
 	public Vector2d move() {
 		
-		if (at_bar() && chooseMeal()) return null;
+		if (at_bar()) {
+			if (this.hungry && chooseMeal()) {this.hungry = false; return null;}
+			else return null;
+		}
 		
 		try {
 			Ausgabe closesttheke = (Ausgabe) next_aim();

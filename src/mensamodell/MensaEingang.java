@@ -17,20 +17,26 @@ public class MensaEingang {
 	SharedStuff sharedstuff;
 	int passedsteps =  0;
 	Object[] proportions;
+	Object[] proportionsWalk;
 	int fp;
 	int numVeggie;
 	int numVegan;
 	int numMeat;
 	int numNoPref;
+	int numChaotic;
+	int numGoal;
+	int numPath;
 	Integer[] foodPrefArray;
+	Integer[] studNumArray;
 
-	public MensaEingang(int numStud, Object[] prop, Context<Object> context, ContinuousSpace<Object> space, SharedStuff sharedstuff) {
+	public MensaEingang(int numStud, Object[] prop, Object[] propWalk, Context<Object> context, ContinuousSpace<Object> space, SharedStuff sharedstuff) {
 		this.numStudents = numStud;
 		this.space = space;
 		this.context = context;
 		this.addedStudents = 0;
 		this.sharedstuff = sharedstuff;
 		this.proportions = prop;
+		this.proportionsWalk = propWalk;
 
 		// berechne die Anzahl der einzelnen Food Preferences
 		numVeggie = (int) Math.floor(this.numStudents * (double) proportions[0]);
@@ -63,6 +69,34 @@ public class MensaEingang {
 		Collections.shuffle(intList);
 		intList.toArray(foodPrefArray);
 		System.out.println(Arrays.toString(foodPrefArray));
+		
+		// berechne die Anzahl der einzelnen Studenten
+		numChaotic = (int) Math.floor(this.numStudents * (double) proportionsWalk[0]);
+		numGoal = (int) Math.floor(this.numStudents * (double) proportionsWalk[1]);
+		numPath = (int) Math.floor(this.numStudents * (double) proportionsWalk[2]);
+
+		// falls die anzahl der initialNumStud noch nicht passt fuelle die werte zufaellig nach
+		while (numStudents != (numChaotic+numGoal+numPath)) {
+				int random = RandomHelper.nextIntFromTo(0, 2);
+				if (random == 0) numChaotic++;
+				if (random == 1) numGoal++;
+				if (random == 2) numPath++;
+		};
+
+		studNumArray = new Integer[this.numStudents];
+		for (int i = 0; i < numStudents; i++) {
+			if (i < numChaotic)
+				studNumArray[i] = 0;
+			else if (i < numChaotic+numGoal)
+				studNumArray[i] = 1;
+			else if (i < numChaotic+numGoal+numPath)
+				studNumArray[i] = 2;
+		}
+		System.out.println(Arrays.toString(studNumArray));
+		List<Integer> intListWalk = Arrays.asList(studNumArray);
+		Collections.shuffle(intListWalk);
+		intListWalk.toArray(studNumArray);
+		System.out.println(Arrays.toString(studNumArray));		
 	}
 
 	@ScheduledMethod(start = 0, interval = 1000)
@@ -78,9 +112,9 @@ public class MensaEingang {
 
 			double x, y;
 			Student stud;
-			int rand = RandomHelper.nextIntFromTo(0, 2); //TODO
-			if (rand == 0) stud = new StudentGoalOriented(space, context, addedStudents, sharedstuff, fp);
-			else if (rand == 1) stud = new StudentChaotic(space, context, addedStudents, sharedstuff, fp);
+			int walkingStyle = studNumArray[addedStudents];
+			if (walkingStyle == 0) stud = new StudentGoalOriented(space, context, addedStudents, sharedstuff, fp);
+			else if (walkingStyle == 1) stud = new StudentChaotic(space, context, addedStudents, sharedstuff, fp);
 			else stud = new StudentPathfinder(space, context, addedStudents, sharedstuff, fp);
 
 			x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);

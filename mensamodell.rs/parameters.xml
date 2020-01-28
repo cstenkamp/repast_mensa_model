@@ -24,6 +24,12 @@
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
 		/>
+				<parameter name="pathProp" displayName="Wegfinder [Anteil in %]:" type="double" 
+						defaultValue="0.3" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
 				<parameter name="meatProp" displayName="Fleischesser [Anteil in %]:" type="double" 
 						defaultValue="0.5" 
 						isReadOnly="false" 
@@ -32,6 +38,18 @@
 		/>
 				<parameter name="noPrefProp" displayName="Allesesser [Anteil in %]:" type="double" 
 						defaultValue="0.1" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
+				<parameter name="goalProp" displayName="Zielorientiert [Anteil in %]:" type="double" 
+						defaultValue="0.3" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
+				<parameter name="chaoticProp" displayName="Chaotische [Anteil in %]:" type="double" 
+						defaultValue="0.3" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									

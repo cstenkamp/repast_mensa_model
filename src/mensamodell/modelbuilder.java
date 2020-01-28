@@ -28,7 +28,11 @@ public class modelbuilder implements ContextBuilder<Object>{
 		double veganProp = (Double) param.getValue("veganProp");
 		double meatProp = (Double) param.getValue("meatProp");
 		double noPrefProp = (Double) param.getValue("noPrefProp");
+		double chaoticProp = (Double) param.getValue("chaoticProp");
+		double goalProp = (Double) param.getValue("goalProp");
+		double pathProp = (Double) param.getValue("pathProp");
 		Object[] proportions = new Object[] {veggieProp, veganProp, meatProp, noPrefProp};
+		Object[] proportionsWalk = new Object[] {chaoticProp, goalProp, pathProp};
 
 		// create ContinuousSpace, size: 100x60
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
@@ -100,7 +104,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 //		grid.print();
 
 		SharedStuff sharedstuff = new SharedStuff(context, space, kassen, ausgaben, grid);
-		MensaEingang eingang = new MensaEingang(initialNumStud, proportions, context, space, sharedstuff); //TODO darauf achten dass man immer 100 studenten drin hat bspw
+		MensaEingang eingang = new MensaEingang(initialNumStud, proportions, proportionsWalk, context, space, sharedstuff); //TODO darauf achten dass man immer 100 studenten drin hat bspw
 		context.add(eingang);
 		space.moveTo(eingang, consts.SIZE_X*2.5/5,consts.SIZE_Y-5);
 		

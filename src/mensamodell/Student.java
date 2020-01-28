@@ -31,20 +31,12 @@ public class Student {
 	protected Kasse tempBar = null;
 	protected Ausgabe tempDestination;
 	protected Object closestkasse;
+	protected Boolean hungry;
 	
 	private Vector2d keepWalkingdirection =  new Vector2d(0, 0); //wenn er gegen wände läuft läuft er in eine zufällige richtung. damit die nicht jigglet muss er sie speichern.
 	protected Vector2d keepZwischenziel = new Vector2d(0, 0);
 	protected Vector2d keepZwischenziel_mypos = new Vector2d(0, 0);
 	protected int keepZwischenziel_stoodfor = 0;
-	
-	static private int notStudents = 0; // DATA
-	static int payStud = 0; // DATA
-	static int countEssenVeggie = 0; // DATA
-	static int countEssenVegan = 0; // DATA
-	static int countEssenMeat = 0; // DATA
-	static int countEssenSALAD = 0; // DATA
-	static int countEssenPOMMES = 0; // DATA
-
 
 	// choose randomly
 	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
@@ -57,6 +49,7 @@ public class Student {
 		this.sharedstuff = sharedstuff;
 		this.num = num;
 		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
+		this.hungry = true;
 	}
 
 	// waehle dein Essen
@@ -69,32 +62,32 @@ public class Student {
 		double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
 		// VEGGIE
 		if (this.food_preference == 0 && consts.vegetarian.contains(essen)) {
-			if (essen == 0 && randomNum <= 0.9) {countEssenVeggie++; return true;}
-			if (essen == 1 && randomNum <= 0.5) {countEssenVegan++; return true;}
-			if (essen == 3 && randomNum <= 0.2) {countEssenSALAD++; return true;}
-			if (essen == 4 && randomNum <= 0.1) {countEssenPOMMES++; return true;}
+			if (essen == 0 && randomNum <= 0.9) {new VeggieObj(context,space); return true;}
+			if (essen == 1 && randomNum <= 0.5) {new VeganObj(context,space); return true;}
+			if (essen == 3 && randomNum <= 0.2) {new SaladObj(context,space); return true;}
+			if (essen == 4 && randomNum <= 0.1) {new PommesObj(context,space); return true;}
 		}
 		// VEGAN
 		else if (this.food_preference == 1 && consts.vegan.contains(essen)) {
-			if (essen == 1 && randomNum <= 0.9) {countEssenVegan++; return true;}
-			if (essen == 3 && randomNum <= 0.2) {countEssenSALAD++; return true;}
-			if (essen == 4 && randomNum <= 0.1) {countEssenPOMMES++; return true;}
+			if (essen == 1 && randomNum <= 0.9) {new VeganObj(context,space); return true;}
+			if (essen == 3 && randomNum <= 0.2) {new SaladObj(context,space); return true;}
+			if (essen == 4 && randomNum <= 0.1) {new PommesObj(context,space); return true;}
 		}
 		// MEAT
 		else if (this.food_preference == 2 && consts.meatlover.contains(essen)) {
-			if (essen == 0 && randomNum <= 0.2) {countEssenVeggie++; return true;}
-			if (essen == 1 && randomNum <= 0.1) {countEssenVegan++; return true;}
-			if (essen == 2 && randomNum <= 0.9) {countEssenMeat++; return true;}
-			if (essen == 3 && randomNum <= 0.2) {countEssenSALAD++; return true;}
-			if (essen == 4 && randomNum <= 0.1) {countEssenPOMMES++; return true;}
+			if (essen == 0 && randomNum <= 0.2) {new VeggieObj(context,space); return true;}
+			if (essen == 1 && randomNum <= 0.1) {new VeganObj(context,space); return true;}
+			if (essen == 2 && randomNum <= 0.9) {new MeatObj(context,space); return true;}
+			if (essen == 3 && randomNum <= 0.2) {new SaladObj(context,space); return true;}
+			if (essen == 4 && randomNum <= 0.1) {new PommesObj(context,space); return true;}
 		}
 		// No Preference
 		else if (this.food_preference == 3 && consts.noPref.contains(essen)) {
-			if (essen == 0) {countEssenVeggie++;}
-			if (essen == 1) {countEssenVegan++;}
-			if (essen == 2) {countEssenMeat++;}
-			if (essen == 3) {countEssenSALAD++;}
-			if (essen == 4) {countEssenPOMMES++;}
+			if (essen == 0) {new VeggieObj(context,space);}
+			if (essen == 1) {new VeganObj(context,space);}
+			if (essen == 2) {new MeatObj(context,space);}
+			if (essen == 3) {new SaladObj(context,space);}
+			if (essen == 4) {new PommesObj(context,space);}
 			return true;
 		}
 		return false;
@@ -273,7 +266,6 @@ public class Student {
 				if (tempBar != null && tempBar.pay(this)) {
 					System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
 					context.remove(this);
-					payStud++;
 				} else {
 					// waehle Kasse
 //					System.out.println("choose Kassa");
@@ -375,65 +367,4 @@ public class Student {
 		vel.scale(walking_speed);
 		return vel;
 	}
-	
-	
-//// COLLECT DATA:
-	//TODO das sollte keine object-methode sein. Wenn in Student dann eher static, aber ggf auch ganz wonaders
-	public int getCurNumStud() {
-		Iterable allObj = space.getObjects();
-		if (notStudents == 0) {
-			for (Object o : allObj) {
-				if (!(o instanceof Student)) notStudents++;
-			}
-		}
-		return space.size()-notStudents;
-	}
-
-	public int getCurNumStudChaos() {
-		Iterable allObj = space.getObjects();
-		int stud = 0;
-		for (Object o : allObj) {
-			if ((o instanceof StudentChaotic)) stud++;
-		}
-		return stud;
-	}
-
-	public int getCurNumStudGoal() {
-		Iterable allObj = space.getObjects();
-		int stud = 0;
-		for (Object o : allObj) {
-			if ((o instanceof StudentGoalOriented)) stud++;
-		}
-		return stud;
-	}
-	// TODO payStud speichert die Zahl solange bis das Projekt wieder geschlossen wird
-	public int getPayStud() {
-//		System.out.println(payStud);
-		return payStud;
-	}
-
-	public int getCountEssenVeggie() {
-		return countEssenVeggie;
-	}
-
-	public int getCountEssenVegan() {
-		return countEssenVegan;
-	}
-
-	public int getCountEssenMeat() {
-		return countEssenMeat;
-	}
-
-	public int getCountEssenSALAD() {
-		return countEssenSALAD;
-	}
-
-	public int getCountEssenPOMMES() {
-		return countEssenPOMMES;
-	}
-
-//	public int[] getMealCount() {
-//		return new int[] {countEssenVeggie, countEssenVegan,countEssenMeat, countEssenSALAD, countEssenPOMMES};
-//	}
-
 } // END of Class.

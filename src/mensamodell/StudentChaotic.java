@@ -28,7 +28,8 @@ public class StudentChaotic extends Student {
 		// Falls der student vor einer Ausgabe steht
 		if (at_bar()) {
 			this.tempDestination = null;
-			if (chooseMeal()) return null;
+			if (this.hungry && chooseMeal()) {this.hungry = false; return null;}
+			else return null;
 //			return new Vector2d(0,0);
 		}
 		// wenn der Student schon eine theke ausgesucht hat gehe weiter
