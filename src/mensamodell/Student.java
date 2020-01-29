@@ -28,7 +28,7 @@ public class Student {
 	SharedStuff sharedstuff; //among others: list of all kassen & theken for faster access
 	public int num; //number of the student
 	public Vector2d directlyToKassa = new Vector2d(-1.0,-1.0); // Speichert die ausgewaehlte Kasse
-	protected Kasse tempBar = null;
+	protected Kasse tempKasse = null;
 	protected Ausgabe tempDestination;
 	protected Object closestkasse;
 	protected Boolean hungry;
@@ -71,9 +71,6 @@ public class Student {
 		//alle Ausgaben abgelaufen sind, ohne was zu nehmen, nehmen sie das ein zufälliges von denen die "am besten" zu ihnen passen.
 		int essen = currentBar.getEssen(); 	
 		
-		//TODO dass die move ebendoch nicht null zurückgeben wenn man alle durchgegangen ist sondern ein random von best food so far   
-		
-			
 		if (essen >= food_preference) { //foodpreference and food are sorted by priority: a person of type meat will like the lowest one most. A person of type vegan will like the lowest one >= itself (=2) most.
 			if ((best_food_so_war_was > essen) && (food_preference != consts.NOPREFERENCE)) { //die mit no preference fügen einfach alles zu ihrer best_so_far liste hinzu, alle anderen nur die die sie am meisten mochten. 
 				best_food_so_war_was = essen;
@@ -136,11 +133,8 @@ public class Student {
 	
 
 	// der student geht zur Kasse
-	public Object to_kasse() {
-		Object closestkasse = get_closest(sharedstuff.kassen);
-//		Vector2d distance = (Vector2d) closestkasse[1];
-//		Kasse k = (Kasse) closestkasse[0];
-		return closestkasse;
+	public Kasse to_kasse() {
+		return (Kasse) get_closest(sharedstuff.kassen);
 	}
 		
 	
@@ -299,23 +293,19 @@ public class Student {
 			velocity.setY(movement.y);
 			return;
 		} 
-			
-		if (tempBar != null && tempBar.pay(this)) {
+		
+		//Wenn wir jetzt noch da sind sollten wir zur Kasse gehen
+		
+		
+		if (tempKasse != null && tempKasse.pay(this)) {
 			System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
 			context.remove(this);
 		} else {
-			// waehle Kasse
-//					System.out.println("choose Kassa");
-			// gibt Location und Objekt zurueck
-			try {
-				this.tempBar = (Kasse) to_kasse();
-				this.directlyToKassa = walk_but_dont_bump(this.tempBar);
-				if (this.directlyToKassa != null) {
-					velocity.setX(this.directlyToKassa.x);
-					velocity.setY(this.directlyToKassa.y);
-				}
-			} catch (NullArgumentException e) {
-				//dont set velocity 
+			this.tempKasse = to_kasse();
+			this.directlyToKassa = walk_but_dont_bump(this.tempKasse);
+			if (this.directlyToKassa != null) {
+				velocity.setX(this.directlyToKassa.x);
+				velocity.setY(this.directlyToKassa.y);
 			}
 		}
 	}
