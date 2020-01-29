@@ -21,7 +21,7 @@ public class Student {
 	int food_preference; 			// 0=veggie, 1=vegan, 2=meat, 3=no_preference
 	protected Vector2d velocity;	// Geschwindigkeits- und Ausrichtungsvektor
 	float walking_speed = 0.002f;
-	int aversionradius = 2;
+	float aversionradius = 1.2f;
 	Context<Object> context;
 	List<Ausgabe> visitedAusgaben; 		// Liste der Besuchten Ausgaben
 	int waitticks;
@@ -232,7 +232,7 @@ public class Student {
 	// Hier wird geprueft ob wir vor einer Ausgabe stehen.
 	public Ausgabe at_bar() {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
-		ContinuousWithin ausgabeInRange = new ContinuousWithin(space, this, 4);
+		ContinuousWithin ausgabeInRange = new ContinuousWithin(space, this, 3);  //TODO das soll 'ne funktion von der Ausgabe sein, dann wird sie seltener ausgeführt!! (die ausgabe kann ja ne liste führen wer an ihr ist, und der student muss das nur abfragen)
 		for (Object b : ausgabeInRange.query()) {
 			if (b instanceof Ausgabe && (!visitedAusgaben.contains(b)) || this.tempDestination == b) {
 				visitedAusgaben.add((Ausgabe) b);
@@ -299,6 +299,8 @@ public class Student {
 		
 		if (tempKasse != null && tempKasse.pay(this)) {
 			System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
+			NdPoint mypos = space.getLocation(this);
+			sharedstuff.grid.set((int)mypos.getX(), (int)mypos.getY(), 0);
 			context.remove(this);
 		} else {
 			this.tempKasse = to_kasse();
@@ -379,7 +381,7 @@ public class Student {
 			potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
 			potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
 		}
-		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, 3);
+		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, consts.GRID_STUDENT);
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
 

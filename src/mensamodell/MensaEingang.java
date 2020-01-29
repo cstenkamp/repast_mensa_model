@@ -127,10 +127,10 @@ public class MensaEingang {
 					(fp == consts.MEAT ? "Fleischesser" : fp == consts.VEGGIE ? "Vegetarier" : fp == consts.VEGANER ? "Veganer" : "Ohne Präferenz"));
 		}
 
-//		if (passedsteps > 50) {
-//			passedsteps = 0;
-//			sharedstuff.grid.print();
-//		}
+		if (passedsteps >100) {
+			passedsteps = 0;
+			sharedstuff.grid.print();
+		}
 
 	}
 
