@@ -123,7 +123,8 @@ public class MensaEingang {
 			space.moveTo(stud, x, y); // add students to space
 
 			addedStudents++;
-			System.out.println("Student #"+addedStudents+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented" : stud instanceof StudentChaotic ? "Chaotic" : "Pathfinder"));
+			System.out.println("Student #"+addedStudents+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented " : stud instanceof StudentChaotic ? "Chaotic " : "Pathfinder ")+
+					(fp == consts.MEAT ? "Fleischesser" : fp == consts.VEGGIE ? "Vegetarier" : fp == consts.VEGANER ? "Veganer" : "Ohne Präferenz"));
 		}
 
 //		if (passedsteps > 50) {

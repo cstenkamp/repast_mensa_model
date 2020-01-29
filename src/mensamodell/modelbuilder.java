@@ -27,10 +27,12 @@ public class modelbuilder implements ContextBuilder<Object>{
 		double veggieProp = (Double) param.getValue("veggieProp");
 		double veganProp = (Double) param.getValue("veganProp");
 		double meatProp = (Double) param.getValue("meatProp");
-		double noPrefProp = (Double) param.getValue("noPrefProp");
+		double noPrefProp = 1.0 - veggieProp - veganProp - meatProp; 
+	
 		double chaoticProp = (Double) param.getValue("chaoticProp");
 		double goalProp = (Double) param.getValue("goalProp");
-		double pathProp = (Double) param.getValue("pathProp");
+		double pathProp = 1.0 - chaoticProp - goalProp; 
+		
 		Object[] proportions = new Object[] {veggieProp, veganProp, meatProp, noPrefProp};
 		Object[] proportionsWalk = new Object[] {chaoticProp, goalProp, pathProp};
 
@@ -41,7 +43,16 @@ public class modelbuilder implements ContextBuilder<Object>{
 		
 		// Theken ##############################################
 		// AKT ist zufaellig vegan, veggie, salad oder meat 
-		addThekeAusgabe(consts.SIZE_X/2, 10, 0, 6, consts.AKTIONSTHEKE, space, RandomHelper.nextIntFromTo(0, 3), context);
+		int aktionsessen = RandomHelper.nextIntFromTo(0, 3);
+		addThekeAusgabe(consts.SIZE_X/2, 10, 0, 6, consts.AKTIONSTHEKE, space, aktionsessen, context);
+		switch (aktionsessen) {
+			case consts.ESSEN_VEGGIE: System.out.println("Aktionstheke ist Vegetarisch."); break;
+			case consts.ESSEN_VEGAN: System.out.println("Aktionstheke ist Vegan."); break;
+			case consts.ESSEN_SALAD: System.out.println("Aktionstheke ist Salat."); break;
+			case consts.ESSEN_MEAT: System.out.println("Aktionstheke ist Fleisch."); break;
+			default: System.out.println("Irgendwas ist mit der Aktionstheke falsch.");
+		}
+		
 		
 		for (double i : new double[]{-consts.SIZE_X/6.0, consts.SIZE_X/5.0}) {
 				addThekeAusgabe((int)(consts.SIZE_X/2.0+i)-1, 5, 0, 2, consts.FLEISCHTHEKE, space, consts.ESSEN_MEAT, context); //bei 34,5 & 66,5 | size 50,20

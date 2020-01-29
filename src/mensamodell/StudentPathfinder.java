@@ -41,10 +41,11 @@ public class StudentPathfinder extends Student {
 				}
 			}
 		}
-		
+
+
 		if (!this.hungry)
 			return null;
-
+		
 		try {
 			Ausgabe closesttheke = (Ausgabe) next_aim();
 			return walk_but_dont_bump(closesttheke);
@@ -55,11 +56,27 @@ public class StudentPathfinder extends Student {
 
 
 	public Object next_aim() {
+		
+		if (best_food_so_war_was == -1) { //dann ist er alle abgeklappert und hat sich die ausgesucht für die er sich dann final entscheidet
+			return this.tempDestination;
+		}
+		
 		List<Ausgabe> nonvisited_ausgaben = new ArrayList<Ausgabe>();
 		for (Ausgabe t : this.ausgaben) {
 			if (!visitedAusgaben.contains(t)) nonvisited_ausgaben.add(t);
 		}
-		if (nonvisited_ausgaben.isEmpty()) return null;
+		
+		if (nonvisited_ausgaben.isEmpty()) {
+			if (consts.MAY_LEAVE_WITHOUT_FOOD) {
+				return null;
+			} else {
+				best_food_so_war_was = -1;
+				int index = RandomHelper.nextIntFromTo(0, best_food_so_far.size()-1);
+				this.tempDestination = best_food_so_far.get(index);
+				return this.tempDestination;
+			}			
+		}
+		
 		Ausgabe nextBar = nonvisited_ausgaben.get(0);
 		return nextBar;
 	}

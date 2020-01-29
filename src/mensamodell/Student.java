@@ -40,6 +40,10 @@ public class Student {
 	private Vector2d keepZwischenziel_mypos = new Vector2d(0, 0);
 	private int keepZwischenziel_stoodfor = 0;
 
+// um sich das beste-essen-so-far zu zwischenspeichern
+	protected List<Ausgabe> best_food_so_far;
+	protected int best_food_so_war_was = 999;
+	
 	
 	
 	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
@@ -54,6 +58,7 @@ public class Student {
 		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
 		this.hungry = true;
 		this.tickCount = 0;
+		this.best_food_so_far = new ArrayList<Ausgabe>();
 	}
 
 	
@@ -62,36 +67,61 @@ public class Student {
 		// warte vor der Ausgabe
 		this.waitticks = currentBar.wait_time;
 
-		int essen = currentBar.getEssen();
+		//Essen funktioniert so: wenn das Essen vom vegetarismus-Grad zu ihnen passt, nehmen sie es zu einem gewissem Prozentsatz sofort. Wenn sie am Ende
+		//alle Ausgaben abgelaufen sind, ohne was zu nehmen, nehmen sie das ein zufälliges von denen die "am besten" zu ihnen passen.
+		int essen = currentBar.getEssen(); 	
+		
+		//TODO dass die move ebendoch nicht null zurückgeben wenn man alle durchgegangen ist sondern ein random von best food so far   
+		
+			
+		if (essen >= food_preference) { //foodpreference and food are sorted by priority: a person of type meat will like the lowest one most. A person of type vegan will like the lowest one >= itself (=2) most.
+			if ((best_food_so_war_was > essen) && (food_preference != consts.NOPREFERENCE)) { //die mit no preference fügen einfach alles zu ihrer best_so_far liste hinzu, alle anderen nur die die sie am meisten mochten. 
+				best_food_so_war_was = essen;
+				best_food_so_far = new ArrayList<Ausgabe>();
+			}
+			best_food_so_far.add(currentBar);				
+		}
+		
+		//System.out.println(visitedAusgaben.size() + "/" + sharedstuff.ausgaben.size());
+		
+		if (best_food_so_war_was == -1) { //das ist der Fal wenn du schon alle durchprobiert hast
+			if (essen == consts.ESSEN_VEGGIE) {new VeggieObj(context,space);}
+			if (essen == consts.ESSEN_VEGAN) {new VeganObj(context,space);}
+			if (essen == consts.ESSEN_MEAT) {new MeatObj(context,space);}
+			if (essen == consts.ESSEN_SALAD) {new SaladObj(context,space);}
+			if (essen == consts.ESSEN_POMMES) {new PommesObj(context,space);}
+			return true;
+		}
+		
 		double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
 		// VEGGIE
-		if (this.food_preference == 0 && consts.vegetarian.contains(essen)) {
-			if (essen == 0 && randomNum <= 0.9) {new VeggieObj(context,space); return true;}
-			if (essen == 1 && randomNum <= 0.5) {new VeganObj(context,space); return true;}
-			if (essen == 3 && randomNum <= 0.2) {new SaladObj(context,space); return true;}
-			if (essen == 4 && randomNum <= 0.1) {new PommesObj(context,space); return true;}
+		if (food_preference == consts.VEGGIE && consts.vegetarian.contains(essen)) {
+			if (essen == consts.ESSEN_VEGGIE && randomNum <= 0.9) {new VeggieObj(context,space); return true;}
+			if (essen == consts.ESSEN_VEGAN && randomNum <= 0.5) {new VeganObj(context,space); return true;}
+			if (essen == consts.ESSEN_SALAD && randomNum <= 0.2) {new SaladObj(context,space); return true;}
+			if (essen == consts.ESSEN_POMMES && randomNum <= 0.1) {new PommesObj(context,space); return true;}
 		}
 		// VEGAN
-		else if (this.food_preference == 1 && consts.vegan.contains(essen)) {
-			if (essen == 1 && randomNum <= 0.9) {new VeganObj(context,space); return true;}
-			if (essen == 3 && randomNum <= 0.2) {new SaladObj(context,space); return true;}
-			if (essen == 4 && randomNum <= 0.1) {new PommesObj(context,space); return true;}
+		else if (food_preference == consts.VEGANER && consts.vegan.contains(essen)) {
+			if (essen == consts.ESSEN_VEGAN && randomNum <= 0.9) {new VeganObj(context,space); return true;}
+			if (essen == consts.ESSEN_SALAD && randomNum <= 0.2) {new SaladObj(context,space); return true;}
+			if (essen == consts.ESSEN_POMMES && randomNum <= 0.1) {new PommesObj(context,space); return true;}
 		}
 		// MEAT
-		else if (this.food_preference == 2 && consts.meatlover.contains(essen)) {
-			if (essen == 0 && randomNum <= 0.2) {new VeggieObj(context,space); return true;}
-			if (essen == 1 && randomNum <= 0.1) {new VeganObj(context,space); return true;}
-			if (essen == 2 && randomNum <= 0.9) {new MeatObj(context,space); return true;}
-			if (essen == 3 && randomNum <= 0.2) {new SaladObj(context,space); return true;}
-			if (essen == 4 && randomNum <= 0.1) {new PommesObj(context,space); return true;}
+		else if (food_preference == consts.MEAT && consts.meatlover.contains(essen)) {
+			if (essen == consts.ESSEN_VEGGIE && randomNum <= 0.2) {new VeggieObj(context,space); return true;}
+			if (essen == consts.ESSEN_VEGAN && randomNum <= 0.1) {new VeganObj(context,space); return true;}
+			if (essen == consts.ESSEN_MEAT && randomNum <= 0.9) {new MeatObj(context,space); return true;}
+			if (essen == consts.ESSEN_SALAD && randomNum <= 0.2) {new SaladObj(context,space); return true;}
+			if (essen == consts.ESSEN_POMMES && randomNum <= 0.1) {new PommesObj(context,space); return true;}
 		}
 		// No Preference
-		else if (this.food_preference == 3 && consts.noPref.contains(essen)) {
-			if (essen == 0) {new VeggieObj(context,space);}
-			if (essen == 1) {new VeganObj(context,space);}
-			if (essen == 2) {new MeatObj(context,space);}
-			if (essen == 3) {new SaladObj(context,space);}
-			if (essen == 4) {new PommesObj(context,space);}
+		else if (food_preference == consts.NOPREFERENCE && consts.noPref.contains(essen)) {
+			if (essen == consts.ESSEN_VEGGIE) {new VeggieObj(context,space);}
+			if (essen == consts.ESSEN_VEGAN) {new VeganObj(context,space);}
+			if (essen == consts.ESSEN_MEAT) {new MeatObj(context,space);}
+			if (essen == consts.ESSEN_SALAD) {new SaladObj(context,space);}
+			if (essen == consts.ESSEN_POMMES) {new PommesObj(context,space);}
 			return true;
 		}
 		return false;
@@ -157,6 +187,7 @@ public class Student {
 		NdPoint thatpos = space.getLocation(to_obj);
 		List<Integer> between = sharedstuff.grid.Bresenham((int)mypos.getX(), (int)mypos.getY(), (int)thatpos.getX(), (int)thatpos.getY());
 		between = between.subList(1, between.size()-1);
+		if (between.size() == 0) return distance;
 		//between sind die grid-punkte die er crossen müsste um dahin zu kommen).
 		if (between.get(0) > consts.GRID_STUDENT) {
 			if ((keepZwischenziel.x != 0) || (keepZwischenziel.y != 0)) {
@@ -175,9 +206,9 @@ public class Student {
 				if (Math.abs((int)mypos.getX()-(int)thatpos.getX()) > Math.abs((int)mypos.getY()-(int)thatpos.getY())) {
 					//wenn also die x-differenz relevanter ist als die y-differenz -> mache schlenker in y-diff.
 					//hard-coden dass wenn sie vor der aktionstheke stehen nicht gegen die Wand laufen sollen
-					if (mypos.getY() < 18 && mypos.getY() > 12 && mypos.getX() < 60 && mypos.getX() > 50)
+					if (mypos.getY() < 19 && mypos.getY() > 11 && mypos.getX() < 62 && mypos.getX() > 48)
 						distance.y = distance.getX()*10*(-0.5);
-					else if (mypos.getY() < 18 && mypos.getY() > 12 && mypos.getX() < 50 && mypos.getX() > 40)
+					else if (mypos.getY() < 19 && mypos.getY() > 11 && mypos.getX() < 48 && mypos.getX() > 38)
 						distance.y = distance.getX()*10*(+0.5);
 					else
 						distance.y = distance.getX()*10*(RandomHelper.nextIntFromTo(0, 1)-0.5);
@@ -209,7 +240,7 @@ public class Student {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
 		ContinuousWithin ausgabeInRange = new ContinuousWithin(space, this, 4);
 		for (Object b : ausgabeInRange.query()) {
-			if (b instanceof Ausgabe && !visitedAusgaben.contains(b)) {
+			if (b instanceof Ausgabe && (!visitedAusgaben.contains(b)) || this.tempDestination == b) {
 				visitedAusgaben.add((Ausgabe) b);
 				//System.out.println("new bar");
 				return (Ausgabe) b;

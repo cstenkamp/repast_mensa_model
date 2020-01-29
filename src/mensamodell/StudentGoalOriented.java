@@ -8,6 +8,7 @@ import javax.vecmath.Vector2d;
 import org.apache.commons.math3.exception.NullArgumentException;
 
 import repast.simphony.context.Context;
+import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 
 public class StudentGoalOriented extends Student {
@@ -33,13 +34,27 @@ public class StudentGoalOriented extends Student {
 		
 		if (!this.hungry)
 			return null;
-
+		
+		if (best_food_so_war_was == -1) { //dann ist er alle abgeklappert und hat sich die ausgesucht für die er sich dann final entscheidet
+			return this.tempDestination;
+		}
+		
 		
 		List<Ausgabe> nonvisited_ausgaben = new ArrayList<Ausgabe>();
 		for (Ausgabe t : sharedstuff.ausgaben) {
 			if (!visitedAusgaben.contains(t)) nonvisited_ausgaben.add(t);
 		}
-		if (nonvisited_ausgaben.isEmpty()) return null;
+	
+		if (nonvisited_ausgaben.isEmpty()) {
+			if (consts.MAY_LEAVE_WITHOUT_FOOD) {
+				return null;
+			} else {
+				best_food_so_war_was = -1;
+				int index = RandomHelper.nextIntFromTo(0, best_food_so_far.size()-1);
+				this.tempDestination = best_food_so_far.get(index);
+				return this.tempDestination;
+			}			
+		}
 
 		Ausgabe closesttheke = (Ausgabe) get_closest(nonvisited_ausgaben);
 		return closesttheke;

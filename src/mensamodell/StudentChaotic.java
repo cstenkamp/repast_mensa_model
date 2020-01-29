@@ -26,7 +26,7 @@ public class StudentChaotic extends Student {
 		 * null  --> gehe zur Kasse
 		 * (X,Y) --> Du bist auf dem Weg.
 		 */
-		
+
 		// Falls der student vor einer Ausgabe steht
 		Ausgabe a= at_bar();
 		if (a != null) {
@@ -41,7 +41,6 @@ public class StudentChaotic extends Student {
 		
 		if (!this.hungry)
 			return null;
-		
 		
 		// wenn der Student schon eine theke ausgesucht hat gehe weiter zu dieser theke
 		if (this.tempDestination != null) {
@@ -60,6 +59,11 @@ public class StudentChaotic extends Student {
 	}
 
 	public Object next_aim() {
+		
+		if (best_food_so_war_was == -1) { //dann ist er alle abgeklappert und hat sich die ausgesucht für die er sich dann final entscheidet
+			return this.tempDestination;
+		}
+		
 		// suche zufaellig eine Ausgabe aus der Liste und speichere sie als tempDestination
 		List<Ausgabe> nonvisited_ausgaben = new ArrayList<Ausgabe>();
 		for (Ausgabe t : sharedstuff.ausgaben) {
@@ -69,8 +73,14 @@ public class StudentChaotic extends Student {
 		}
 		
 		if (nonvisited_ausgaben.isEmpty()) {
-			return null;
-			// gehe zur kasse, der Student will heute nichts zu essen
+			if (consts.MAY_LEAVE_WITHOUT_FOOD) {
+				return null;
+			} else {
+				best_food_so_war_was = -1;
+				int index = RandomHelper.nextIntFromTo(0, best_food_so_far.size()-1);
+				this.tempDestination = best_food_so_far.get(index);
+				return this.tempDestination;
+			}			
 		}
 		
 		int index = nonvisited_ausgaben.size();

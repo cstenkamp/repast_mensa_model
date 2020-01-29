@@ -6,8 +6,12 @@ import java.util.List;
 
 public class consts {
 
+	//settings
 	public final static int SIZE_X = 100;
 	public final static int SIZE_Y = 60;
+	public final static boolean MAY_LEAVE_WITHOUT_FOOD = false;
+	
+	
 
 	//Theken
 	public final static int AKTIONSTHEKE = 0;
@@ -20,17 +24,18 @@ public class consts {
 	public final static int VEGANTHEKE = 7;
 
 	//Foodpreferences
-	public final static int VEGGIE = 0;
-	public final static int VEGANER = 1;
-	public final static int MEAT = 2;
-	public final static int NOPREFERENCE = 3;
+	public final static int MEAT = 0;
+	public final static int VEGGIE = 1;
+	public final static int VEGANER = 2;
+	public final static int NOPREFERENCE = -1;
 	
 	//Essen
-	public final static int ESSEN_VEGGIE = 0;
-	public final static int ESSEN_VEGAN = 1;
-	public final static int ESSEN_MEAT = 2;
+	public final static int ESSEN_MEAT = 0;
+	public final static int ESSEN_VEGGIE = 1;
+	public final static int ESSEN_VEGAN = 2;
 	public final static int ESSEN_SALAD = 3;
 	public final static int ESSEN_POMMES = 4;
+	//these are sorted by priority: a person of type meat will like the lowest one most. A person of type vegan will like the lowest one >= itself (=2) most. 
 	
 	// Listen mit Essenswahl
 	public static List<Integer> vegetarian = new ArrayList<>() ;
