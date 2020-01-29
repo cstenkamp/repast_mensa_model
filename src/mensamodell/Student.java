@@ -33,12 +33,14 @@ public class Student {
 	protected Object closestkasse;
 	protected Boolean hungry;
 	
-	private Vector2d keepWalkingdirection =  new Vector2d(0, 0); //wenn er gegen wände läuft läuft er in eine zufällige richtung. damit die nicht jigglet muss er sie speichern.
-	protected Vector2d keepZwischenziel = new Vector2d(0, 0);
-	protected Vector2d keepZwischenziel_mypos = new Vector2d(0, 0);
-	protected int keepZwischenziel_stoodfor = 0;
+//wenn er gegen wände läuft läuft er in eine zufällige richtung. damit die nicht jigglet muss er sie speichern.
+	private Vector2d keepWalkingdirection =  new Vector2d(0, 0); 
+	private Vector2d keepZwischenziel = new Vector2d(0, 0);
+	private Vector2d keepZwischenziel_mypos = new Vector2d(0, 0);
+	private int keepZwischenziel_stoodfor = 0;
 
-	// choose randomly
+	
+	
 	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
 		this.space = s;
 		this.food_preference = fp;
@@ -52,6 +54,7 @@ public class Student {
 		this.hungry = true;
 	}
 
+	
 	// waehle dein Essen
 	public boolean chooseMeal_2() {
 		// warte vor der Ausgabe
@@ -256,11 +259,9 @@ public class Student {
 			return;
 		} 
 		
-		//Priorität 2) Laufe zu Ausgaben		
-		Vector2d movement = move();
-//	if (movement != null) System.out.println(movement.x + " " + movement.y + " " + this);
+		//Priorität 2) Laufe zu Ausgaben (returns null wenn er gerade was zu essen gefunden hat, nicht mehr hungrig ist, oder schon alle Theken besucht hat)
+		Vector2d movement = move(); //move ist überschrieben für die 3 Tochterklassen
 		if (movement != null) {
-			// Du bist auf dem Weg.
 			velocity.setX(movement.x);
 			velocity.setY(movement.y);
 			return;

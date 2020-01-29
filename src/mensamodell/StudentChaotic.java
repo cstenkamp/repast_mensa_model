@@ -19,18 +19,17 @@ public class StudentChaotic extends Student {
 
 	}
 
+	//returns null wenn er gerade was zu essen gefunden hat, nicht mehr hungrig ist, oder schon alle Theken besucht hat
 	public Vector2d move() {
 		/*
 		 * Return Values:
-		 * distXY == null --> gehe zur Kasse
-		 * distXY == (X,Y)--> Du bist auf dem Weg.
+		 * null  --> gehe zur Kasse
+		 * (X,Y) --> Du bist auf dem Weg.
 		 */
-		// Falls der student vor einer Ausgabe steht
 		
 		// Falls der student vor einer Ausgabe steht
 		if (at_bar()) {
 			this.tempDestination = null;
-
 			if (this.hungry) {
 				if (chooseMeal()) {
 					this.hungry = false; 
@@ -38,11 +37,12 @@ public class StudentChaotic extends Student {
 				}
 			}
 		}
+		
 		if (!this.hungry)
 			return null;
 		
 		
-		// wenn der Student schon eine theke ausgesucht hat gehe weiter
+		// wenn der Student schon eine theke ausgesucht hat gehe weiter zu dieser theke
 		if (this.tempDestination != null) {
 			return walk_but_dont_bump(this.tempDestination);
 		// falls er noch keine theke erkoren hat suche eine neue
@@ -64,9 +64,9 @@ public class StudentChaotic extends Student {
 		for (Ausgabe t : sharedstuff.ausgaben) {
 			if (!visitedAusgaben.contains(t)) {
 				nonvisited_ausgaben.add(t);
-				//System.out.println("da war ich nicht "+ t);
 			}
 		}
+		
 		if (nonvisited_ausgaben.isEmpty()) {
 			return null;
 			// gehe zur kasse, der Student will heute nichts zu essen

@@ -18,10 +18,10 @@ public class StudentGoalOriented extends Student {
 	}
 	
 	public Object next_aim() {
+		//returns null wenn er gerade was zu essen gefunden hat, nicht mehr hungrig ist, oder schon alle Theken besucht hat
 
 		// Falls der student vor einer Ausgabe steht
 		if (at_bar()) {
-
 			if (this.hungry) {
 				if (chooseMeal()) {
 					this.hungry = false; 
@@ -29,9 +29,11 @@ public class StudentGoalOriented extends Student {
 				}
 			}
 		}
+		
 		if (!this.hungry)
 			return null;
 
+		
 		List<Ausgabe> nonvisited_ausgaben = new ArrayList<Ausgabe>();
 		for (Ausgabe t : sharedstuff.ausgaben) {
 			if (!visitedAusgaben.contains(t)) nonvisited_ausgaben.add(t);
@@ -39,18 +41,16 @@ public class StudentGoalOriented extends Student {
 		if (nonvisited_ausgaben.isEmpty()) return null;
 
 		Ausgabe closesttheke = (Ausgabe) get_closest(nonvisited_ausgaben);
-		
 		return closesttheke;
 	}
 	
 
 	// Sucht den kuerzesten Weg
 		public Vector2d move() {
-
 			/*
 			 * Return Values:
-			 * distXY == null --> gehe zur Kasse
-			 * distXY == (X,Y)--> Du bist auf dem Weg.
+			 * null --> gehe zur Kasse
+			 * (X,Y) --> Du bist auf dem Weg.
 			 */
 			try {
 				Ausgabe closesttheke = (Ausgabe) next_aim();
@@ -60,39 +60,6 @@ public class StudentGoalOriented extends Student {
 			}
 		}
 		
-		
-
-
-
-
-
-//			// Suche deinen Weg zur naechsten Theke
-//			double[] distXY = null;
-//			NdPoint lastPos = space.getLocation(this);										// speichere die aktuelle Position
-//			ContinuousWithin barInVision = new ContinuousWithin(space, this, vision);		// erzeugt eine Query mit allen Objekten im Sichtradius
-//			double minBarDist = vision;					// kuerzester Abstand zu einer Bar
-//			NdPoint closestBarPoint = new NdPoint();	// Punkt mit naechster Bar
-//			Theke v = null; 							// zum speichern der besuchten Theke
-//
-//
-//			for (Object o : barInVision.query()){			// Durchlaufe die Query des Sichtradius
-//				if (o instanceof Theke && !visitedBars.contains(o)){	// falls das Theke und noch nicht besucht
-//					Theke tempBar = (Theke) o;
-//					NdPoint tempBarLoc = space.getLocation(tempBar);
-//					double dist = space.getDistance(lastPos, tempBarLoc);			// Distanz zur Theke, falls minimum -> speichern
-//					if (dist < minBarDist){
-//						minBarDist = dist;
-//						closestBarPoint = tempBarLoc;
-//						v = tempBar;
-//						distXY = space.getDisplacement(lastPos, closestBarPoint);	// speichere Abstand in x- und y-Ausrichtung
-//					}
-//				}
-//			}
-//			if (v != null) {
-//				return new Vector2d(distXY[0], distXY[1]);
-//			} else {
-//				// Falls alle Theken besucht oder Essen gefunden.
-//				return null;
-//			}
+	
 
 }
