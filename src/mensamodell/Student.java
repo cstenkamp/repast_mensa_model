@@ -32,6 +32,7 @@ public class Student {
 	protected Ausgabe tempDestination;
 	protected Object closestkasse;
 	protected Boolean hungry;
+	private int tickCount;
 	
 //wenn er gegen wände läuft läuft er in eine zufällige richtung. damit die nicht jigglet muss er sie speichern.
 	private Vector2d keepWalkingdirection =  new Vector2d(0, 0); 
@@ -52,6 +53,7 @@ public class Student {
 		this.num = num;
 		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
 		this.hungry = true;
+		this.tickCount = 0;
 	}
 
 	
@@ -249,6 +251,7 @@ public class Student {
 
 	@ScheduledMethod(start = 0, interval = 1)
 	public void step() {
+		this.tickCount++;
 		
 		//Priorität 1) Laufe nicht gegen andere
 		Vector2d avoidance = avoid_others();
@@ -370,4 +373,9 @@ public class Student {
 		vel.scale(walking_speed);
 		return vel;
 	}
+	
+	public int getTickCount() {
+		return this.tickCount;
+	}
+	
 } // END of Class.
