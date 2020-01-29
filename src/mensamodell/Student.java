@@ -56,11 +56,10 @@ public class Student {
 
 	
 	// waehle dein Essen
-	public boolean chooseMeal_2() {
+	public boolean chooseMeal_2(Ausgabe currentBar) {
 		// warte vor der Ausgabe
-		this.waitticks = 10000;
-		// speicher die letzte Ausgabe
-		Ausgabe currentBar = this.visitedAusgaben.get(visitedAusgaben.size()-1);
+		this.waitticks = currentBar.wait_time;
+
 		int essen = currentBar.getEssen();
 		double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
 		// VEGGIE
@@ -96,8 +95,8 @@ public class Student {
 		return false;
 	}
 
-	public boolean chooseMeal() {
-		boolean tmp = chooseMeal_2();
+	public boolean chooseMeal(Ausgabe a) {
+		boolean tmp = chooseMeal_2(a);
 		if (tmp)
 			System.out.println("Student #" + this.num + " hat sich ein Essen gesucht.");
 		return tmp;
@@ -204,17 +203,17 @@ public class Student {
 	
 
 	// Hier wird geprueft ob wir vor einer Ausgabe stehen.
-	public boolean at_bar() {
+	public Ausgabe at_bar() {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
 		ContinuousWithin ausgabeInRange = new ContinuousWithin(space, this, 4);
 		for (Object b : ausgabeInRange.query()) {
 			if (b instanceof Ausgabe && !visitedAusgaben.contains(b)) {
 				visitedAusgaben.add((Ausgabe) b);
 				//System.out.println("new bar");
-				return true;
+				return (Ausgabe) b;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	// gehe anderen Studenten aus dem Weg

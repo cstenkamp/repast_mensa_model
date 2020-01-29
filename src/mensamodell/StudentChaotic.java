@@ -28,10 +28,11 @@ public class StudentChaotic extends Student {
 		 */
 		
 		// Falls der student vor einer Ausgabe steht
-		if (at_bar()) {
+		Ausgabe a= at_bar();
+		if (a != null) {
 			this.tempDestination = null;
 			if (this.hungry) {
-				if (chooseMeal()) {
+				if (chooseMeal(a)) {
 					this.hungry = false; 
 					return null;
 				}

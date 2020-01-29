@@ -21,9 +21,10 @@ public class StudentGoalOriented extends Student {
 		//returns null wenn er gerade was zu essen gefunden hat, nicht mehr hungrig ist, oder schon alle Theken besucht hat
 
 		// Falls der student vor einer Ausgabe steht
-		if (at_bar()) {
+		Ausgabe a= at_bar();
+		if (a != null) {
 			if (this.hungry) {
-				if (chooseMeal()) {
+				if (chooseMeal(a)) {
 					this.hungry = false; 
 					return null;
 				}
