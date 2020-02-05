@@ -1,7 +1,19 @@
 <repast.simphony.visualization.engine.CartesianDisplayDescriptor simphonyVersion="2.7.0">
-  <name>Forest</name>
+  <name>MensaGrid</name>
   <type>2D</type>
   <styles>
+    <entry>
+      <string>mensamodell.Student</string>
+      <string>mensamodell.ObjectStyle2D</string>
+    </entry>
+    <entry>
+      <string>mensamodell.Ausgabe</string>
+      <string>mensamodell.ObjectStyle2D</string>
+    </entry>
+    <entry>
+      <string>mensamodell.StudentGoalOriented</string>
+      <string>mensamodell.ObjectStyle2D</string>
+    </entry>
     <entry>
       <string>mensamodell.StudentShortestQueue</string>
       <string>mensamodell.ObjectStyle2D</string>
@@ -11,24 +23,24 @@
       <string>mensamodell.ObjectStyle2D</string>
     </entry>
     <entry>
-      <string>mensamodell.Student</string>
-      <string>mensamodell.ObjectStyle2D</string>
-    </entry>
-    <entry>
       <string>mensamodell.StudentChaotic</string>
-      <string>mensamodell.ObjectStyle2D</string>
-    </entry>
-    <entry>
-      <string>mensamodell.StudentGoalOriented</string>
-      <string>mensamodell.ObjectStyle2D</string>
-    </entry>
-    <entry>
-      <string>mensamodell.Ausgabe</string>
       <string>mensamodell.ObjectStyle2D</string>
     </entry>
   </styles>
   <editedStyles>
     <entry>
+      <string>mensamodell.Student</string>
+      <string>mensamodell.Student.style_1.xml</string>
+    </entry>
+    <entry>
+      <string>mensamodell.Ausgabe</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>mensamodell.StudentGoalOriented</string>
+      <null/>
+    </entry>
+    <entry>
       <string>mensamodell.StudentShortestQueue</string>
       <null/>
     </entry>
@@ -37,19 +49,7 @@
       <null/>
     </entry>
     <entry>
-      <string>mensamodell.Student</string>
-      <string>mensamodell.Student.style_1.xml</string>
-    </entry>
-    <entry>
       <string>mensamodell.StudentChaotic</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>mensamodell.StudentGoalOriented</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>mensamodell.Ausgabe</string>
       <null/>
     </entry>
   </editedStyles>
@@ -63,12 +63,24 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1537401371</hashCode>
+    <hashCode>-1717491120</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>Forest</layoutProjection>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
+    <entry>
+      <string>mensamodell.Student</string>
+      <int>0</int>
+    </entry>
+    <entry>
+      <string>mensamodell.Ausgabe</string>
+      <int>2</int>
+    </entry>
+    <entry>
+      <string>mensamodell.StudentGoalOriented</string>
+      <int>3</int>
+    </entry>
     <entry>
       <string>mensamodell.StudentShortestQueue</string>
       <int>4</int>
@@ -78,20 +90,8 @@
       <int>1</int>
     </entry>
     <entry>
-      <string>mensamodell.Student</string>
-      <int>0</int>
-    </entry>
-    <entry>
       <string>mensamodell.StudentChaotic</string>
       <int>5</int>
-    </entry>
-    <entry>
-      <string>mensamodell.StudentGoalOriented</string>
-      <int>3</int>
-    </entry>
-    <entry>
-      <string>mensamodell.Ausgabe</string>
-      <int>2</int>
     </entry>
   </layerOrder>
   <projections>

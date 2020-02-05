@@ -75,7 +75,7 @@ public class ObjectStyle2D extends DefaultStyleOGL2D {
 	}
 	
 	@Override
-	public VSpatial getVSpatial(Object agent, VSpatial spatial) {
+	public VSpatial getVSpatial(Object agent, VSpatial spatial)	 {
 		
 	    //muss nur 1* aufgerufen werden, wenn noch keine Form festgelegt ist.
 		if (spatial == null) {

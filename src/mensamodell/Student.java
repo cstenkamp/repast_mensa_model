@@ -129,7 +129,7 @@ public class Student {
 	// waehle dein Essen
 	public boolean chooseMeal_2(Ausgabe currentBar) {
 		// warte vor der Ausgabe
-		this.waitticks = currentBar.waitTicks;
+		this.waitticks = currentBar.getWaitTicks();
 
 		//Essen funktioniert so: wenn das Essen vom vegetarismus-Grad zu ihnen passt, nehmen sie es zu einem gewissem Prozentsatz sofort. Wenn sie am Ende
 		//alle Ausgaben abgelaufen sind, ohne was zu nehmen, nehmen sie das ein zufälliges von denen die "am besten" zu ihnen passen.
@@ -214,7 +214,7 @@ public class Student {
 
 	// ==================================== Grid methods ====================================
 	
-	
+	//TODO die wieder in die kinder
 	public Ausgabe move() {
 		Ausgabe nextBar = null;
 		ArrayList<Ausgabe> non_visitedAusgaben = new ArrayList<Ausgabe>();
@@ -230,63 +230,61 @@ public class Student {
 //		System.out.println("#" + this.num +" kind: " + nextBar.kind );
 		return nextBar;
 	}
+	
+	
 	/**
 	 * Methode wird jede Runde ausgefuehrt 
 	 */
 	public void step_grid(){	
 		if (!inQueue) {
-			Ausgabe nextBar;
-			if (this.ThefoodIsOkay) { 					// Wenn das essen gut ist gehe zur Kasse ansonsten hole dir was neues
-				nextBar = sharedstuff.ausgaben.get(0); //TODO war Share.saladList.get(0);
-				if (this.wantSalad && nextBar.getStudentsInQueue() < 15) { // wenn du salat willst gehe zur salatbar & Schlange kleiner 15
-					this.current = nextBar;
-					this.wantSalad = false;
-				} else {								// warst du bereits an der salatbar oder willst du keinen Salat gehe zur kasse
-					nextBar = toKasse();
-					this.current = nextBar;
-				}					
-			} else {									// Such dir deinen Weg wenn du noch kein Essen gefunden hast
-				nextBar = move();
-				if (nextBar != null) {
-					this.visitedAusgaben.add(nextBar);
-					this.current = nextBar;
-					DoYouWantThatFood();				// Willst du das Essen von dieser Bar?
-					// TODO wenn du das Essen nicht nimmst gehe zu einer anderen Bar Do-While Schleife
-					// Jedoch geht man dann direkt zur Ziel Bar
-				}  else {								// Falls alle Bars gesehen gehe zur Kasse
-					nextBar = toKasse();
-//					if (nextBar == null) System.out.println("Kasse not found! #"+ this.num);
-//					else System.out.println("Kasse found #"+ this.num);
-					this.current = nextBar;
+				Ausgabe nextBar;
+				if (this.ThefoodIsOkay) { 					// Wenn das essen gut ist gehe zur Kasse ansonsten hole dir was neues
+					nextBar = sharedstuff.ausgaben.get(0); //TODO war Share.saladList.get(0);
+					if (this.wantSalad && nextBar.getStudentsInQueue() < 15) { // wenn du salat willst & Schlange kleiner 15 gehe zur salatbar 
+						this.current = nextBar;
+						this.wantSalad = false;
+					} else {								// warst du bereits an der salatbar oder willst du keinen Salat gehe zur kasse
+						nextBar = toKasse();
+						this.current = nextBar;
+					}					
+				} else {									// Such dir deinen Weg wenn du noch kein Essen gefunden hast
+					nextBar = move(); //Kann auch zu ner Kasse gehen
+					if (nextBar != null) {
+						this.visitedAusgaben.add(nextBar);
+						this.current = nextBar;
+						DoYouWantThatFood();				// Willst du das Essen von dieser Bar?
+						// TODO wenn du das Essen nicht nimmst gehe zu einer anderen Bar Do-While Schleife
+						// Jedoch geht man dann direkt zur Ziel Bar
+					}  else {								// Falls alle Bars gesehen gehe zur Kasse
+						nextBar = toKasse();
+						this.current = nextBar;
+					}
 				}
-			}
-			int[] lastQueuePos = nextBar.getLastQueuePos(this); // Gehe zum ende der Queue
-			this.inQueue = true;
-			this.nextLocX = lastQueuePos[0];
-			this.nextLocY = lastQueuePos[1];
-			this.waitTicks = nextBar.waitTicks;					// Get waitTicks from current Bar
-//			System.out.println("#"+this.num + " [" +nextLocX+ " , " +nextLocY+ "]");
+				int[] lastQueuePos = nextBar.getLastQueuePos(this); // Gehe zum ende der Queue
+				this.inQueue = true;
+				this.nextLocX = lastQueuePos[0];
+				this.nextLocY = lastQueuePos[1];
+				this.waitTicks = nextBar.getWaitTicks();					// Get waitTicks from current Bar
+	//			System.out.println("#"+this.num + " [" +nextLocX+ " , " +nextLocY+ "]");
 		} else if (current.firstInQueue(this)){					// DU bist der ERSTE in einer Queue	
 //			System.out.println("Warte: " + waitTicks);
-			if (this.waitTicks > 0) {							// Warte vor der Ausgabe
-				this.waitTicks--;
-				this.waiting = true;
-			} else {
-				this.waiting = false;							
-//				System.out.println("First in Queue: #"+this.num + " [" +this.nextLocX+ " , " +this.nextLocY+ "] " + current.kind);
-				this.inQueue = false;
-				current.removeFromQueue();
-				// Leave the Mensa
-//				if (current.kind == Share.kasse) {	// Falls du an einer Kasse stehst verlasse die Mensa //TODO das ist ja jetzt anders
-//					context.remove(this);
-				if (false) {
-					System.out.println("");
-//					System.out.println("#"+this.num +" Der Student hat die Mensa verlassen.");
-				} else {										// Ansonsten suche dir im naechsten Schritt eine neue Ausgabe 
-//					System.out.println("#"+this.num + " Next Bar");
-					this.current = null;
+				if (this.waitTicks > 0) {							// Warte vor der Ausgabe
+					this.waitTicks--;
+					this.waiting = true;
+				} else {
+					this.waiting = false;							
+	//				System.out.println("First in Queue: #"+this.num + " [" +this.nextLocX+ " , " +this.nextLocY+ "] " + current.kind);
+					this.inQueue = false;
+					current.removeFromQueue();
+					// Leave the Mensa
+					if (current instanceof Kasse) {
+						remove_me();
+						return;
+					} else {										// Ansonsten suche dir im naechsten Schritt eine neue Ausgabe 
+						System.out.println("#"+this.num + " Next Bar");
+						this.current = null;
+					}
 				}
-			}
 		} else {												// Du stehst in einer Schlange
 			int[] nextPos = this.current.moveForwardInQueue(this);	// Sieh nach ob du eine Position weiter aufruecken kannst
 			if (nextPos == null) {								// Falls du nicht nachruecken kannst warte einen Zeitschritt
@@ -510,8 +508,10 @@ public class Student {
 	
 	public void remove_me() {
 		System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
-		NdPoint mypos = space.getLocation(this);
-		sharedstuff.mgrid.set((int)mypos.getX(), (int)mypos.getY(), 0);
+		if (space != null && sharedstuff.mgrid != null) {
+			NdPoint mypos = space.getLocation(this);
+			sharedstuff.mgrid.set((int)mypos.getX(), (int)mypos.getY(), 0);
+		}
 		context.remove(this);
 		//sharedstuff.schedule.removeAction(scheduledStep);
 		sharedstuff.remove_these.add(this);

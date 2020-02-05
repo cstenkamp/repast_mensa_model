@@ -10,7 +10,7 @@ public class consts {
 	public final static int SIZE_X = 100;
 	public final static int SIZE_Y = 60;
 	public final static boolean MAY_LEAVE_WITHOUT_FOOD = false;
-	public final static int EINGANG_DELAY = 1000;
+	public static int EINGANG_DELAY;
 	
 
 	//Theken
@@ -56,9 +56,9 @@ public class consts {
 	
 
 	//wait times
-	public static final int waitKasse = 4;
-	public static final int waitAktion = 2;
-	public static final int waitMeat = 2;
-	public static final int waitSalad = 6;
+	public static final int waitKasse = 40;
+	public static final int waitAktion = 20;
+	public static final int waitMeat = 20;
+	public static final int waitSalad = 60;
 	
 }

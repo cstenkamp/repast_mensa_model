@@ -24,7 +24,6 @@ public class Ausgabe {
 	private int essen;
 	public Vector2d ap1 = null;
 	public Vector2d ap2 = null;
-	public int waitTicks;
 	
 	//relevant if grid
 	private Grid<Object> grid;
@@ -62,7 +61,7 @@ public class Ausgabe {
 	
 	
 	//TODO die müssen mal like 10.000 falls nicht mit grid
-	private int getWaitTicks() { //überschrieben in Kasse
+	int getWaitTicks() { //überschrieben in Kasse
 		int wait_time = 0;
 		switch (kind) {
 		case consts.SALATBAR:

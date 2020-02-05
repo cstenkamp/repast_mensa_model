@@ -68,6 +68,8 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		Grid<Object> grid = null;
 		Ausgabe aktion = null;
 		if (USE_GRID) {
+				consts.EINGANG_DELAY = 10;
+			
 				GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);	
 				grid = gridFactory.createGrid("Forest", context, new GridBuilderParameters<Object>(new StickyBorders(), new SimpleGridAdder<Object>(), false, consts.SIZE_X, consts.SIZE_Y));
 				
@@ -79,6 +81,7 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 				Ausgabe salat = new Ausgabe(2, 0, consts.SALATBAR, consts.ESSEN_SALAD, context, grid);
 			
 		} else {
+				consts.EINGANG_DELAY = 1000;
 				
 				// create ContinuousSpace, size: 100x60
 				ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);

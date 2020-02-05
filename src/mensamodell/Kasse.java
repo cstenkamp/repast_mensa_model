@@ -34,7 +34,7 @@ public class Kasse extends Ausgabe { //extends Ausgabe
 	  return false;
   }
   
-  private int getWaitTicks() {
+  int getWaitTicks() {
   	return consts.waitKasse;
   }
   
