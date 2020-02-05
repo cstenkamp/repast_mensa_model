@@ -25,14 +25,14 @@ public class StudentChaotic extends Student {
 	
   @Override
   public String toString() { 
-      return "StudentChaotic(#"+num+")";
+      return "StudentChaotic(#"+num+", "+get_pref_string()+")";
   } 
 	
 	@Override
 	public Ausgabe next_ausgabe() {
 		Ausgabe nextBar = null;
 		ArrayList<Ausgabe> non_visitedAusgaben = new ArrayList<Ausgabe>();
-		for (Ausgabe a : this.barList) {
+		for (Ausgabe a : this.consideredBarsList) {
 			if (!this.visitedAusgaben.contains(a)) {
 				non_visitedAusgaben.add(a);
 			}

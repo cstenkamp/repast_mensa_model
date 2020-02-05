@@ -10,7 +10,6 @@ import repast.simphony.context.Context;
 import repast.simphony.dataLoader.ContextBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ISchedule;
-import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.grid.Grid; 
 
@@ -32,13 +31,12 @@ public class SharedStuff {
 	public ContinuousSpace<Object> space;
 	public Grid<Object> grid;
 
-	public SharedStuff(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext, ContinuousSpace<Object> space, MensaGrid mgrid, double[] fParam) {
+	
+	private void auslager_constr(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext) {
 		this.context = context;
-		this.space = space;
+		this.foodContext = foodContext;
 		this.kassen = kassen;
-		this.foodParam = fParam;
 		this.ausgaben = ausgaben;
-		this.mgrid = mgrid;
 		this.builder = builder;
 		schedule = RunEnvironment.getInstance().getCurrentSchedule(); //schedule.schedule(ScheduleParameters.createOneTime(1.0), new IAction() { public void execute() {} });
 		
@@ -46,18 +44,18 @@ public class SharedStuff {
 		remove_these = new ArrayList<Student>();
 	}
 	
-	public SharedStuff(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext, Grid<Object> grid, MensaGrid mgrid, double[] fParam) {
-		this.context = context;
-		this.grid = grid;
-		this.kassen = kassen;
-		this.ausgaben = ausgaben;
+	
+	public SharedStuff(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext, ContinuousSpace<Object> space, MensaGrid mgrid, double[] fParam) {
+		auslager_constr(builder, context, kassen, ausgaben, foodContext);
+		this.space = space;
 		this.mgrid = mgrid;
-		this.builder = builder;
 		this.foodParam = fParam;
-		schedule = RunEnvironment.getInstance().getCurrentSchedule();
-		
-		studierende = new ArrayList<Student>();
-		remove_these = new ArrayList<Student>();
+	}
+	
+	public SharedStuff(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext, Grid<Object> grid, MensaGrid mgrid, double[] fParam) {
+		auslager_constr(builder, context, kassen, ausgaben, foodContext);
+		this.mgrid = mgrid;
+		this.foodParam = fParam;
 	}
 	
 }

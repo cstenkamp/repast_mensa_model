@@ -24,15 +24,15 @@ public class StudentGoalOriented extends Student {
 	}
 	
   @Override
-  public String toString() { 
-      return "StudentGoalOriented(#"+num+")";
+  public String toString() {
+      return "StudentGoalOriented(#"+num+", "+get_pref_string()+")";
   } 
 	
 	@Override
 	public Ausgabe next_ausgabe() {
 		Ausgabe nextBar = null;
-		int index = this.barList.size();
-		nextBar = this.barList.get(RandomHelper.nextIntFromTo(0, index-1));
+		int index = this.consideredBarsList.size();
+		nextBar = this.consideredBarsList.get(RandomHelper.nextIntFromTo(0, index-1));
 		return nextBar;
 	}
 	

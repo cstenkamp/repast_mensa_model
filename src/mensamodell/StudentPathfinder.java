@@ -1,7 +1,6 @@
 package mensamodell;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +29,7 @@ public class StudentPathfinder extends Student {
 	
   @Override
   public String toString() { 
-      return "StudentPathFinder(#"+num+")";
+      return "StudentPathFinder(#"+num+", "+get_pref_string()+")";
   } 
 
 	public Vector2d move_spatial() {

@@ -15,7 +15,6 @@ import food_objs.VeggieObj;
 import repast.simphony.context.Context;
 import repast.simphony.engine.schedule.ISchedulableAction;
 import repast.simphony.engine.schedule.ScheduleParameters;
-import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
@@ -65,7 +64,7 @@ public class Student {
 	boolean waiting;
 	boolean ThefoodIsOkay;
 	boolean wantSalad;
-	ArrayList<Ausgabe> barList;
+	List<Ausgabe> consideredBarsList;
 	Ausgabe current;
 	int waitTicks;
 	int spentTicks;	 // DATA
@@ -82,8 +81,7 @@ public class Student {
 		this.best_food_so_far = new ArrayList<Ausgabe>();
 		context.add(this);
 		sharedstuff.studierende.add(this);
-		barList = new ArrayList<Ausgabe>();
-		setBarList();
+		consideredBarsList = setConsiredBars();
 	}
 
 
@@ -108,11 +106,22 @@ public class Student {
 		scheduledSteps.add(sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(sharedstuff.schedule.getTickCount()+1, 1), this, "step_grid"));
 	}
 
-
+	
+	protected String get_pref_string() {
+		String foodprefstring;
+		switch (food_preference) {
+			case consts.MEAT: foodprefstring = "Meateater"; break;
+			case consts.VEGGIE: foodprefstring = "Vegetarier"; break;
+			case consts.VEGANER: foodprefstring = "Veganer"; break;
+			default: foodprefstring = "NoPrefEater"; break;
+		}
+		return foodprefstring;
+	}
+	
 
 
 	// waehle dein Essen
-	public boolean chooseMeal_inner(Ausgabe currentBar) {
+	public boolean chooseMeal(Ausgabe currentBar) {
 		// warte vor der Ausgabe (nur im space)
 		this.waitticks = currentBar.getWaitTicks();
 
@@ -173,12 +182,6 @@ public class Student {
 		return false;
 	}
 
-	public boolean chooseMeal(Ausgabe a) {
-		boolean tmp = chooseMeal_inner(a);
-		if (tmp)
-			System.out.println("Student #" + this.num + " hat sich ein Essen gesucht.");
-		return tmp;
-	}
 
 
 	public int getTickCount() {
@@ -210,69 +213,115 @@ public class Student {
 	 * Methode wird jede Runde ausgefuehrt
 	 */
 	public void step_grid(){
-		if (!inQueue) {
-				Ausgabe nextBar;
-				if (this.ThefoodIsOkay) { 					// Wenn das essen gut ist gehe zur Kasse ansonsten hole dir was neues
-					nextBar = sharedstuff.ausgaben.get(0); //TODO war Share.saladList.get(0);
-					if (this.wantSalad && nextBar.getStudentsInQueue() < 15) { // wenn du salat willst & Schlange kleiner 15 gehe zur salatbar
-						this.current = nextBar;
-						this.wantSalad = false;
-					} else {								// warst du bereits an der salatbar oder willst du keinen Salat gehe zur kasse
-						nextBar = toKasse();
-						this.current = nextBar;
-					}
-				} else {									// Such dir deinen Weg wenn du noch kein Essen gefunden hast
-					nextBar = next_ausgabe(); //Kann auch zu ner Kasse gehen
-					if (nextBar != null) {
-						this.visitedAusgaben.add(nextBar);
-						this.current = nextBar;
-						DoYouWantThatFood();				// Willst du das Essen von dieser Bar?
-						// TODO wenn du das Essen nicht nimmst gehe zu einer anderen Bar Do-While Schleife
-						// Jedoch geht man dann direkt zur Ziel Bar somit sind alle goal Oriented weil keiner mehr unn�tig ansteht
-					}  else {								// Falls alle Bars gesehen gehe zur Kasse
-						nextBar = toKasse();
-						this.current = nextBar;
-					}
+		if (!inQueue) {													//WENN NICHT IN SCHLANGE
+				Ausgabe nextBar = next_ausgabe();
+				if (nextBar != null) {
+					this.visitedAusgaben.add(nextBar);
+					this.current = nextBar; 
+				}	else { //dann bist du alle durchgegangen
+					nextBar = toKasse();
+					this.current = nextBar;
 				}
-				int[] lastQueuePos = nextBar.getLastQueuePos(this); // Gehe zum ende der Queue
 				getInQueue();
-				this.nextLocX = lastQueuePos[0];
-				this.nextLocY = lastQueuePos[1];
-				this.waitTicks = nextBar.getWaitTicks();					// Get waitTicks from current Bar
-	//			System.out.println("#"+this.num + " [" +nextLocX+ " , " +nextLocY+ "]");
-		} else if (current.firstInQueue(this)){					// DU bist der ERSTE in einer Queue
-//			System.out.println("Warte: " + waitTicks);
-				if (this.waitTicks > 0) {							// Warte vor der Ausgabe
+		} else if (current.firstInQueue(this)) { //WENN ERSTER IN SCHLANGE
+				if (this.waitTicks > 0) { // Warte vor der Ausgabe
 					this.waitTicks--;
 					this.waiting = true;
-				} else {
-					this.waiting = false;
-	//				System.out.println("First in Queue: #"+this.num + " [" +this.nextLocX+ " , " +this.nextLocY+ "] " + current.kind);
+				} else {  //Du bist dran!!
+					this.waiting = false; 
+					//System.out.println("First in Queue: #"+this.num + " [" +this.nextLocX+ " , " +this.nextLocY+ "] " + current.kind);
 					getOutOfQueue();
-					// Leave the Mensa
-					if (current instanceof Kasse) {
+					if (current instanceof Kasse) { //Wenn du an einer Kasse stehst
 						remove_me();
 						return;
-					} else {										// Ansonsten suche dir im naechsten Schritt eine neue Ausgabe
-						System.out.println("#"+this.num + " Next Bar");
-						this.current = null;
+					} else {							
+						if (chooseMeal(this.current)) {
+							System.out.println(this+" found a meal at "+this.current);
+							this.current = toKasse();
+							getInQueue();
+						} else {
+							this.current = null;							
+						}
 					}
+			  }
+		} else {																//WENN NICHT ERSTER IN SCHLANGE
+				int[] nextPos = this.current.moveForwardInQueue(this);	// Sieh nach ob du eine Position weiter aufruecken kannst
+				if (nextPos == null) {								// Falls du nicht nachruecken kannst warte einen Zeitschritt
+					this.waiting = true;
+				} else {											// Du kannst nachruecken
+					this.waiting = false;
+					this.nextLocX = nextPos[0];
+					this.nextLocY = nextPos[1];
 				}
-		} else {												// Du stehst in einer Schlange
-			int[] nextPos = this.current.moveForwardInQueue(this);	// Sieh nach ob du eine Position weiter aufruecken kannst
-			if (nextPos == null) {								// Falls du nicht nachruecken kannst warte einen Zeitschritt
-				this.waiting = true;
-			} else {											// Du kannst nachruecken
-				this.waiting = false;
-				this.nextLocX = nextPos[0];
-				this.nextLocY = nextPos[1];
-			}
 		}
 		update();
 	} // End Of Step.
+	
+	
+//				if (this.ThefoodIsOkay) { 					// Wenn das essen gut ist gehe zur Kasse ansonsten hole dir was neues
+//					nextBar = sharedstuff.ausgaben.get(0); //TODO war Share.saladList.get(0);
+//					if (this.wantSalad && nextBar.getStudentsInQueue() < 15) { // wenn du salat willst & Schlange kleiner 15 gehe zur salatbar
+//						this.current = nextBar;
+//						this.wantSalad = false;
+//					} else {								// warst du bereits an der salatbar oder willst du keinen Salat gehe zur kasse
+//						nextBar = toKasse();
+//						this.current = nextBar;
+//					}
+//				} else {									// Such dir deinen Weg wenn du noch kein Essen gefunden hast
+//					nextBar = next_ausgabe(); //Kann auch zu ner Kasse gehen
+//					if (nextBar != null) {
+//						this.visitedAusgaben.add(nextBar);
+//						this.current = nextBar;
+//						DoYouWantThatFood();				// Willst du das Essen von dieser Bar?
+//						// TODO wenn du das Essen nicht nimmst gehe zu einer anderen Bar Do-While Schleife
+//						// Jedoch geht man dann direkt zur Ziel Bar somit sind alle goal Oriented weil keiner mehr unn�tig ansteht
+//					}  else {								// Falls alle Bars gesehen gehe zur Kasse
+//						nextBar = toKasse();
+//						this.current = nextBar;
+//					}
+//				}
+//				int[] lastQueuePos = nextBar.getLastQueuePos(this); // Gehe zum ende der Queue
+//				getInQueue();
+//				this.nextLocX = lastQueuePos[0];
+//				this.nextLocY = lastQueuePos[1];
+//				this.waitTicks = nextBar.getWaitTicks();					// Get waitTicks from current Bar
+//	//			System.out.println("#"+this.num + " [" +nextLocX+ " , " +nextLocY+ "]");
+//		} else if (current.firstInQueue(this)){					// DU bist der ERSTE in einer Queue
+////			System.out.println("Warte: " + waitTicks);
+//				if (this.waitTicks > 0) {							// Warte vor der Ausgabe
+//					this.waitTicks--;
+//					this.waiting = true;
+//				} else {
+//					this.waiting = false; 
+//	//				System.out.println("First in Queue: #"+this.num + " [" +this.nextLocX+ " , " +this.nextLocY+ "] " + current.kind);
+//					getOutOfQueue();
+//					// Leave the Mensa
+//					if (current instanceof Kasse) {
+//						remove_me();
+//						return;
+//					} else {										// Ansonsten suche dir im naechsten Schritt eine neue Ausgabe
+//						System.out.println("#"+this.num + " Next Bar");
+//						this.current = null;
+//					}
+//				}
+//		} else {												// Du stehst in einer Schlange
+//			int[] nextPos = this.current.moveForwardInQueue(this);	// Sieh nach ob du eine Position weiter aufruecken kannst
+//			if (nextPos == null) {								// Falls du nicht nachruecken kannst warte einen Zeitschritt
+//				this.waiting = true;
+//			} else {											// Du kannst nachruecken
+//				this.waiting = false;
+//				this.nextLocX = nextPos[0];
+//				this.nextLocY = nextPos[1];
+//			}
+//		}
 
 
 	public void getInQueue() {
+		int[] lastQueuePos = this.current.getLastQueuePos(this); // Gehe zum ende der Queue
+		this.nextLocX = lastQueuePos[0];
+		this.nextLocY = lastQueuePos[1];
+		this.waitTicks = this.current.getWaitTicks();	
+		
 		inQueue = true;
 		//wenn du in der queue bist sollst du nicht mehr eigenständiges movement machen sondern kriegst von der schlange immer aufs neue gesagt dass du dich 1x bewegen darst.
 		//warum? damit keine lücken in der schlange entstehen, per prioritäten bewegt sich der erste zuerst, ...
@@ -317,15 +366,18 @@ public class Student {
 		else this.wantSalad = false;
 	}
 
-	public void setBarList() {
+	public List<Ausgabe> setConsiredBars() {
+		List<Ausgabe> res = new ArrayList<Ausgabe>();
 		List<Integer> temp = new ArrayList<Integer>();
 		if (this.food_preference == consts.MEAT) temp = consts.meatlover;
 		else if (this.food_preference == consts.VEGGIE) temp = consts.vegetarian;
 		else if (this.food_preference == consts.VEGANER) temp = consts.vegan;
 		else temp = consts.noPref;
 		for (Ausgabe bar : sharedstuff.ausgaben) {
-			if (temp.contains(bar.essen)) this.barList.add(bar);
+			if (temp.contains(bar.essen)) 
+				res.add(bar);
 		}
+		return res;
 	}
 
 	// DATA
