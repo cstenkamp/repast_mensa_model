@@ -14,8 +14,8 @@ import repast.simphony.space.continuous.ContinuousSpace;
 public class StudentGoalOriented extends Student {
 
 
-	public StudentGoalOriented(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
-		super(s, c, num, sharedstuff, fp);
+	public StudentGoalOriented(int num, SharedStuff sharedstuff, int fp, Context<Object> context, ContinuousSpace<Object> s) {
+		super(num, sharedstuff, fp, context, s);
 	}
 	
 	public Object next_aim() {
@@ -51,7 +51,9 @@ public class StudentGoalOriented extends Student {
 			} else {
 				best_food_so_war_was = -1;
 				int index = RandomHelper.nextIntFromTo(0, best_food_so_far.size()-1);
-				this.tempDestination = best_food_so_far.get(index);
+				if (best_food_so_far.size() > 0)
+					this.tempDestination = best_food_so_far.get(index);
+				//TODO was ist denn else? :D warum hat ers nicht gesetzt?
 				return this.tempDestination;
 			}			
 		}

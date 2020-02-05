@@ -55,5 +55,10 @@ public class consts {
 	public final static int GRID_AUSGABE = 4;
 	
 
+	//wait times
+	public static final int waitKasse = 4;
+	public static final int waitAktion = 2;
+	public static final int waitMeat = 2;
+	public static final int waitSalad = 6;
 	
 }

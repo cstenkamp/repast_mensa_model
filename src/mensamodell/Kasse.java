@@ -6,7 +6,7 @@ import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.visualization.visualization3D.ShapeFactory;
 
-public class Kasse {
+public class Kasse { //exends Ausgabe
 	int x;
 	int y;
 	private ContinuousSpace space;
@@ -19,14 +19,6 @@ public class Kasse {
 		this.space = s;
 	}
 	
-  public Shape3D getVSpatial(Object agent, Shape3D spatial) { 
-    if (spatial == null) {
-      
-    }
-    spatial = ShapeFactory.createCube(4, 16); // You can use it to create circles, rectangles, images, or any shape by passing in a java.awt.Shape
-    return spatial;
-  }
-
   // Prueft ob studenten entfernt werden koennen
   public boolean pay(Student s) {
 	  ContinuousWithin StudentPayRange = new ContinuousWithin(space, this, payRange);
@@ -38,4 +30,15 @@ public class Kasse {
 		}
 	  return false;
   }
+  
+  private int getWaitTicks() {
+  	return consts.waitKasse;
+  }
+  
+	// In welche Richtung ausgehend von der Position der Ausgabe geht die Schlange
+	private int[] getShift(int kind) {
+		return new int[] {0, -1};
+	}
+  
+  
 }

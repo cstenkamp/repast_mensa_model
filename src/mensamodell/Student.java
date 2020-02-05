@@ -13,8 +13,11 @@ import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
+import repast.simphony.space.grid.Grid;
 
 public class Student {
+	
+	//TODO den walking-studenten hiervon erben lassen bzw irgendwie magically dafür sorgen dass das walken woanders steht
 
 	// Class variables
 	ContinuousSpace space;	// Der kontinuierliche Raum wird in dieser Variablen gespeichert.
@@ -24,7 +27,6 @@ public class Student {
 	float aversionradius = 1.2f;
 	Context<Object> context;
 	List<Ausgabe> visitedAusgaben; 		// Liste der Besuchten Ausgaben
-	int waitticks;
 	SharedStuff sharedstuff; //among others: list of all kassen & theken for faster access
 	public int num; //number of the student
 	public Vector2d directlyToKassa = new Vector2d(-1.0,-1.0); // Speichert die ausgewaehlte Kasse
@@ -32,7 +34,9 @@ public class Student {
 	protected Ausgabe tempDestination;
 	protected Object closestkasse;
 	protected Boolean hungry;
-	private int tickCount;
+
+	int waitticks;
+	private int tickCount = 0;
 	
 //wenn er gegen wände läuft läuft er in eine zufällige richtung. damit die nicht jigglet muss er sie speichern.
 	private Vector2d keepWalkingdirection =  new Vector2d(0, 0); 
@@ -45,27 +49,69 @@ public class Student {
 	protected int best_food_so_war_was = 999;
 	
 	
+// im grid	
+	Grid<Object> grid;
+	int nextLocX;
+	int nextLocY;
+	boolean inQueue;
+	boolean waiting;
+	boolean ThefoodIsOkay;
+	boolean wantSalad;
+	Ausgabe current;
+	int waitTicks;
+	int spentTicks;	 // DATA
+//	static ArrayList<Student> studentList = new ArrayList<Student>();	// DATA
 	
-	public Student(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
-		this.space = s;
+	
+	
+	
+	public Student(int num, SharedStuff sharedstuff, int fp, Context<Object> context, ContinuousSpace<Object> s) {
 		this.food_preference = fp;
-		this.velocity = new Vector2d(0,0);
-		this.visitedAusgaben = new ArrayList<>();
-		this.context = c;
+		this.visitedAusgaben = new ArrayList<Ausgabe>();
+		this.context = context;
 		this.waitticks = 0;
 		this.sharedstuff = sharedstuff;
 		this.num = num;
-		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
 		this.hungry = true;
-		this.tickCount = 0;
 		this.best_food_so_far = new ArrayList<Ausgabe>();
+
+		this.space = s;
+		this.velocity = new Vector2d(0,0);
+		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
 	}
 
+	
+	public Student(int num, SharedStuff sharedstuff, int fp, Context<Object> context, Grid<Object> g, int x, int y) {
+		this.food_preference = fp;
+		this.visitedAusgaben = new ArrayList<Ausgabe>();
+		this.context = context;
+		this.waitticks = 0;
+		this.sharedstuff = sharedstuff;
+		this.num = num;
+		this.hungry = true;
+		this.best_food_so_far = new ArrayList<Ausgabe>();
+		
+		this.grid = g;
+		this.inQueue = false;
+		this.waiting = false;
+		this.current = null;
+		this.nextLocX = x;
+		this.nextLocY = y;
+//		this.ThefoodIsOkay = false;
+//		this.wantSalad = false;
+//		this.spentTicks = 0;							// DATA
+//		DoYouWantSalad();								// Entscheide zu beginn ob du Salat willst.
+		
+	}
+	
+	
+	
+	
 	
 	// waehle dein Essen
 	public boolean chooseMeal_2(Ausgabe currentBar) {
 		// warte vor der Ausgabe
-		this.waitticks = currentBar.wait_time;
+		this.waitticks = currentBar.waitTicks;
 
 		//Essen funktioniert so: wenn das Essen vom vegetarismus-Grad zu ihnen passt, nehmen sie es zu einem gewissem Prozentsatz sofort. Wenn sie am Ende
 		//alle Ausgaben abgelaufen sind, ohne was zu nehmen, nehmen sie das ein zufälliges von denen die "am besten" zu ihnen passen.
@@ -138,6 +184,24 @@ public class Student {
 	}
 		
 	
+	//to be overridden
+	public Vector2d move() {
+		return new Vector2d(0,0);
+	}
+	
+	
+	public int getTickCount() {
+		return this.tickCount;
+	}
+	
+	
+	
+	
+	
+	
+	
+	// ==================================== Walking methods ==================================== 
+	
 	public Vector2d get_dist_to(Object obj) throws NullArgumentException {
 		if (!(obj instanceof Ausgabe) && !(obj instanceof Kasse)) {
 			throw new NullArgumentException();
@@ -151,12 +215,12 @@ public class Student {
 	}
 	
 	// sucht die naechste kasse
-	public Object get_closest(List lst) {
+	public <T> T get_closest(List<T> lst) {
 		Vector2d distXY = new Vector2d(999999,999999);
 		Vector2d tmpdist = null;
-		Object res = null;
+		T res = null;
 		try {
-			for (Object obj : lst) {
+			for (T obj : lst) {
 				tmpdist = get_dist_to(obj);
 				if (tmpdist.length() < distXY.length()) {
 					distXY = tmpdist;
@@ -166,13 +230,8 @@ public class Student {
 		} catch (ArithmeticException e) {
 			return res;
 		}
-
-
 		return res;
 	}
-	
-	
-	
 	
 	
 	public Vector2d walk_but_dont_bump(Object to_obj) {
@@ -225,10 +284,6 @@ public class Student {
 	}
 	
 	
-	
-	
-	
-
 	// Hier wird geprueft ob wir vor einer Ausgabe stehen.
 	public Ausgabe at_bar() {
 		// pruefe ob du bereits nah genug bist um Essen zu nehmen
@@ -283,6 +338,7 @@ public class Student {
 		if (avoidance != null) {
 			velocity.setX(-avoidance.x);
 			velocity.setY(-avoidance.y);
+			do_move();
 			return;
 		} 
 		
@@ -291,6 +347,7 @@ public class Student {
 		if (movement != null) {
 			velocity.setX(movement.x);
 			velocity.setY(movement.y);
+			do_move();
 			return;
 		} 
 		
@@ -302,6 +359,7 @@ public class Student {
 			NdPoint mypos = space.getLocation(this);
 			sharedstuff.grid.set((int)mypos.getX(), (int)mypos.getY(), 0);
 			context.remove(this);
+			return;
 		} else {
 			this.tempKasse = to_kasse();
 			this.directlyToKassa = walk_but_dont_bump(this.tempKasse);
@@ -310,17 +368,15 @@ public class Student {
 				velocity.setY(this.directlyToKassa.y);
 			}
 		}
+		do_move();
+		
 	}
 
-	//to be overridden
-		public Vector2d move() {
-			return new Vector2d(0,0);
-		}
+
 
 	/*
 	 * Eigentliche Bewegung zwischen den Zeitschritten.
 	 */
-	@ScheduledMethod(start=0.5, interval=1)
 	public void do_move(){
 		if (waitticks > 0) {
 			waitticks --;
@@ -384,7 +440,6 @@ public class Student {
 		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, consts.GRID_STUDENT);
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
-
 	
 	
 	public Vector2d scaleAndNormalize(Vector2d vel) {
@@ -396,9 +451,6 @@ public class Student {
 		vel.scale(walking_speed);
 		return vel;
 	}
-	
-	public int getTickCount() {
-		return this.tickCount;
-	}
+
 	
 } // END of Class.

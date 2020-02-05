@@ -21,8 +21,8 @@ public class StudentPathfinder extends Student {
 	private int random;
 
 
-	public StudentPathfinder(ContinuousSpace s, Context c, int num, SharedStuff sharedstuff, int fp) {
-		super(s, c, num, sharedstuff, fp);
+	public StudentPathfinder(int num, SharedStuff sharedstuff, int fp, Context<Object> context, ContinuousSpace<Object> s) {
+		super(num, sharedstuff, fp, context, s);
 		this.random = RandomHelper.nextIntFromTo(0,2); //er geht entweder die standard-route von vorne nach durch, oder von hinten nach vorne, oder komplett random (1/3, 1/3, 1/3)
 		this.ausgaben = new ArrayList<Ausgabe>();
 		generatePath();

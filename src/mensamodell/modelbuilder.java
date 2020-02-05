@@ -33,8 +33,8 @@ public class modelbuilder implements ContextBuilder<Object>{
 		double goalProp = (Double) param.getValue("goalProp");
 		double pathProp = 1.0 - chaoticProp - goalProp; 
 		
-		Object[] proportions = new Object[] {veggieProp, veganProp, meatProp, noPrefProp};
-		Object[] proportionsWalk = new Object[] {chaoticProp, goalProp, pathProp};
+		Double[] proportions = new Double[] {veggieProp, veganProp, meatProp, noPrefProp};
+		Double[] proportionsWalk = new Double[] {chaoticProp, goalProp, pathProp};
 
 		// create ContinuousSpace, size: 100x60
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
@@ -115,9 +115,9 @@ public class modelbuilder implements ContextBuilder<Object>{
 //		grid.print();
 
 		SharedStuff sharedstuff = new SharedStuff(context, space, kassen, ausgaben, grid);
-		MensaEingang eingang = new MensaEingang(initialNumStud, proportions, proportionsWalk, context, space, sharedstuff); //TODO darauf achten dass man immer 100 studenten drin hat bspw
+		MensaEingang eingang = new MensaEingang((float)(consts.SIZE_X*2.5/5), (float)(consts.SIZE_Y-5), initialNumStud, proportions, proportionsWalk, context, space, sharedstuff); //TODO darauf achten dass man immer 100 studenten drin hat bspw
 		context.add(eingang);
-		space.moveTo(eingang, consts.SIZE_X*2.5/5,consts.SIZE_Y-5);
+		space.moveTo(eingang, eingang.x, eingang.y);
 		
 		
 		return context;
@@ -125,7 +125,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 
 	
 	public void addThekeAusgabe(int theke_x, int theke_y, int ausgabe_x_diff, int ausgabe_y_diff, int kind, ContinuousSpace s, int e, Context context) {
-		Ausgabe ausgabe = new Ausgabe(theke_x+ausgabe_x_diff, theke_y+ausgabe_y_diff, kind, s, e);
+		Ausgabe ausgabe = new Ausgabe(theke_x+ausgabe_x_diff, theke_y+ausgabe_y_diff, kind, e, s);
 		Theke theke = new Theke(theke_x, theke_y, kind, s);
 		context.add(theke);
 		s.moveTo(theke, theke.x, theke.y);
@@ -134,7 +134,7 @@ public class modelbuilder implements ContextBuilder<Object>{
 	}
 	
 	public void addAusgabe(int x, int y, int kind, ContinuousSpace s, int e, Context context) {
-		Ausgabe ausgabe = new Ausgabe(x, y, kind, s, e);
+		Ausgabe ausgabe = new Ausgabe(x, y, kind, e, s);
 		context.add(ausgabe);
 		s.moveTo(ausgabe, ausgabe.x, ausgabe.y);
 	}
