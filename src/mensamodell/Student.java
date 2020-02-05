@@ -68,7 +68,6 @@ public class Student {
 	Ausgabe current;
 	int waitTicks;
 	int spentTicks;	 // DATA
-//	static ArrayList<Student> studentList = new ArrayList<Student>();	// DATA
 	
 	
 	
@@ -87,15 +86,14 @@ public class Student {
 		this.velocity = new Vector2d(0,0);
 		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
 		
-
-		scheduledStep = sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(sharedstuff.schedule.getTickCount()+1, 1), this, "step");
-    //TODO Es gibt priorities in den schedules!! https://stackoverflow.com/a/57774003
-
 		context.add(this);	
 		sharedstuff.studierende.add(this);
 		float x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);
 		float y = consts.SIZE_Y-5;
 		space.moveTo(this, x, y); // add students to space or grid
+
+		scheduledStep = sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(sharedstuff.schedule.getTickCount()+1, 1), this, "step");
+    //TODO Es gibt priorities in den schedules!! https://stackoverflow.com/a/57774003
 	}
 
 	
@@ -201,16 +199,8 @@ public class Student {
 	}
 	
 
-	// der student geht zur Kasse
-	public Kasse to_kasse() {
-		return get_closest(sharedstuff.kassen);
-	}
 		
 	
-	//to be overridden
-	public Vector2d move_spatial() {
-		return new Vector2d(0,0);
-	}
 	
 	
 	public int getTickCount() {
@@ -218,12 +208,12 @@ public class Student {
 	}
 
 	// ==================================== Grid methods ====================================
-	
+
+	//to be overridden	
 	public Ausgabe next_ausgabe() {
 		return null;
 	}
-	
-	
+
 	/**
 	 * Methode wird jede Runde ausgefuehrt 
 	 */
@@ -330,6 +320,20 @@ public class Student {
 	}
 
 	// ==================================== Walking methods ==================================== 
+	
+	
+
+	//to be overridden
+	public Vector2d move_spatial() {
+		return new Vector2d(0,0);
+	}
+	
+	
+	// der student geht zur Kasse
+	public Kasse to_kasse() {
+		return get_closest(sharedstuff.kassen);
+	}
+	
 	
 	public Vector2d get_dist_to(Object obj) throws NullArgumentException {
 		if (!(obj instanceof Ausgabe) && !(obj instanceof Kasse)) {
