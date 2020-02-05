@@ -19,7 +19,7 @@ public class Ausgabe {
 	int y;
 	public int kind;
 	public Vector2d size;
-	private ContinuousSpace space;
+	protected ContinuousSpace space;
 	private double barRange = 5;
 	private int essen;
 	public Vector2d ap1 = null;
@@ -36,23 +36,28 @@ public class Ausgabe {
 		return studentsInQueue.size(); //TODO do
 	}
 	
-	public Ausgabe(int x, int y, int kind, int food_here, ContinuousSpace s) {
+	public Ausgabe(int x, int y, int kind, int food_here, Context<Object> context, ContinuousSpace s) {
 		this.x = x;
 		this.y = y;
-		this.space = s;
+		space = s;
 		this.kind = kind;
 		this.studentsInQueue = new ArrayList<Student>();
 		this.shift = null;
+		context.add(this);
+		space.moveTo(this, x, y);
 	}
 	
 	//für Grid
-	public Ausgabe(int x, int y, int kind, int food_here, Grid<Object> grid){
+	public Ausgabe(int x, int y, int kind, int food_here, Context<Object> context, Grid<Object> grid){
 		this.x = x;
 		this.y = y;
-		this.grid = grid;
 		this.kind = kind;
+		this.essen = food_here;
+		this.grid = grid;
 		this.studentsInQueue = new ArrayList<Student>();
 		this.shift = getShift(this.kind);
+		context.add(this);
+		grid.moveTo(this, x, y);
 	}
 	
 	
@@ -96,7 +101,7 @@ public class Ausgabe {
 	
 	
 	// In welche Richtung ausgehend von der Position der Ausgabe geht die Schlange
-	private int[] getShift(int kind) {
+	protected int[] getShift(int kind) {
 		if (kind == consts.AKTIONSTHEKE || kind == consts.FLEISCHTHEKE|| kind == consts.SALATBAR) return new int[] {0, 1};
 		//if (kind == Share.kasse) return new int[] {0, -1}; überschrieben in Kasse
 		return new int[] {0,0}; //TODO andere Theken

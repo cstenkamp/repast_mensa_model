@@ -194,7 +194,7 @@ public class Student {
 
 	// der student geht zur Kasse
 	public Kasse to_kasse() {
-		return (Kasse) get_closest(sharedstuff.kassen);
+		return get_closest(sharedstuff.kassen);
 	}
 		
 	
@@ -207,13 +207,116 @@ public class Student {
 	public int getTickCount() {
 		return this.tickCount;
 	}
+
+	// ==================================== Grid methods ====================================
 	
-	
-	
-	
-	
-	
-	
+	/**
+	 * Methode wird jede Runde ausgefuehrt 
+	 */
+//	public void step_grid(){	
+//		if (!inQueue) {
+//			Ausgabe nextBar;
+//			if (this.ThefoodIsOkay) { 					// Wenn das essen gut ist gehe zur Kasse ansonsten hole dir was neues
+//				nextBar = Share.saladList.get(0);
+//				if (this.wantSalad && nextBar.getQueueSize() < 15) { // wenn du salat willst gehe zur salatbar & Schlange kleiner 15
+//					this.current = nextBar;
+//					this.wantSalad = false;
+//				} else {								// warst du bereits an der salatbar oder willst du keinen Salat gehe zur kasse
+//					nextBar = toKasse();
+//					this.current = nextBar;
+//				}					
+//			} else {									// Such dir deinen Weg wenn du noch kein Essen gefunden hast
+//				nextBar = move();
+//				if (nextBar != null) {
+//					this.visitedAusgaben.add(nextBar);
+//					this.current = nextBar;
+//					DoYouWantThatFood();				// Willst du das Essen von dieser Bar?
+//					// TODO wenn du das Essen nicht nimmst gehe zu einer anderen Bar Do-While Schleife
+//					// Jedoch geht man dann direkt zur Ziel Bar
+//				}  else {								// Falls alle Bars gesehen gehe zur Kasse
+//					nextBar = toKasse();
+////					if (nextBar == null) System.out.println("Kasse not found! #"+ this.num);
+////					else System.out.println("Kasse found #"+ this.num);
+//					this.current = nextBar;
+//				}
+//			}
+//			int[] lastQueuePos = nextBar.getLastQueuePos(this); // Gehe zum ende der Queue
+//			this.inQueue = true;
+//			this.nextLocX = lastQueuePos[0];
+//			this.nextLocY = lastQueuePos[1];
+//			this.waitTicks = nextBar.waitTicks;					// Get waitTicks from current Bar
+////			System.out.println("#"+this.num + " [" +nextLocX+ " , " +nextLocY+ "]");
+//		} else if (current.firstInQueue(this)){					// DU bist der ERSTE in einer Queue	
+////			System.out.println("Warte: " + waitTicks);
+//			if (this.waitTicks > 0) {							// Warte vor der Ausgabe
+//				this.waitTicks--;
+//				this.waiting = true;
+//			} else {
+//				this.waiting = false;							
+////				System.out.println("First in Queue: #"+this.num + " [" +this.nextLocX+ " , " +this.nextLocY+ "] " + current.kind);
+//				this.inQueue = false;
+//				current.removeFromQueue();
+//				// Leave the Mensa
+//				if (current.kind == Share.kasse) {	// Falls du an einer Kasse stehst verlasse die Mensa
+//					context.remove(this);
+////					System.out.println("#"+this.num +" Der Student hat die Mensa verlassen.");
+//				} else {										// Ansonsten suche dir im naechsten Schritt eine neue Ausgabe 
+////					System.out.println("#"+this.num + " Next Bar");
+//					this.current = null;
+//				}
+//			}
+//		} else {												// Du stehst in einer Schlange
+//			int[] nextPos = this.current.moveForwardInQueue(this);	// Sieh nach ob du eine Position weiter aufruecken kannst
+//			if (nextPos == null) {								// Falls du nicht nachruecken kannst warte einen Zeitschritt
+//				this.waiting = true;
+//			} else {											// Du kannst nachruecken
+//				this.waiting = false;
+//				this.nextLocX = nextPos[0];
+//				this.nextLocY = nextPos[1];
+//			}
+//		}	
+//	} // End Of Step.
+//	
+//	
+//
+//	/**
+//	 * Status "updaten" immer zum halben Schritt.
+//	 */
+//	@ScheduledMethod(start = 1.5, interval = 1.0)
+//	public void update(){
+//		this.spentTicks++;									// DATA
+//		if (this.waiting) return;							// return wenn du warten musst
+//		if (this.current == null) return;					// return wenn du an erster Stelle standest und erst im naechsten Schritt eine neue Loc bekommst
+//		grid.moveTo(this, this.nextLocX, this.nextLocY);	// Bewege dich zu deinem naechsten Ziel
+//	}	
+//	
+//	public Ausgabe toKasse() {
+//		//TODO nicht random sondern die kürzeste?
+//		int index = Share.kassenList.size();
+//		Ausgabe randomCheckout = Share.kassenList.get(RandomHelper.nextIntFromTo(0, index-1)); // zufaellige Wahl der Kasse
+//		return randomCheckout;
+//	}	
+//	
+//	public void DoYouWantThatFood() {
+//		if (RandomHelper.nextIntFromTo(0, 3) == 0) this.ThefoodIsOkay = true;	// Entscheide dich mit 1/4 ob du das Essen nimmst.
+//		else this.ThefoodIsOkay = false;
+//	}
+//	
+//	// TODO Wenn die schlange an der Salatbar zu lang ist setze wantSalad auf false
+//	public void DoYouWantSalad() {
+//		if (RandomHelper.nextIntFromTo(0, 1) == 0) this.wantSalad = true; 		// Entscheide dich mit 1/2 ob du Salat willst
+//		else this.wantSalad = false;
+//	}
+//	
+//	// DATA
+//	public double calcMeanSpentTicks() {
+//		int sum = 0;
+//		for (Student s : sharedstuff.studierende) {
+//			sum = sum + s.spentTicks;
+//		}
+//		return sum / sharedstuff.studierende.size();		// Returns Mean 
+//	}
+
 	// ==================================== Walking methods ==================================== 
 	
 	public Vector2d get_dist_to(Object obj) throws NullArgumentException {
@@ -252,7 +355,7 @@ public class Student {
 		Vector2d distance = get_dist_to(to_obj);
 		NdPoint mypos = space.getLocation(this);
 		NdPoint thatpos = space.getLocation(to_obj);
-		List<Integer> between = sharedstuff.grid.Bresenham((int)mypos.getX(), (int)mypos.getY(), (int)thatpos.getX(), (int)thatpos.getY());
+		List<Integer> between = sharedstuff.mgrid.Bresenham((int)mypos.getX(), (int)mypos.getY(), (int)thatpos.getX(), (int)thatpos.getY());
 		between = between.subList(1, between.size()-1);
 		if (between.size() == 0) return distance;
 		//between sind die grid-punkte die er crossen müsste um dahin zu kommen).
@@ -386,7 +489,7 @@ public class Student {
 	public void remove_me() {
 		System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
 		NdPoint mypos = space.getLocation(this);
-		sharedstuff.grid.set((int)mypos.getX(), (int)mypos.getY(), 0);
+		sharedstuff.mgrid.set((int)mypos.getX(), (int)mypos.getY(), 0);
 		context.remove(this);
 		//sharedstuff.schedule.removeAction(scheduledStep);
 		sharedstuff.remove_these.add(this);
@@ -404,13 +507,13 @@ public class Student {
 		}
 		velocity = scaleAndNormalize(velocity);		
 		NdPoint pos = space.getLocation(this);
-		sharedstuff.grid.set((int)pos.getX(), (int)pos.getY(), 0);
+		sharedstuff.mgrid.set((int)pos.getX(), (int)pos.getY(), 0);
 		Vector2d potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
 		//System.out.println("Student #"+num+" did something"+pos.getX()+" "+pos.getY()+" velocity "+velocity.x+" "+velocity.y);
 		if (potentialcoords.x <= 0 || potentialcoords.x >= consts.SIZE_X || potentialcoords.y <= 0 || potentialcoords.y >= consts.SIZE_Y){
 			throw new java.lang.RuntimeException("Student ausserhalb der Mensa.");
 		}
-		int potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
+		int potential_grid_pos = sharedstuff.mgrid.get((int)potentialcoords.x, (int)potentialcoords.y);
 		if (potential_grid_pos == consts.GRID_STUDENT) {//studenten sind +2, also ist dann schon wer da
 			//throw new java.lang.RuntimeException("Student laeuft auf anderen Studenten!");
 		}
@@ -441,10 +544,10 @@ public class Student {
 						triedkeepwalking = true;
 					}
 				} else {
-					int leftofthat  = sharedstuff.grid.get((int)potentialcoords.x-1, (int)potentialcoords.y);
-					int rightofthat = sharedstuff.grid.get((int)potentialcoords.x+1, (int)potentialcoords.y);
-					int topofthat    = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y-1);
-					int bottomofthat = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y+1); //TODO fehler fangen
+					int leftofthat  = sharedstuff.mgrid.get((int)potentialcoords.x-1, (int)potentialcoords.y);
+					int rightofthat = sharedstuff.mgrid.get((int)potentialcoords.x+1, (int)potentialcoords.y);
+					int topofthat    = sharedstuff.mgrid.get((int)potentialcoords.x, (int)potentialcoords.y-1);
+					int bottomofthat = sharedstuff.mgrid.get((int)potentialcoords.x, (int)potentialcoords.y+1); //TODO fehler fangen
 					if ((leftofthat > consts.GRID_STUDENT) || (rightofthat > consts.GRID_STUDENT)) {
 						velocity.y = 0;
 					}
@@ -455,9 +558,9 @@ public class Student {
 			}
 			velocity = scaleAndNormalize(velocity);
 			potentialcoords = new Vector2d(pos.getX()+velocity.x, pos.getY()+velocity.y);
-			potential_grid_pos = sharedstuff.grid.get((int)potentialcoords.x, (int)potentialcoords.y);
+			potential_grid_pos = sharedstuff.mgrid.get((int)potentialcoords.x, (int)potentialcoords.y);
 		}
-		sharedstuff.grid.set((int)potentialcoords.x, (int)potentialcoords.y, consts.GRID_STUDENT);
+		sharedstuff.mgrid.set((int)potentialcoords.x, (int)potentialcoords.y, consts.GRID_STUDENT);
 		space.moveByDisplacement(this, velocity.x, velocity.y);
 	}
 	

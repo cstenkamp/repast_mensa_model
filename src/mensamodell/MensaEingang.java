@@ -46,6 +46,8 @@ public class MensaEingang {
 		this.sharedstuff = sharedstuff;
 		this.foodPrefArray = createFoodPref(propEat);
 		this.walkStyleArray = createWalkStyle(propWalk);
+		context.add(this);
+		space.moveTo(this, x, y);
 	}
 		
 	//Konstruktor für Grid
@@ -150,12 +152,12 @@ private Integer[] createWalkStyle(Double[] prop) {
 			}
 
 			addedStudents++;
-			System.out.println("Student #"+addedStudents+"@ "+sharedstuff.schedule.getTickCount()+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented " : stud instanceof StudentChaotic ? "Chaotic " : "Pathfinder ")+
+			System.out.println("Student #"+addedStudents+" @"+(int)sharedstuff.schedule.getTickCount()+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented " : stud instanceof StudentChaotic ? "Chaotic " : "Pathfinder ")+
 					(fp == consts.MEAT ? "Fleischesser" : fp == consts.VEGGIE ? "Vegetarier" : fp == consts.VEGANER ? "Veganer" : "Ohne Präferenz"));
 		}
 
 		if (sharedstuff.schedule.getTickCount()/consts.EINGANG_DELAY % 100 == 0) {
-			sharedstuff.grid.print();
+			sharedstuff.mgrid.print();
 		}
 
 	}
