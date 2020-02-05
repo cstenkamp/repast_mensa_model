@@ -28,7 +28,7 @@ import repast.simphony.engine.schedule.IAction;
 public class modelbuilder extends DefaultContext implements ContextBuilder<Object>{
 
 
-	static boolean USE_GRID = false;
+	static boolean USE_GRID = true;
 	
 	SharedStuff sharedstuff;
 	@Override
