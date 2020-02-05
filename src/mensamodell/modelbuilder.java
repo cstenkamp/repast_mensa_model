@@ -52,6 +52,9 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		Double[] proportionsEat = new Double[] {veggieProp, veganProp, meatProp, noPrefProp};
 		Double[] proportionsWalk = new Double[] {chaoticProp, goalProp, pathProp};
 
+		consts.SIZE_X = (int) param.getValue("size_x");
+		consts.SIZE_Y = (int) param.getValue("size_y");
+		
 		
 		// Aktionstheke ist zufaellig vegan, veggie, salad oder meat 
 		int aktionsessen = RandomHelper.nextIntFromTo(0, 3);

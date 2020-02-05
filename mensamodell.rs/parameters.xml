@@ -6,7 +6,7 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"	
 		/>
 				<parameter name="initialNumStud" displayName="Anzahl Studenten" type="int" 
-						defaultValue="15" 
+						defaultValue="100" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 		/>
@@ -43,4 +43,16 @@
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 		/>
 		
+		
+					  <parameter name="size_x" displayName="Size-X" type="int" 
+						defaultValue="60" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"							
+		/>
+		
+					  <parameter name="size_y" displayName="Size-Y" type="int" 
+						defaultValue="40" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"							
+		/>
 </parameters>
