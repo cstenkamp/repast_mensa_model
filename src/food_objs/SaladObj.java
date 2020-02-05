@@ -1,4 +1,4 @@
-package mensamodell;
+package food_objs;
 
 import repast.simphony.context.Context;
 import repast.simphony.space.continuous.ContinuousSpace;

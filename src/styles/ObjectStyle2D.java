@@ -1,8 +1,16 @@
-package mensamodell;
+package styles;
 
 import java.awt.Color;
 import java.awt.Font;
 
+import mensamodell.Ausgabe;
+import mensamodell.Kasse;
+import mensamodell.MensaEingang;
+import mensamodell.Student;
+import mensamodell.StudentChaotic;
+import mensamodell.StudentGoalOriented;
+import mensamodell.StudentShortestQueue;
+import mensamodell.consts;
 import saf.v3d.scene.Position;
 import repast.simphony.visualizationOGL2D.DefaultStyleOGL2D;
 import saf.v3d.scene.VSpatial;

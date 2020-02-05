@@ -4,33 +4,33 @@
   <styles>
     <entry>
       <string>mensamodell.Student</string>
-      <string>mensamodell.ObjectStyle2D</string>
+      <string>styles.ObjectStyle2D</string>
     </entry>
     <entry>
       <string>mensamodell.Ausgabe</string>
-      <string>mensamodell.ObjectStyle2D</string>
+      <string>styles.ObjectStyle2D</string>
     </entry>
     <entry>
       <string>mensamodell.StudentGoalOriented</string>
-      <string>mensamodell.ObjectStyle2D</string>
+      <string>styles.ObjectStyle2D</string>
     </entry>
     <entry>
       <string>mensamodell.StudentShortestQueue</string>
-      <string>mensamodell.ObjectStyle2D</string>
+      <string>styles.ObjectStyle2D</string>
     </entry>
     <entry>
       <string>mensamodell.MensaEingang</string>
-      <string>mensamodell.ObjectStyle2D</string>
+      <string>styles.ObjectStyle2D</string>
     </entry>
     <entry>
       <string>mensamodell.StudentChaotic</string>
-      <string>mensamodell.ObjectStyle2D</string>
+      <string>styles.ObjectStyle2D</string>
     </entry>
   </styles>
   <editedStyles>
     <entry>
       <string>mensamodell.Student</string>
-      <string>mensamodell.Student.style_1.xml</string>
+      <null/>
     </entry>
     <entry>
       <string>mensamodell.Ausgabe</string>

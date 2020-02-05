@@ -7,6 +7,11 @@ import javax.vecmath.Vector2d;
 
 import org.apache.commons.math3.exception.NullArgumentException;
 
+import food_objs.MeatObj;
+import food_objs.PommesObj;
+import food_objs.SaladObj;
+import food_objs.VeganObj;
+import food_objs.VeggieObj;
 import repast.simphony.context.Context;
 import repast.simphony.engine.schedule.ISchedulableAction;
 import repast.simphony.engine.schedule.ScheduleParameters;
