@@ -142,7 +142,7 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		consts.noPref.add(consts.ESSEN_MEAT);
 		
 
-		Context<Food> foodContext = new DefaultContext<>();
+		Context<Food> foodContext = new DefaultContext<>("foodContext");
 		context.addSubContext(foodContext);
 		
 		// #########################################################

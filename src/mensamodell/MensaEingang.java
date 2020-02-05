@@ -63,7 +63,6 @@ public class MensaEingang {
 		this.walkStyleArray = createWalkStyle(propWalk); 
 		context.add(this);
 		grid.moveTo(this, x, y);
-
 	}
 
 		
