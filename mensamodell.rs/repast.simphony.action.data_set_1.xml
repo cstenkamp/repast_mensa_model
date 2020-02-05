@@ -1,50 +1,31 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.7.0">
-  <name>Students</name>
-  <type>AGGREGATE</type>
+  <name>A Data Set</name>
+  <type>NON_AGGREGATE</type>
+  <sourceType>mensamodell.StudentChaotic</sourceType>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
-    <start>1.0</start>
-    <interval>10000.0</interval>
+    <start>Infinity</start>
+    <interval>0.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
-    <frequency>REPEAT</frequency>
-    <hashCode>-1862763583</hashCode>
+    <frequency>ONE_TIME</frequency>
+    <hashCode>-1416958405</hashCode>
   </scheduleParams>
-  <atEnd>true</atEnd>
-  <methodDataSources class="linked-hash-map"/>
-  <countSources class="linked-hash-map">
+  <atEnd>false</atEnd>
+  <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Students</string>
-      <repast.simphony.data2.engine.CountSourceDefinition>
-        <typeName>mensamodell.Student</typeName>
-        <id>Students</id>
-      </repast.simphony.data2.engine.CountSourceDefinition>
+      <string>TickCount</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>TickCount</id>
+        <className>mensamodell.StudentChaotic</className>
+        <methodName>getTickCount</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
-    <entry>
-      <string>Chaotic</string>
-      <repast.simphony.data2.engine.CountSourceDefinition>
-        <typeName>mensamodell.StudentChaotic</typeName>
-        <id>Chaotic</id>
-      </repast.simphony.data2.engine.CountSourceDefinition>
-    </entry>
-    <entry>
-      <string>Pathfinder</string>
-      <repast.simphony.data2.engine.CountSourceDefinition>
-        <typeName>mensamodell.StudentPathfinder</typeName>
-        <id>Pathfinder</id>
-      </repast.simphony.data2.engine.CountSourceDefinition>
-    </entry>
-    <entry>
-      <string>GoalOriented</string>
-      <repast.simphony.data2.engine.CountSourceDefinition>
-        <typeName>mensamodell.StudentGoalOriented</typeName>
-        <id>GoalOriented</id>
-      </repast.simphony.data2.engine.CountSourceDefinition>
-    </entry>
-  </countSources>
+  </methodDataSources>
+  <countSources class="linked-hash-map"/>
   <customNADataSources class="linked-hash-map"/>
   <customAggDataSources class="linked-hash-map"/>
 </repast.simphony.data2.engine.DataSetDescriptor>
