@@ -41,7 +41,7 @@ public class Student {
 	protected Ausgabe tempDestination;
 	protected Object closestkasse;
 	protected Boolean hungry;
-	ISchedulableAction scheduledStep;
+	List<ISchedulableAction> scheduledSteps;
 
 	int waitticks;
 	private int tickCount = 0;
@@ -70,9 +70,7 @@ public class Student {
 	int spentTicks;	 // DATA
 	
 	
-	
-	
-	public Student(int num, SharedStuff sharedstuff, int fp, Context<Object> context, ContinuousSpace<Object> s) {  
+	private void global_construct(int num, SharedStuff sharedstuff, int fp, Context<Object> context) {
 		this.food_preference = fp;
 		this.visitedAusgaben = new ArrayList<Ausgabe>();
 		this.context = context;
@@ -81,31 +79,14 @@ public class Student {
 		this.num = num;
 		this.hungry = true;
 		this.best_food_so_far = new ArrayList<Ausgabe>();
-
-		this.space = s;
-		this.velocity = new Vector2d(0,0);
-		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
-		
 		context.add(this);	
 		sharedstuff.studierende.add(this);
-		float x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);
-		float y = consts.SIZE_Y-5;
-		space.moveTo(this, x, y); // add students to space or grid
-
-		scheduledStep = sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(sharedstuff.schedule.getTickCount()+1, 1), this, "step");
-    //TODO Es gibt priorities in den schedules!! https://stackoverflow.com/a/57774003
 	}
-
 	
+	
+	//constructor für Grid
 	public Student(int num, SharedStuff sharedstuff, int fp, Context<Object> context, Grid<Object> g, int x, int y) {
-		this.food_preference = fp;
-		this.visitedAusgaben = new ArrayList<Ausgabe>();
-		this.context = context;
-		this.waitticks = 0;
-		this.sharedstuff = sharedstuff;
-		this.num = num;
-		this.hungry = true;
-		this.best_food_so_far = new ArrayList<Ausgabe>();
+		global_construct(num, sharedstuff, fp, context); //viel ist gleich ob für grid oder für space
 		
 		this.grid = g;
 		this.inQueue = false;
@@ -118,16 +99,14 @@ public class Student {
 		this.spentTicks = 0;							// DATA
 		DoYouWantSalad();								// Entscheide zu beginn ob du Salat willst.
 		
-		context.add(this);	
-		sharedstuff.studierende.add(this);
 		grid.moveTo(this, (int)x, (int)y);
 
-		scheduledStep = sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(sharedstuff.schedule.getTickCount()+1, 1), this, "step_grid");
+		scheduledSteps = new ArrayList<ISchedulableAction>();
+		scheduledSteps.add(sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(sharedstuff.schedule.getTickCount()+1, 1), this, "step_grid"));
 	}
 	
 	
-	
-	
+
 	
 	// waehle dein Essen
 	public boolean chooseMeal_inner(Ausgabe currentBar) {
@@ -198,14 +177,24 @@ public class Student {
 		return tmp;
 	}
 	
-
-		
-	
-	
 	
 	public int getTickCount() {
 		return this.tickCount;
 	}
+	
+	
+	public void remove_me() {
+		System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
+		if (space != null && sharedstuff.mgrid != null) {
+			NdPoint mypos = space.getLocation(this);
+			sharedstuff.mgrid.set((int)mypos.getX(), (int)mypos.getY(), 0);
+		}
+		context.remove(this);
+		//sharedstuff.schedule.removeAction(scheduledStep);
+		sharedstuff.remove_these.add(this);
+		sharedstuff.schedule.schedule(ScheduleParameters.createOneTime(sharedstuff.schedule.getTickCount()+0.01, 1), sharedstuff.builder, "remove_studs"); //priority 1
+	}
+
 
 	// ==================================== Grid methods ====================================
 
@@ -243,7 +232,7 @@ public class Student {
 					}
 				}
 				int[] lastQueuePos = nextBar.getLastQueuePos(this); // Gehe zum ende der Queue
-				this.inQueue = true;
+				getInQueue();
 				this.nextLocX = lastQueuePos[0];
 				this.nextLocY = lastQueuePos[1];
 				this.waitTicks = nextBar.getWaitTicks();					// Get waitTicks from current Bar
@@ -256,8 +245,7 @@ public class Student {
 				} else {
 					this.waiting = false;							
 	//				System.out.println("First in Queue: #"+this.num + " [" +this.nextLocX+ " , " +this.nextLocY+ "] " + current.kind);
-					this.inQueue = false;
-					current.removeFromQueue();
+					getOutOfQueue();
 					// Leave the Mensa
 					if (current instanceof Kasse) {
 						remove_me();
@@ -280,6 +268,23 @@ public class Student {
 		update();
 	} // End Of Step.
 	
+	
+	public void getInQueue() {
+		inQueue = true;
+		//wenn du in der queue bist sollst du nicht mehr eigenständiges movement machen sondern kriegst von der schlange immer aufs neue gesagt dass du dich 1x bewegen darst.
+		//warum? damit keine lücken in der schlange entstehen, per prioritäten bewegt sich der erste zuerst, ...
+		sharedstuff.remove_these.add(this);
+		sharedstuff.schedule.schedule(ScheduleParameters.createOneTime(sharedstuff.schedule.getTickCount()+0.01, 1), sharedstuff.builder, "remove_studs"); //priority 1
+	}
+	
+	public void getOutOfQueue() {
+		current.removeFromQueue();
+		inQueue = false;
+		if (!(current instanceof Kasse)) {
+			scheduledSteps.add(sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(sharedstuff.schedule.getTickCount()+1, 1), this, "step_grid"));
+			//dann laufe wieder eigenständig
+		}
+	}
 	
 
 	/**
@@ -321,6 +326,22 @@ public class Student {
 
 	// ==================================== Walking methods ==================================== 
 	
+	
+	//constructor für walking
+	public Student(int num, SharedStuff sharedstuff, int fp, Context<Object> context, ContinuousSpace<Object> s) {  
+		global_construct(num, sharedstuff, fp, context);
+		
+		this.space = s;
+		this.velocity = new Vector2d(0,0);
+		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
+		
+		float x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);
+		float y = consts.SIZE_Y-5;
+		space.moveTo(this, x, y); // add students to space or grid
+
+		scheduledSteps = new ArrayList<ISchedulableAction>();
+		scheduledSteps.add(sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(sharedstuff.schedule.getTickCount()+1, 1), this, "step"));
+	}
 	
 
 	//to be overridden
@@ -500,18 +521,6 @@ public class Student {
 		}
 		do_move();
 		
-	}
-	
-	public void remove_me() {
-		System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
-		if (space != null && sharedstuff.mgrid != null) {
-			NdPoint mypos = space.getLocation(this);
-			sharedstuff.mgrid.set((int)mypos.getX(), (int)mypos.getY(), 0);
-		}
-		context.remove(this);
-		//sharedstuff.schedule.removeAction(scheduledStep);
-		sharedstuff.remove_these.add(this);
-		sharedstuff.schedule.schedule(ScheduleParameters.createOneTime(sharedstuff.schedule.getTickCount()+0.01, 1), sharedstuff.builder, "remove_studs"); //priority 1
 	}
 
 

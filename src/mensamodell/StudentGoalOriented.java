@@ -23,7 +23,10 @@ public class StudentGoalOriented extends Student {
 		super(num, sharedstuff, fp, context, g, x, y);
 	}
 	
-	
+  @Override
+  public String toString() { 
+      return "StudentGoalOriented(#"+num+")";
+  } 
 	
 	@Override
 	public Ausgabe next_ausgabe() {

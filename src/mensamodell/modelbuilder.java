@@ -24,6 +24,7 @@ import repast.simphony.space.grid.StickyBorders;
 import repast.simphony.engine.schedule.ISchedule;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.engine.schedule.IAction;
+import repast.simphony.engine.schedule.ISchedulableAction;
 
 
 public class modelbuilder extends DefaultContext implements ContextBuilder<Object>{
@@ -179,7 +180,10 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 	
   public void remove_studs() {
     for (Student s : sharedstuff.remove_these) {
-    	sharedstuff.schedule.removeAction(s.scheduledStep);
+    	for (ISchedulableAction a : s.scheduledSteps) {
+    		sharedstuff.schedule.removeAction(a);
+    	}
+    	s.scheduledSteps = new ArrayList<ISchedulableAction>();
     }
     sharedstuff.remove_these = new ArrayList<Student>();
   }

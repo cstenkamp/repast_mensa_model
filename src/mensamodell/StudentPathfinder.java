@@ -27,6 +27,11 @@ public class StudentPathfinder extends Student {
 		this.ausgaben = new ArrayList<Ausgabe>();
 		generatePath();
 	}
+	
+  @Override
+  public String toString() { 
+      return "StudentPathFinder(#"+num+")";
+  } 
 
 	public Vector2d move_spatial() {
 		//returns null wenn er gerade was zu essen gefunden hat, nicht mehr hungrig ist, oder schon alle Theken besucht hat

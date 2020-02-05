@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import javax.vecmath.Vector2d;
 
 import repast.simphony.context.Context;
+import repast.simphony.engine.schedule.ScheduleParameters;
+import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.grid.Grid;
@@ -159,6 +161,16 @@ public class Ausgabe {
 			if (z.nextLocX == this.x + shift[0] && z.nextLocY == this.y + shift[1]) firstInQueue = z;
 		}
 		return firstInQueue;
+	}
+	
+	
+	@ScheduledMethod(start = 0, interval = 1)
+	public void step() {
+		int num_in_queue = 2; //priorität 1 ist aus context entfernen, schlangen starten ab 2
+		//wenn du studierende in deiner schlange hast, lasse sie alle einen schritt machen, vom ersten in der schlange zum letzten!
+		for (Student s : this.studentsInQueue) {
+			s.scheduledSteps.add(s.sharedstuff.schedule.schedule(ScheduleParameters.createOneTime(s.sharedstuff.schedule.getTickCount()+1, num_in_queue++), s, "step_grid")); 
+		}
 	}
 	
 	
