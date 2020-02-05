@@ -24,6 +24,7 @@ public class SharedStuff {
 	public ISchedule schedule = null;
 	public ContextBuilder<Object> builder = null;
 	public Context<Food> foodContext;
+	public double[] foodParam;
 	
 	public List<Student> studierende;
 	public List<Student> remove_these;
@@ -44,13 +45,14 @@ public class SharedStuff {
 		remove_these = new ArrayList<Student>();
 	}
 	
-	public SharedStuff(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext, Grid<Object> grid, MensaGrid mgrid) {
+	public SharedStuff(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext, Grid<Object> grid, MensaGrid mgrid, double[] fParam) {
 		this.context = context;
 		this.grid = grid;
 		this.kassen = kassen;
 		this.ausgaben = ausgaben;
 		this.mgrid = mgrid;
 		this.builder = builder;
+		this.foodParam = fParam;
 		schedule = RunEnvironment.getInstance().getCurrentSchedule();
 		
 		studierende = new ArrayList<Student>();

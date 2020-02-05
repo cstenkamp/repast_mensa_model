@@ -52,6 +52,27 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		
 		Double[] proportionsEat = new Double[] {veggieProp, veganProp, meatProp, noPrefProp};
 		Double[] proportionsWalk = new Double[] {chaoticProp, goalProp, pathProp};
+		
+		// BATCH RUN PARAMETERS:
+		// VEGGIE
+		double vg_vg = 0; param.setValue("vg_vg", 0.9);
+		double vg_ve = 0; param.setValue("vg_ve", 0.5);
+		double vg_sa = 0; param.setValue("vg_sa", 0.2);
+		double vg_po = 0; param.setValue("vg_po", 0.1);
+		// VEGAN
+		double ve_ve = 0; param.setValue("ve_ve", 0.9);
+		double ve_po = 0; param.setValue("ve_po", 0.2);
+		double ve_sa = 0; param.setValue("ve_sa", 0.1);
+		// MEAT
+		double m_ve = 0; param.setValue("m_ve", 0.2);
+		double m_vg = 0; param.setValue("m_vg", 0.1);
+		double m_m = 0; param.setValue("m_m", 0.9);
+		double m_sa = 0; param.setValue("m_sa", 0.2);
+		double m_po = 0; param.setValue("m_po", 0.1);
+		
+		double[] foodParam = new double[] {vg_vg, vg_ve, vg_sa, vg_po, ve_ve, ve_po, ve_sa, m_ve, m_vg, m_m, m_sa, m_po};
+		
+		
 
 		consts.SIZE_X = (int) param.getValue("size_x");
 		consts.SIZE_Y = (int) param.getValue("size_y");
@@ -153,7 +174,7 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 
 		MensaEingang eingang;
 		if (USE_GRID)  {
-			sharedstuff = new SharedStuff(this, context, kassen, ausgaben, foodContext, grid, null);
+			sharedstuff = new SharedStuff(this, context, kassen, ausgaben, foodContext, grid, null, foodParam);
 			eingang = new MensaEingang((int)consts.SIZE_X/2, (int)consts.SIZE_Y-1, initialNumStud, proportionsEat, proportionsWalk, context, sharedstuff, grid, aktion);
 		} else {
 			sharedstuff = new SharedStuff(this, context, kassen, ausgaben, foodContext, space, mgrid);

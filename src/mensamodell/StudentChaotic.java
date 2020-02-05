@@ -32,7 +32,7 @@ public class StudentChaotic extends Student {
 	public Ausgabe next_ausgabe() {
 		Ausgabe nextBar = null;
 		ArrayList<Ausgabe> non_visitedAusgaben = new ArrayList<Ausgabe>();
-		for (Ausgabe a : sharedstuff.ausgaben) {
+		for (Ausgabe a : this.barList) {
 			if (!this.visitedAusgaben.contains(a)) {
 				non_visitedAusgaben.add(a);
 			}
