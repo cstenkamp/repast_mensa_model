@@ -3,53 +3,53 @@
   <type>2D</type>
   <styles>
     <entry>
-      <string>forestfire.StudentShortestQueue</string>
-      <string>forestfire.ObjectStyle2D</string>
+      <string>mensamodell.StudentShortestQueue</string>
+      <string>mensamodell.ObjectStyle2D</string>
     </entry>
     <entry>
-      <string>forestfire.Eingang</string>
-      <string>forestfire.ObjectStyle2D</string>
+      <string>mensamodell.MensaEingang</string>
+      <string>mensamodell.ObjectStyle2D</string>
     </entry>
     <entry>
-      <string>forestfire.Student</string>
-      <string>forestfire.ObjectStyle2D</string>
+      <string>mensamodell.Student</string>
+      <string>mensamodell.ObjectStyle2D</string>
     </entry>
     <entry>
-      <string>forestfire.StudentChaotic</string>
-      <string>forestfire.ObjectStyle2D</string>
+      <string>mensamodell.StudentChaotic</string>
+      <string>mensamodell.ObjectStyle2D</string>
     </entry>
     <entry>
-      <string>forestfire.StudentGoalOriented</string>
-      <string>forestfire.ObjectStyle2D</string>
+      <string>mensamodell.StudentGoalOriented</string>
+      <string>mensamodell.ObjectStyle2D</string>
     </entry>
     <entry>
-      <string>forestfire.Ausgabe</string>
-      <string>forestfire.ObjectStyle2D</string>
+      <string>mensamodell.Ausgabe</string>
+      <string>mensamodell.ObjectStyle2D</string>
     </entry>
   </styles>
   <editedStyles>
     <entry>
-      <string>forestfire.StudentShortestQueue</string>
+      <string>mensamodell.StudentShortestQueue</string>
       <null/>
     </entry>
     <entry>
-      <string>forestfire.Eingang</string>
+      <string>mensamodell.MensaEingang</string>
       <null/>
     </entry>
     <entry>
-      <string>forestfire.Student</string>
-      <string>forestfire.Student.style_1.xml</string>
+      <string>mensamodell.Student</string>
+      <string>mensamodell.Student.style_1.xml</string>
     </entry>
     <entry>
-      <string>forestfire.StudentChaotic</string>
+      <string>mensamodell.StudentChaotic</string>
       <null/>
     </entry>
     <entry>
-      <string>forestfire.StudentGoalOriented</string>
+      <string>mensamodell.StudentGoalOriented</string>
       <null/>
     </entry>
     <entry>
-      <string>forestfire.Ausgabe</string>
+      <string>mensamodell.Ausgabe</string>
       <null/>
     </entry>
   </editedStyles>
@@ -70,27 +70,27 @@
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>forestfire.StudentShortestQueue</string>
+      <string>mensamodell.StudentShortestQueue</string>
       <int>4</int>
     </entry>
     <entry>
-      <string>forestfire.Eingang</string>
+      <string>mensamodell.MensaEingang</string>
       <int>1</int>
     </entry>
     <entry>
-      <string>forestfire.Student</string>
+      <string>mensamodell.Student</string>
       <int>0</int>
     </entry>
     <entry>
-      <string>forestfire.StudentChaotic</string>
+      <string>mensamodell.StudentChaotic</string>
       <int>5</int>
     </entry>
     <entry>
-      <string>forestfire.StudentGoalOriented</string>
+      <string>mensamodell.StudentGoalOriented</string>
       <int>3</int>
     </entry>
     <entry>
-      <string>forestfire.Ausgabe</string>
+      <string>mensamodell.Ausgabe</string>
       <int>2</int>
     </entry>
   </layerOrder>

@@ -213,109 +213,111 @@ public class Student {
 	/**
 	 * Methode wird jede Runde ausgefuehrt 
 	 */
-//	public void step_grid(){	
-//		if (!inQueue) {
-//			Ausgabe nextBar;
-//			if (this.ThefoodIsOkay) { 					// Wenn das essen gut ist gehe zur Kasse ansonsten hole dir was neues
-//				nextBar = Share.saladList.get(0);
-//				if (this.wantSalad && nextBar.getQueueSize() < 15) { // wenn du salat willst gehe zur salatbar & Schlange kleiner 15
-//					this.current = nextBar;
-//					this.wantSalad = false;
-//				} else {								// warst du bereits an der salatbar oder willst du keinen Salat gehe zur kasse
-//					nextBar = toKasse();
-//					this.current = nextBar;
-//				}					
-//			} else {									// Such dir deinen Weg wenn du noch kein Essen gefunden hast
-//				nextBar = move();
-//				if (nextBar != null) {
-//					this.visitedAusgaben.add(nextBar);
-//					this.current = nextBar;
-//					DoYouWantThatFood();				// Willst du das Essen von dieser Bar?
-//					// TODO wenn du das Essen nicht nimmst gehe zu einer anderen Bar Do-While Schleife
-//					// Jedoch geht man dann direkt zur Ziel Bar
-//				}  else {								// Falls alle Bars gesehen gehe zur Kasse
-//					nextBar = toKasse();
-////					if (nextBar == null) System.out.println("Kasse not found! #"+ this.num);
-////					else System.out.println("Kasse found #"+ this.num);
-//					this.current = nextBar;
-//				}
-//			}
-//			int[] lastQueuePos = nextBar.getLastQueuePos(this); // Gehe zum ende der Queue
-//			this.inQueue = true;
-//			this.nextLocX = lastQueuePos[0];
-//			this.nextLocY = lastQueuePos[1];
-//			this.waitTicks = nextBar.waitTicks;					// Get waitTicks from current Bar
-////			System.out.println("#"+this.num + " [" +nextLocX+ " , " +nextLocY+ "]");
-//		} else if (current.firstInQueue(this)){					// DU bist der ERSTE in einer Queue	
-////			System.out.println("Warte: " + waitTicks);
-//			if (this.waitTicks > 0) {							// Warte vor der Ausgabe
-//				this.waitTicks--;
-//				this.waiting = true;
-//			} else {
-//				this.waiting = false;							
-////				System.out.println("First in Queue: #"+this.num + " [" +this.nextLocX+ " , " +this.nextLocY+ "] " + current.kind);
-//				this.inQueue = false;
-//				current.removeFromQueue();
-//				// Leave the Mensa
-//				if (current.kind == Share.kasse) {	// Falls du an einer Kasse stehst verlasse die Mensa
+	public void step_grid(){	
+		if (!inQueue) {
+			Ausgabe nextBar;
+			if (this.ThefoodIsOkay) { 					// Wenn das essen gut ist gehe zur Kasse ansonsten hole dir was neues
+				nextBar = sharedstuff.ausgaben.get(0); //TODO war Share.saladList.get(0);
+				if (this.wantSalad && nextBar.getStudentsInQueue() < 15) { // wenn du salat willst gehe zur salatbar & Schlange kleiner 15
+					this.current = nextBar;
+					this.wantSalad = false;
+				} else {								// warst du bereits an der salatbar oder willst du keinen Salat gehe zur kasse
+					nextBar = toKasse();
+					this.current = nextBar;
+				}					
+			} else {									// Such dir deinen Weg wenn du noch kein Essen gefunden hast
+				nextBar = sharedstuff.ausgaben.get(0); //TODO war move();
+				if (nextBar != null) {
+					this.visitedAusgaben.add(nextBar);
+					this.current = nextBar;
+					DoYouWantThatFood();				// Willst du das Essen von dieser Bar?
+					// TODO wenn du das Essen nicht nimmst gehe zu einer anderen Bar Do-While Schleife
+					// Jedoch geht man dann direkt zur Ziel Bar
+				}  else {								// Falls alle Bars gesehen gehe zur Kasse
+					nextBar = toKasse();
+//					if (nextBar == null) System.out.println("Kasse not found! #"+ this.num);
+//					else System.out.println("Kasse found #"+ this.num);
+					this.current = nextBar;
+				}
+			}
+			int[] lastQueuePos = nextBar.getLastQueuePos(this); // Gehe zum ende der Queue
+			this.inQueue = true;
+			this.nextLocX = lastQueuePos[0];
+			this.nextLocY = lastQueuePos[1];
+			this.waitTicks = nextBar.waitTicks;					// Get waitTicks from current Bar
+//			System.out.println("#"+this.num + " [" +nextLocX+ " , " +nextLocY+ "]");
+		} else if (current.firstInQueue(this)){					// DU bist der ERSTE in einer Queue	
+//			System.out.println("Warte: " + waitTicks);
+			if (this.waitTicks > 0) {							// Warte vor der Ausgabe
+				this.waitTicks--;
+				this.waiting = true;
+			} else {
+				this.waiting = false;							
+//				System.out.println("First in Queue: #"+this.num + " [" +this.nextLocX+ " , " +this.nextLocY+ "] " + current.kind);
+				this.inQueue = false;
+				current.removeFromQueue();
+				// Leave the Mensa
+//				if (current.kind == Share.kasse) {	// Falls du an einer Kasse stehst verlasse die Mensa //TODO das ist ja jetzt anders
 //					context.remove(this);
-////					System.out.println("#"+this.num +" Der Student hat die Mensa verlassen.");
-//				} else {										// Ansonsten suche dir im naechsten Schritt eine neue Ausgabe 
-////					System.out.println("#"+this.num + " Next Bar");
-//					this.current = null;
-//				}
-//			}
-//		} else {												// Du stehst in einer Schlange
-//			int[] nextPos = this.current.moveForwardInQueue(this);	// Sieh nach ob du eine Position weiter aufruecken kannst
-//			if (nextPos == null) {								// Falls du nicht nachruecken kannst warte einen Zeitschritt
-//				this.waiting = true;
-//			} else {											// Du kannst nachruecken
-//				this.waiting = false;
-//				this.nextLocX = nextPos[0];
-//				this.nextLocY = nextPos[1];
-//			}
-//		}	
-//	} // End Of Step.
-//	
-//	
-//
-//	/**
-//	 * Status "updaten" immer zum halben Schritt.
-//	 */
-//	@ScheduledMethod(start = 1.5, interval = 1.0)
-//	public void update(){
-//		this.spentTicks++;									// DATA
-//		if (this.waiting) return;							// return wenn du warten musst
-//		if (this.current == null) return;					// return wenn du an erster Stelle standest und erst im naechsten Schritt eine neue Loc bekommst
-//		grid.moveTo(this, this.nextLocX, this.nextLocY);	// Bewege dich zu deinem naechsten Ziel
-//	}	
-//	
-//	public Ausgabe toKasse() {
-//		//TODO nicht random sondern die kürzeste?
-//		int index = Share.kassenList.size();
-//		Ausgabe randomCheckout = Share.kassenList.get(RandomHelper.nextIntFromTo(0, index-1)); // zufaellige Wahl der Kasse
-//		return randomCheckout;
-//	}	
-//	
-//	public void DoYouWantThatFood() {
-//		if (RandomHelper.nextIntFromTo(0, 3) == 0) this.ThefoodIsOkay = true;	// Entscheide dich mit 1/4 ob du das Essen nimmst.
-//		else this.ThefoodIsOkay = false;
-//	}
-//	
-//	// TODO Wenn die schlange an der Salatbar zu lang ist setze wantSalad auf false
-//	public void DoYouWantSalad() {
-//		if (RandomHelper.nextIntFromTo(0, 1) == 0) this.wantSalad = true; 		// Entscheide dich mit 1/2 ob du Salat willst
-//		else this.wantSalad = false;
-//	}
-//	
-//	// DATA
-//	public double calcMeanSpentTicks() {
-//		int sum = 0;
-//		for (Student s : sharedstuff.studierende) {
-//			sum = sum + s.spentTicks;
-//		}
-//		return sum / sharedstuff.studierende.size();		// Returns Mean 
-//	}
+				if (false) {
+					System.out.println("");
+//					System.out.println("#"+this.num +" Der Student hat die Mensa verlassen.");
+				} else {										// Ansonsten suche dir im naechsten Schritt eine neue Ausgabe 
+//					System.out.println("#"+this.num + " Next Bar");
+					this.current = null;
+				}
+			}
+		} else {												// Du stehst in einer Schlange
+			int[] nextPos = this.current.moveForwardInQueue(this);	// Sieh nach ob du eine Position weiter aufruecken kannst
+			if (nextPos == null) {								// Falls du nicht nachruecken kannst warte einen Zeitschritt
+				this.waiting = true;
+			} else {											// Du kannst nachruecken
+				this.waiting = false;
+				this.nextLocX = nextPos[0];
+				this.nextLocY = nextPos[1];
+			}
+		}	
+	} // End Of Step.
+	
+	
+
+	/**
+	 * Status "updaten" immer zum halben Schritt.
+	 */
+	@ScheduledMethod(start = 1.5, interval = 1.0)
+	public void update(){
+		this.spentTicks++;									// DATA
+		if (this.waiting) return;							// return wenn du warten musst
+		if (this.current == null) return;					// return wenn du an erster Stelle standest und erst im naechsten Schritt eine neue Loc bekommst
+		grid.moveTo(this, this.nextLocX, this.nextLocY);	// Bewege dich zu deinem naechsten Ziel
+	}	
+	
+	public Kasse toKasse() {
+		//TODO nicht random sondern die kürzeste?
+		int index = sharedstuff.kassen.size();
+		Kasse randomCheckout = sharedstuff.kassen.get(RandomHelper.nextIntFromTo(0, index-1)); // zufaellige Wahl der Kasse
+		return randomCheckout;
+	}	
+	
+	public void DoYouWantThatFood() {
+		if (RandomHelper.nextIntFromTo(0, 3) == 0) this.ThefoodIsOkay = true;	// Entscheide dich mit 1/4 ob du das Essen nimmst.
+		else this.ThefoodIsOkay = false;
+	}
+	
+	// TODO Wenn die schlange an der Salatbar zu lang ist setze wantSalad auf false
+	public void DoYouWantSalad() {
+		if (RandomHelper.nextIntFromTo(0, 1) == 0) this.wantSalad = true; 		// Entscheide dich mit 1/2 ob du Salat willst
+		else this.wantSalad = false;
+	}
+	
+	// DATA
+	public double calcMeanSpentTicks() {
+		int sum = 0;
+		for (Student s : sharedstuff.studierende) {
+			sum = sum + s.spentTicks;
+		}
+		return sum / sharedstuff.studierende.size();		// Returns Mean 
+	}
 
 	// ==================================== Walking methods ==================================== 
 	

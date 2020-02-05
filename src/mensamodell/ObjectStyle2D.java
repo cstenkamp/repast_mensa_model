@@ -19,7 +19,7 @@ public class ObjectStyle2D extends DefaultStyleOGL2D {
 		else if (o instanceof StudentShortestQueue) return Color.MAGENTA;
 		else if (o instanceof StudentGoalOriented) return Color.ORANGE;
 		else if (o instanceof Ausgabe) return Color.BLUE;
-		else if (o instanceof Eingang) return Color.BLACK;
+		else if (o instanceof MensaEingang) return Color.BLACK;
 		else return null;
 	}
 	
@@ -36,13 +36,13 @@ public class ObjectStyle2D extends DefaultStyleOGL2D {
 		if (o instanceof Student) {
 			return Position.CENTER;
 		}
-		else if (o instanceof Ausgabe && ((Ausgabe) o).kind == Share.kasse) {
+		else if (o instanceof Kasse) {
 			return Position.NORTH;
 		}
 		else if (o instanceof Ausgabe) {
 			return Position.SOUTH;
 		}
-		else if (o instanceof Eingang) {
+		else if (o instanceof MensaEingang) {
 			return Position.NORTH;
 		}
 		else return Position.NORTH;
@@ -55,10 +55,10 @@ public class ObjectStyle2D extends DefaultStyleOGL2D {
 		if (o instanceof Student) {
 			s = String.valueOf(((Student) o).num);
 			return s;
-		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == Share.kasse) {
+		} else if (o instanceof Kasse ) {
 			s = "Kasse";
 			return s;
-		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == Share.salad) {
+		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.SALATBAR) {
 			s = "Salatbar";
 			return s;
 		}
@@ -67,7 +67,7 @@ public class ObjectStyle2D extends DefaultStyleOGL2D {
 			String d = "Ausgabe ";
 			return d + s;
 		}
-		else if (o instanceof Eingang) {
+		else if (o instanceof MensaEingang) {
 			s = "Eingang";
 			return s;
 		}

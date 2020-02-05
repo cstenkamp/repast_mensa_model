@@ -1,7 +1,7 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.7.0">
   <name>SpentTicks</name>
   <type>NON_AGGREGATE</type>
-  <sourceType>forestfire.Student</sourceType>
+  <sourceType>mensamodell.Student</sourceType>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
@@ -20,7 +20,7 @@
       <string>calcMeanSpentTicks</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>calcMeanSpentTicks</id>
-        <className>forestfire.Student</className>
+        <className>mensamodell.Student</className>
         <methodName>calcMeanSpentTicks</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
