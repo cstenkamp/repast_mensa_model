@@ -7,8 +7,8 @@ import java.util.List;
 public class consts {
 
 	//settings
-	public final static int SIZE_X = 100;
-	public final static int SIZE_Y = 60;
+	public static int SIZE_X = 0;
+	public static int SIZE_Y = 0;
 	public final static boolean MAY_LEAVE_WITHOUT_FOOD = false;
 	public static int EINGANG_DELAY;
 	
