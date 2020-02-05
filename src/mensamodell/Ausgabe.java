@@ -32,7 +32,7 @@ public class Ausgabe {
 		
 	
 	public int getStudentsInQueue() {
-		return studentsInQueue.size(); //TODO do
+		return studentsInQueue.size(); 
 	}
 	
 	public Ausgabe(int x, int y, int kind, int food_here, Context<Object> context, ContinuousSpace s) {

@@ -1,5 +1,9 @@
 package food_objs;
 
-public class Food {
+import repast.simphony.context.Context;
 
+public class Food {
+	public Food(Context c) {
+		c.add(this);
+	}
 }

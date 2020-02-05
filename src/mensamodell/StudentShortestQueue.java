@@ -10,21 +10,21 @@ public class StudentShortestQueue extends Student{
 	public StudentShortestQueue(int num, SharedStuff sharedstuff, int fp, Context<Object> context, Grid<Object> g, int x, int y) {
 		super(num, sharedstuff, fp, context, g, x, y);
 	}
-	
+
 	// Suche dir die Ausgabe mit der kuerzesten Schlange
-//	@Override
-//	public Ausgabe move() {
-//		Ausgabe nextBar = null;
-//		int sizeMin = 999999;
-//		for (Object a : Share.ausgabenList) {
-//			if (!this.visitedAusgaben.contains(a)) {
-//				int size = ((Ausgabe) a).getQueueSize();
-//				if (size <= sizeMin) {
-//					sizeMin = size;
-//					nextBar = (Ausgabe) a;
-//				}
-//			}
-//		}
-//		return nextBar;	
-//	}
+	@Override
+	public Ausgabe next_ausgabe() {
+		Ausgabe nextBar = null;
+		int sizeMin = 999999;
+		for (Object a : sharedstuff.ausgaben) {
+			if (!this.visitedAusgaben.contains(a)) {
+				int size = ((Ausgabe) a).getStudentsInQueue();
+				if (size <= sizeMin) {
+					sizeMin = size;
+					nextBar = (Ausgabe) a;
+				}
+			}
+		}
+		return nextBar;	
+	}
 }

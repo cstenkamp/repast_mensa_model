@@ -61,6 +61,9 @@ public class MensaEingang {
 		this.sharedstuff = sharedstuff;
 		this.foodPrefArray = createFoodPref(propEat);
 		this.walkStyleArray = createWalkStyle(propWalk); 
+		context.add(this);
+		space.moveTo(this, x, y);
+
 	}
 
 		

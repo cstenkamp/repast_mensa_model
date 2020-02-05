@@ -1,6 +1,9 @@
 package mensamodell;
 
 import java.util.List;
+
+import food_objs.Food;
+
 import java.util.ArrayList;
 
 import repast.simphony.context.Context;
@@ -20,14 +23,15 @@ public class SharedStuff {
 	public MensaGrid mgrid;
 	public ISchedule schedule = null;
 	public ContextBuilder<Object> builder = null;
+	public Context<Food> foodContext;
 	
 	public List<Student> studierende;
 	public List<Student> remove_these;
 
 	public ContinuousSpace<Object> space;
-	public Grid<Object> grid_fix_me;
+	public Grid<Object> grid;
 
-	public SharedStuff(ContextBuilder<Object> builder, Context<Object> context, ContinuousSpace<Object> space, List<Kasse> kassen, List<Ausgabe> ausgaben, MensaGrid mgrid) {
+	public SharedStuff(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext, ContinuousSpace<Object> space, MensaGrid mgrid) {
 		this.context = context;
 		this.space = space;
 		this.kassen = kassen;
@@ -40,9 +44,9 @@ public class SharedStuff {
 		remove_these = new ArrayList<Student>();
 	}
 	
-	public SharedStuff(ContextBuilder<Object> builder, Context<Object> context, Grid<Object> grid, List<Kasse> kassen, List<Ausgabe> ausgaben, MensaGrid mgrid) {
+	public SharedStuff(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext, Grid<Object> grid, MensaGrid mgrid) {
 		this.context = context;
-		this.grid_fix_me = grid;
+		this.grid = grid;
 		this.kassen = kassen;
 		this.ausgaben = ausgaben;
 		this.mgrid = mgrid;

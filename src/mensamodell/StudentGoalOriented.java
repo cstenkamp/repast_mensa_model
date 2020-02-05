@@ -23,6 +23,22 @@ public class StudentGoalOriented extends Student {
 		super(num, sharedstuff, fp, context, g, x, y);
 	}
 	
+	
+	
+	@Override
+	public Ausgabe next_ausgabe() {
+		Ausgabe nextBar = null;
+		int index = sharedstuff.ausgaben.size();
+		nextBar = sharedstuff.ausgaben.get(RandomHelper.nextIntFromTo(0, index-1));
+		return nextBar;
+	}
+	
+	@Override
+	public void DoYouWantThatFood() {
+		this.ThefoodIsOkay = true; 
+	}
+	
+	
 	public Object next_aim() {
 		//returns null wenn er gerade was zu essen gefunden hat, nicht mehr hungrig ist, oder schon alle Theken besucht hat
 

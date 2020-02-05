@@ -3,6 +3,7 @@ package mensamodell;
 import java.util.ArrayList;
 import java.util.List;
 
+import food_objs.Food;
 import repast.simphony.context.Context;
 import repast.simphony.context.DefaultContext;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactory;
@@ -34,7 +35,6 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 	@Override
 	public Context<Object> build(Context<Object> context) {
 		
-
 		// ======================== get parameters from the GUI ========================
 		
 		Parameters param = RunEnvironment.getInstance().getParameters();
@@ -140,14 +140,19 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		consts.noPref.add(consts.ESSEN_SALAD);
 		consts.noPref.add(consts.ESSEN_POMMES);
 		consts.noPref.add(consts.ESSEN_MEAT);
+		
+
+		Context<Food> foodContext = new DefaultContext<>();
+		context.addSubContext(foodContext);
+		
 		// #########################################################
 
 		MensaEingang eingang;
 		if (USE_GRID)  {
-			sharedstuff = new SharedStuff(this, context, grid, kassen, ausgaben, null);
+			sharedstuff = new SharedStuff(this, context, kassen, ausgaben, foodContext, grid, null);
 			eingang = new MensaEingang((int)consts.SIZE_X/2, (int)consts.SIZE_Y-1, initialNumStud, proportionsEat, proportionsWalk, context, sharedstuff, grid, aktion);
 		} else {
-			sharedstuff = new SharedStuff(this, context, space, kassen, ausgaben, mgrid);
+			sharedstuff = new SharedStuff(this, context, kassen, ausgaben, foodContext, space, mgrid);
 			eingang = new MensaEingang((float)(consts.SIZE_X*2.5/5), (float)(consts.SIZE_Y-5), initialNumStud, proportionsEat, proportionsWalk, context, space, sharedstuff); 
 			//TODO darauf achten dass man immer 100 studenten drin hat bspw
 		}	

@@ -22,6 +22,25 @@ public class StudentChaotic extends Student {
 	public StudentChaotic(int num, SharedStuff sharedstuff, int fp, Context<Object> context, Grid<Object> g, int x, int y) {
 		super(num, sharedstuff, fp, context, g, x, y);
 	}
+	
+	
+	@Override
+	public Ausgabe next_ausgabe() {
+		Ausgabe nextBar = null;
+		ArrayList<Ausgabe> non_visitedAusgaben = new ArrayList<Ausgabe>();
+		for (Ausgabe a : sharedstuff.ausgaben) {
+			if (!this.visitedAusgaben.contains(a)) {
+				non_visitedAusgaben.add(a);
+			}
+		}
+		if (non_visitedAusgaben.isEmpty()) return null;
+		
+		int index = non_visitedAusgaben.size();
+		nextBar = non_visitedAusgaben.get(RandomHelper.nextIntFromTo(0, index-1));
+//		System.out.println("#" + this.num +" kind: " + nextBar.kind );
+		return nextBar;
+	}
+	
 
 	//returns null wenn er gerade was zu essen gefunden hat, nicht mehr hungrig ist, oder schon alle Theken besucht hat
 	public Vector2d move_spatial() {
