@@ -110,12 +110,16 @@ public class Student {
 		this.current = null;
 		this.nextLocX = x;
 		this.nextLocY = y;
-//		this.ThefoodIsOkay = false;
-//		this.wantSalad = false;
-//		this.spentTicks = 0;							// DATA
-//		DoYouWantSalad();								// Entscheide zu beginn ob du Salat willst.
+		this.ThefoodIsOkay = false;
+		this.wantSalad = false;
+		this.spentTicks = 0;							// DATA
+		DoYouWantSalad();								// Entscheide zu beginn ob du Salat willst.
 		
-		//grid.moveTo(this, (int)x, (int)y);
+		context.add(this);	
+		sharedstuff.studierende.add(this);
+		grid.moveTo(this, (int)x, (int)y);
+
+		scheduledStep = sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(sharedstuff.schedule.getTickCount()+1, 1), this, "step_grid");
 	}
 	
 	
@@ -199,7 +203,7 @@ public class Student {
 		
 	
 	//to be overridden
-	public Vector2d move() {
+	public Vector2d move_spatial() {
 		return new Vector2d(0,0);
 	}
 	
@@ -210,6 +214,22 @@ public class Student {
 
 	// ==================================== Grid methods ====================================
 	
+	
+	public Ausgabe move() {
+		Ausgabe nextBar = null;
+		ArrayList<Ausgabe> non_visitedAusgaben = new ArrayList<Ausgabe>();
+		for (Ausgabe a : sharedstuff.ausgaben) {
+			if (!this.visitedAusgaben.contains(a)) {
+				non_visitedAusgaben.add(a);
+			}
+		}
+		if (non_visitedAusgaben.isEmpty()) return null;
+		
+		int index = non_visitedAusgaben.size();
+		nextBar = non_visitedAusgaben.get(RandomHelper.nextIntFromTo(0, index-1));
+//		System.out.println("#" + this.num +" kind: " + nextBar.kind );
+		return nextBar;
+	}
 	/**
 	 * Methode wird jede Runde ausgefuehrt 
 	 */
@@ -226,7 +246,7 @@ public class Student {
 					this.current = nextBar;
 				}					
 			} else {									// Such dir deinen Weg wenn du noch kein Essen gefunden hast
-				nextBar = sharedstuff.ausgaben.get(0); //TODO war move();
+				nextBar = move();
 				if (nextBar != null) {
 					this.visitedAusgaben.add(nextBar);
 					this.current = nextBar;
@@ -277,14 +297,14 @@ public class Student {
 				this.nextLocY = nextPos[1];
 			}
 		}	
+		update();
 	} // End Of Step.
 	
 	
 
 	/**
-	 * Status "updaten" immer zum halben Schritt.
+	 * Status "updaten" immer nach dem step
 	 */
-	@ScheduledMethod(start = 1.5, interval = 1.0)
 	public void update(){
 		this.spentTicks++;									// DATA
 		if (this.waiting) return;							// return wenn du warten musst
@@ -462,7 +482,7 @@ public class Student {
 		} 
 		
 		//Priorität 2) Laufe zu Ausgaben (returns null wenn er gerade was zu essen gefunden hat, nicht mehr hungrig ist, oder schon alle Theken besucht hat)
-		Vector2d movement = move(); //move ist überschrieben für die 3 Tochterklassen
+		Vector2d movement = move_spatial(); //move ist überschrieben für die 3 Tochterklassen
 		if (movement != null) {
 			velocity.setX(movement.x);
 			velocity.setY(movement.y);

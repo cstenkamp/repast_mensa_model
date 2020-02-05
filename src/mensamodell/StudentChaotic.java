@@ -10,17 +10,21 @@ import org.apache.commons.math3.exception.NullArgumentException;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
+import repast.simphony.space.grid.Grid;
 
 public class StudentChaotic extends Student {
 
 
 	public StudentChaotic(int num, SharedStuff sharedstuff, int fp, Context<Object> context, ContinuousSpace<Object> s) {
 		super(num, sharedstuff, fp, context, s);
-
+	}
+	
+	public StudentChaotic(int num, SharedStuff sharedstuff, int fp, Context<Object> context, Grid<Object> g, int x, int y) {
+		super(num, sharedstuff, fp, context, g, x, y);
 	}
 
 	//returns null wenn er gerade was zu essen gefunden hat, nicht mehr hungrig ist, oder schon alle Theken besucht hat
-	public Vector2d move() {
+	public Vector2d move_spatial() {
 		/*
 		 * Return Values:
 		 * null  --> gehe zur Kasse

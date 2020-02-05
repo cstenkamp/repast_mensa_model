@@ -134,20 +134,29 @@ private Integer[] createWalkStyle(Double[] prop) {
 	public void step() {		
 		if (addedStudents < numStudents) {
 			
-			if (aktionstheke != null && aktionstheke.getStudentsInQueue()< (y-9)) 
+			if (aktionstheke != null && aktionstheke.getStudentsInQueue() > (y-9)) 
 				return; //falls es ein grid gibt und hier zu viel schlange ist kann keiner kommen
 			
 			int fp = foodPrefArray[addedStudents];
 			Student stud = null;
 			switch(walkStyleArray[addedStudents]) {
 			case 0: 
-				stud = new StudentChaotic(addedStudents, sharedstuff, fp, context, space);
+				if (space != null) 
+					stud = new StudentChaotic(addedStudents, sharedstuff, fp, context, space);
+				else
+					stud = new StudentChaotic(addedStudents, sharedstuff, fp, context, grid, (int)x, (int)y-1);
 				break;
 			case 1:
-				stud = new StudentGoalOriented(addedStudents, sharedstuff, fp, context, space);
+				if (space != null) 
+					stud = new StudentGoalOriented(addedStudents, sharedstuff, fp, context, space);
+				else
+					stud = new StudentGoalOriented(addedStudents, sharedstuff, fp, context, grid, (int)x, (int)y-1);
 				break;
 			case 2:
-				stud = new StudentPathfinder(addedStudents, sharedstuff, fp, context, space);
+				if (space != null) 
+					stud = new StudentPathfinder(addedStudents, sharedstuff, fp, context, space);
+				else
+					stud = new StudentShortestQueue(addedStudents, sharedstuff, fp, context, grid, (int)x, (int)y-1);
 				break;
 			}
 

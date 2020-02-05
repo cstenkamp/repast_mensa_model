@@ -7,8 +7,8 @@ import repast.simphony.space.grid.GridPoint;
 
 public class StudentShortestQueue extends Student{
 
-	public StudentShortestQueue(int num, SharedStuff sharedstuff, int fp, Context<Object> context, ContinuousSpace<Object> s) {
-		super(num, sharedstuff, fp, context, s);
+	public StudentShortestQueue(int num, SharedStuff sharedstuff, int fp, Context<Object> context, Grid<Object> g, int x, int y) {
+		super(num, sharedstuff, fp, context, g, x, y);
 	}
 	
 	// Suche dir die Ausgabe mit der kuerzesten Schlange

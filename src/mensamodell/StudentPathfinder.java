@@ -28,7 +28,7 @@ public class StudentPathfinder extends Student {
 		generatePath();
 	}
 
-	public Vector2d move() {
+	public Vector2d move_spatial() {
 		//returns null wenn er gerade was zu essen gefunden hat, nicht mehr hungrig ist, oder schon alle Theken besucht hat
 
 		// Falls der student vor einer Ausgabe steht

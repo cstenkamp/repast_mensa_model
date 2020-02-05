@@ -10,12 +10,17 @@ import org.apache.commons.math3.exception.NullArgumentException;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
+import repast.simphony.space.grid.Grid;
 
 public class StudentGoalOriented extends Student {
 
 
 	public StudentGoalOriented(int num, SharedStuff sharedstuff, int fp, Context<Object> context, ContinuousSpace<Object> s) {
 		super(num, sharedstuff, fp, context, s);
+	}
+	
+	public StudentGoalOriented(int num, SharedStuff sharedstuff, int fp, Context<Object> context, Grid<Object> g, int x, int y) {
+		super(num, sharedstuff, fp, context, g, x, y);
 	}
 	
 	public Object next_aim() {
@@ -64,7 +69,7 @@ public class StudentGoalOriented extends Student {
 	
 
 	// Sucht den kuerzesten Weg
-		public Vector2d move() {
+		public Vector2d move_spatial() {
 			/*
 			 * Return Values:
 			 * null --> gehe zur Kasse
