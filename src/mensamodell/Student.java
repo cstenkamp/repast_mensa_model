@@ -133,7 +133,7 @@ public class Student {
 	
 	// waehle dein Essen
 	public boolean chooseMeal_inner(Ausgabe currentBar) {
-		// warte vor der Ausgabe
+		// warte vor der Ausgabe (nur im space)
 		this.waitticks = currentBar.getWaitTicks();
 
 		//Essen funktioniert so: wenn das Essen vom vegetarismus-Grad zu ihnen passt, nehmen sie es zu einem gewissem Prozentsatz sofort. Wenn sie am Ende
@@ -162,24 +162,24 @@ public class Student {
 		double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
 		// VEGGIE
 		if (food_preference == consts.VEGGIE && consts.vegetarian.contains(essen)) {
-			if (essen == consts.ESSEN_VEGGIE && randomNum <= 0.9) {new VeggieObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_VEGAN && randomNum <= 0.5) {new VeganObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_SALAD && randomNum <= 0.2) {new SaladObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_POMMES && randomNum <= 0.1) {new PommesObj(sharedstuff.foodContext); return true;}
+			if (essen == consts.ESSEN_VEGGIE && randomNum <= sharedstuff.foodParam[0]) {new VeggieObj(sharedstuff.foodContext); return true;}
+			if (essen == consts.ESSEN_VEGAN && randomNum <= sharedstuff.foodParam[1]) {new VeganObj(sharedstuff.foodContext); return true;}
+			if (essen == consts.ESSEN_SALAD && randomNum <= sharedstuff.foodParam[2]) {new SaladObj(sharedstuff.foodContext); return true;}
+			if (essen == consts.ESSEN_POMMES && randomNum <= sharedstuff.foodParam[3]) {new PommesObj(sharedstuff.foodContext); return true;}
 		}
 		// VEGAN
 		else if (food_preference == consts.VEGANER && consts.vegan.contains(essen)) {
-			if (essen == consts.ESSEN_VEGAN && randomNum <= 0.9) {new VeganObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_SALAD && randomNum <= 0.2) {new SaladObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_POMMES && randomNum <= 0.1) {new PommesObj(sharedstuff.foodContext); return true;}
+			if (essen == consts.ESSEN_VEGAN && randomNum <= sharedstuff.foodParam[4]) {new VeganObj(sharedstuff.foodContext); return true;}
+			if (essen == consts.ESSEN_SALAD && randomNum <= sharedstuff.foodParam[5]) {new SaladObj(sharedstuff.foodContext); return true;}
+			if (essen == consts.ESSEN_POMMES && randomNum <= sharedstuff.foodParam[6]) {new PommesObj(sharedstuff.foodContext); return true;}
 		}
 		// MEAT
 		else if (food_preference == consts.MEAT && consts.meatlover.contains(essen)) {
-			if (essen == consts.ESSEN_VEGGIE && randomNum <= 0.2) {new VeggieObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_VEGAN && randomNum <= 0.1) {new VeganObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_MEAT && randomNum <= 0.9) {new MeatObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_SALAD && randomNum <= 0.2) {new SaladObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_POMMES && randomNum <= 0.1) {new PommesObj(sharedstuff.foodContext); return true;}
+			if (essen == consts.ESSEN_VEGGIE && randomNum <= sharedstuff.foodParam[7]) {new VeggieObj(sharedstuff.foodContext); return true;}
+			if (essen == consts.ESSEN_VEGAN && randomNum <= sharedstuff.foodParam[8]) {new VeganObj(sharedstuff.foodContext); return true;}
+			if (essen == consts.ESSEN_MEAT && randomNum <= sharedstuff.foodParam[9]) {new MeatObj(sharedstuff.foodContext); return true;}
+			if (essen == consts.ESSEN_SALAD && randomNum <= sharedstuff.foodParam[10]) {new SaladObj(sharedstuff.foodContext); return true;}
+			if (essen == consts.ESSEN_POMMES && randomNum <= sharedstuff.foodParam[11]) {new PommesObj(sharedstuff.foodContext); return true;}
 		}
 		// No Preference
 		else if (food_preference == consts.NOPREFERENCE && consts.noPref.contains(essen)) {
@@ -223,7 +223,7 @@ public class Student {
 		if (!inQueue) {
 				Ausgabe nextBar;
 				if (this.ThefoodIsOkay) { 					// Wenn das essen gut ist gehe zur Kasse ansonsten hole dir was neues
-					nextBar = sharedstuff.ausgaben.get(0); //TODO war Share.saladList.get(0);
+					nextBar = sharedstuff.ausgaben.get(0); //TODO war Share.saladList.get(0); 
 					if (this.wantSalad && nextBar.getStudentsInQueue() < 15) { // wenn du salat willst & Schlange kleiner 15 gehe zur salatbar 
 						this.current = nextBar;
 						this.wantSalad = false;
@@ -238,7 +238,7 @@ public class Student {
 						this.current = nextBar;
 						DoYouWantThatFood();				// Willst du das Essen von dieser Bar?
 						// TODO wenn du das Essen nicht nimmst gehe zu einer anderen Bar Do-While Schleife
-						// Jedoch geht man dann direkt zur Ziel Bar
+						// Jedoch geht man dann direkt zur Ziel Bar somit sind alle goal Oriented weil keiner mehr unnötig ansteht
 					}  else {								// Falls alle Bars gesehen gehe zur Kasse
 						nextBar = toKasse();
 						this.current = nextBar;
