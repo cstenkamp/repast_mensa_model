@@ -21,7 +21,7 @@ public class Ausgabe {
 	public Vector2d size;
 	protected ContinuousSpace space;
 	private double barRange = 5;
-	private int essen;
+	int essen;
 	public Vector2d ap1 = null;
 	public Vector2d ap2 = null;
 	

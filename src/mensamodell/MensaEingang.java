@@ -62,7 +62,7 @@ public class MensaEingang {
 		this.foodPrefArray = createFoodPref(propEat);
 		this.walkStyleArray = createWalkStyle(propWalk); 
 		context.add(this);
-		space.moveTo(this, x, y);
+		grid.moveTo(this, x, y);
 
 	}
 

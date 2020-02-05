@@ -65,6 +65,7 @@ public class Student {
 	boolean waiting;
 	boolean ThefoodIsOkay;
 	boolean wantSalad;
+	ArrayList<Ausgabe> barList;
 	Ausgabe current;
 	int waitTicks;
 	int spentTicks;	 // DATA
@@ -72,7 +73,7 @@ public class Student {
 	
 	
 	
-	
+	// SPACE
 	public Student(int num, SharedStuff sharedstuff, int fp, Context<Object> context, ContinuousSpace<Object> s) {  
 		this.food_preference = fp;
 		this.visitedAusgaben = new ArrayList<Ausgabe>();
@@ -98,7 +99,7 @@ public class Student {
 		space.moveTo(this, x, y); // add students to space or grid
 	}
 
-	
+	// GRID
 	public Student(int num, SharedStuff sharedstuff, int fp, Context<Object> context, Grid<Object> g, int x, int y) {
 		this.food_preference = fp;
 		this.visitedAusgaben = new ArrayList<Ausgabe>();
@@ -108,7 +109,8 @@ public class Student {
 		this.num = num;
 		this.hungry = true;
 		this.best_food_so_far = new ArrayList<Ausgabe>();
-		
+		ArrayList<Ausgabe> barList = new ArrayList<Ausgabe>();
+		setBarList(); 											// Erstellt individuelle liste an Ausgaben für jeden Studenten
 		this.grid = g;
 		this.inQueue = false;
 		this.waiting = false;
@@ -303,7 +305,6 @@ public class Student {
 	}	
 	
 	public Kasse toKasse() {
-		//TODO nicht random sondern die kÃ¼rzeste?
 		int index = sharedstuff.kassen.size();
 		Kasse randomCheckout = sharedstuff.kassen.get(RandomHelper.nextIntFromTo(0, index-1)); // zufaellige Wahl der Kasse
 		return randomCheckout;
@@ -320,6 +321,19 @@ public class Student {
 		else this.wantSalad = false;
 	}
 	
+	public void setBarList() {
+		List<Integer> temp = new ArrayList<Integer>();
+		if (this.food_preference == consts.MEAT) temp = consts.meatlover;
+		else if (this.food_preference == consts.VEGGIE) temp = consts.vegetarian;
+		else if (this.food_preference == consts.VEGANER) temp = consts.vegan;
+		else temp = consts.noPref;
+		for (Ausgabe bar : sharedstuff.ausgaben) {
+			for (int e : temp) {
+				if (bar.essen == e) this.barList.add(bar);
+			}
+		}
+	}
+	
 	// DATA
 	public double calcMeanSpentTicks() {
 		int sum = 0;
@@ -328,6 +342,8 @@ public class Student {
 		}
 		return sum / sharedstuff.studierende.size();		// Returns Mean 
 	}
+	
+	
 
 	// ==================================== Walking methods ==================================== 
 	

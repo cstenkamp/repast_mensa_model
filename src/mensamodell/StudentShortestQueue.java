@@ -16,7 +16,7 @@ public class StudentShortestQueue extends Student{
 	public Ausgabe next_ausgabe() {
 		Ausgabe nextBar = null;
 		int sizeMin = 999999;
-		for (Object a : sharedstuff.ausgaben) {
+		for (Object a : this.barList) {
 			if (!this.visitedAusgaben.contains(a)) {
 				int size = ((Ausgabe) a).getStudentsInQueue();
 				if (size <= sizeMin) {
