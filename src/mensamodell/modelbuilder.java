@@ -53,7 +53,7 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		Double[] proportionsWalk = new Double[] {chaoticProp, goalProp, pathProp};
 
 		
-		// AKT ist zufaellig vegan, veggie, salad oder meat 
+		// Aktionstheke ist zufaellig vegan, veggie, salad oder meat 
 		int aktionsessen = RandomHelper.nextIntFromTo(0, 3);
 		switch (aktionsessen) {
 			case consts.ESSEN_VEGGIE: System.out.println("Aktionstheke ist Vegetarisch."); break;
@@ -71,48 +71,40 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 				consts.EINGANG_DELAY = 10;
 			
 				GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);	
-				grid = gridFactory.createGrid("Forest", context, new GridBuilderParameters<Object>(new StickyBorders(), new SimpleGridAdder<Object>(), false, consts.SIZE_X, consts.SIZE_Y));
+				grid = gridFactory.createGrid("MensaGrid", context, new GridBuilderParameters<Object>(new StickyBorders(), new SimpleGridAdder<Object>(), false, consts.SIZE_X, consts.SIZE_Y));
 				
-				Kasse kasse = new Kasse(consts.SIZE_X/6, consts.SIZE_Y-1, context, grid);
-				Ausgabe kasse1 = new Kasse(consts.SIZE_X*5/6, consts.SIZE_Y-1, context, grid);
+				//der konstruktor added die jeweils zum Kontext
+				new Kasse(consts.SIZE_X/6, consts.SIZE_Y-1, context, grid);
+				new Kasse(consts.SIZE_X*5/6, consts.SIZE_Y-1, context, grid);
 				aktion = new Ausgabe(consts.SIZE_X/2, 0, consts.AKTIONSTHEKE, aktionsessen, context, grid);
-				Ausgabe meat1 = new Ausgabe(consts.SIZE_X*1/5, 0, consts.FLEISCHTHEKE, consts.ESSEN_MEAT, context, grid);
-				Ausgabe meat2 = new Ausgabe(consts.SIZE_X*4/5, 0, consts.FLEISCHTHEKE, consts.ESSEN_MEAT, context, grid);
-				Ausgabe salat = new Ausgabe(2, 0, consts.SALATBAR, consts.ESSEN_SALAD, context, grid);
+				new Ausgabe(consts.SIZE_X*1/5, 0, consts.FLEISCHTHEKE, consts.ESSEN_MEAT, context, grid);
+				new Ausgabe(consts.SIZE_X*4/5, 0, consts.FLEISCHTHEKE, consts.ESSEN_MEAT, context, grid);
+				new Ausgabe(2, 0, consts.SALATBAR, consts.ESSEN_SALAD, context, grid);
 			
 		} else {
 				consts.EINGANG_DELAY = 1000;
 				
-				// create ContinuousSpace, size: 100x60
 				ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 				space = spaceFactory.createContinuousSpace("space", context, new SimpleCartesianAdder<Object>(), new StrictBorders(), consts.SIZE_X, consts.SIZE_Y);
 		
-				
-				// Theken ##############################################
+				// Theken 
 				addThekeAusgabe(consts.SIZE_X/2, 10, 0, 6, consts.AKTIONSTHEKE, space, aktionsessen, context);
-		
-				
-				for (double i : new double[]{-consts.SIZE_X/6.0, consts.SIZE_X/5.0}) {
+				for (double i : new double[]{-consts.SIZE_X/6.0, consts.SIZE_X/5.0})
 						addThekeAusgabe((int)(consts.SIZE_X/2.0+i)-1, 5, 0, 2, consts.FLEISCHTHEKE, space, consts.ESSEN_MEAT, context); //bei 34,5 & 66,5 | size 50,20
-						//TODO die Theken müssen unterschiedlich lange bearbeitungszeit haben -> salatbar läänger
-				}
 				for (double i : new double[]{-consts.SIZE_X/5.0, consts.SIZE_X/5.0}) {
-					addThekeAusgabe((int)(consts.SIZE_X/2.0+i), consts.SIZE_Y/2, 0, 5, consts.SALATBAR, space, consts.ESSEN_SALAD, context);				
-					addAusgabe((int)(consts.SIZE_X/2.0+i), consts.SIZE_Y/2-5, consts.FLEISCHTHEKE, space, consts.ESSEN_MEAT, context);
-		
+					addThekeAusgabe((int)(consts.SIZE_X/2.0+i), consts.SIZE_Y/2, 0, 5, consts.SALATBAR, space, consts.ESSEN_SALAD, context);
+					new Ausgabe((int)(consts.SIZE_X/2.0+i), consts.SIZE_Y/2-5, consts.FLEISCHTHEKE, consts.ESSEN_MEAT, context, space);
 				}
 				addThekeAusgabe(12, consts.SIZE_Y*1/4, 4, 0, consts.VEGGIETHEKE, space, consts.ESSEN_VEGGIE, context);
 				addThekeAusgabe(12, consts.SIZE_Y*2/4, 4, 0, consts.VEGANTHEKE, space, consts.ESSEN_VEGAN, context);
-				
+				addThekeAusgabe(consts.SIZE_X-12, consts.SIZE_Y*1/4, -4, 0, consts.POMMES, space, consts.ESSEN_POMMES, context);
 				// Eintopf ist zufaellig vegan, veggie oder meat
 				addThekeAusgabe(consts.SIZE_X-12, consts.SIZE_Y*2/4, -4, 0, consts.EINTOPF, space, RandomHelper.nextIntFromTo(0, 2), context);
-				addThekeAusgabe(consts.SIZE_X-12, consts.SIZE_Y*1/4, -4, 0, consts.POMMES, space, consts.ESSEN_POMMES, context);
 		
-				// Kassen #################################################
-				Kasse kasseL = new Kasse(consts.SIZE_X*1/4, consts.SIZE_Y-5, context, space);
-				Kasse kasseR = new Kasse(consts.SIZE_X*3/4, consts.SIZE_Y-5, context, space);
+				// Kassen
+				new Kasse(consts.SIZE_X*1/4, consts.SIZE_Y-5, context, space);
+				new Kasse(consts.SIZE_X*3/4, consts.SIZE_Y-5, context, space);
 			
-				
 				mgrid = new MensaGrid(consts.SIZE_X, consts.SIZE_Y);
 				for (Object obj: context.getObjects(Object.class))
 					mgrid.setObj(obj);
@@ -176,10 +168,6 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		s.moveTo(theke, theke.x, theke.y);
 	}
 	
-	public void addAusgabe(int x, int y, int kind, ContinuousSpace s, int e, Context context) {
-		Ausgabe ausgabe = new Ausgabe(x, y, kind, e, context, s);
-	}
-
 	
   public void remove_studs() {
     for (Student s : sharedstuff.remove_these) {

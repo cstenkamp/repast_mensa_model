@@ -135,7 +135,7 @@ private Integer[] createWalkStyle(Double[] prop) {
 		if (addedStudents < numStudents) {
 			
 			if (aktionstheke != null && aktionstheke.getStudentsInQueue() > (y-9)) 
-				return; //falls es ein grid gibt und hier zu viel schlange ist kann keiner kommen
+				return; //falls es ein grid gibt und hier zu viel schlange ist kann keiner kommen //TODO Hm kann das anders?
 			
 			int fp = foodPrefArray[addedStudents];
 			Student stud = null;
@@ -165,7 +165,7 @@ private Integer[] createWalkStyle(Double[] prop) {
 					(fp == consts.MEAT ? "Fleischesser" : fp == consts.VEGGIE ? "Vegetarier" : fp == consts.VEGANER ? "Veganer" : "Ohne Präferenz"));
 		}
 
-		if (sharedstuff.schedule.getTickCount()/consts.EINGANG_DELAY % 100 == 0) {
+		if (sharedstuff.mgrid != null && sharedstuff.schedule.getTickCount()/consts.EINGANG_DELAY % 100 == 0) {
 			sharedstuff.mgrid.print();
 		}
 
