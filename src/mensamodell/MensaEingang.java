@@ -5,7 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import repast.simphony.context.Context;
+import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.engine.schedule.ISchedule;
+import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.engine.schedule.ScheduledMethod;
+import repast.simphony.essentials.RepastEssentials;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.grid.Grid;
@@ -15,7 +19,6 @@ public class MensaEingang {
 	Context<Object> context;
 	ContinuousSpace<Object> space;
 	SharedStuff sharedstuff;
-	int passedsteps = 0;
 	int addedStudents = 0;
 	int numVeggie;
 	int numVegan;
@@ -125,18 +128,14 @@ private Integer[] createWalkStyle(Double[] prop) {
 
 
 
-	@ScheduledMethod(start = 0, interval = 1000)
-	public void step() {
-		passedsteps++;
-
-		
+	//ScheduledMethod(start = 0, interval = consts.EINGANG_DELAY)
+	public void step() {		
 		if (addedStudents < numStudents) {
 			
 			if (aktionstheke != null && aktionstheke.getStudentsInQueue()< (y-9)) 
 				return; //falls es ein grid gibt und hier zu viel schlange ist kann keiner kommen
 			
 			int fp = foodPrefArray[addedStudents];
-			double x, y;
 			Student stud = null;
 			switch(walkStyleArray[addedStudents]) {
 			case 0: 
@@ -150,23 +149,12 @@ private Integer[] createWalkStyle(Double[] prop) {
 				break;
 			}
 
-			x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);
-			y = consts.SIZE_Y-5;
-			context.add(stud);	// add the new students to the root context
-			sharedstuff.studierende.add(stud);
-			
-			if (space != null) 
-				space.moveTo(stud, x, y); // add students to space or grid
-			else
-				grid.moveTo(stud, (int)x, (int)y);
-
 			addedStudents++;
-			System.out.println("Student #"+addedStudents+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented " : stud instanceof StudentChaotic ? "Chaotic " : "Pathfinder ")+
+			System.out.println("Student #"+addedStudents+"@ "+sharedstuff.schedule.getTickCount()+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented " : stud instanceof StudentChaotic ? "Chaotic " : "Pathfinder ")+
 					(fp == consts.MEAT ? "Fleischesser" : fp == consts.VEGGIE ? "Vegetarier" : fp == consts.VEGANER ? "Veganer" : "Ohne Präferenz"));
 		}
 
-		if (passedsteps >100) {
-			passedsteps = 0;
+		if (sharedstuff.schedule.getTickCount()/consts.EINGANG_DELAY % 100 == 0) {
 			sharedstuff.grid.print();
 		}
 

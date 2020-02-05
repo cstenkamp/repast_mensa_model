@@ -8,6 +8,8 @@ import javax.vecmath.Vector2d;
 import org.apache.commons.math3.exception.NullArgumentException;
 
 import repast.simphony.context.Context;
+import repast.simphony.engine.schedule.ISchedulableAction;
+import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.random.RandomHelper;
@@ -34,6 +36,7 @@ public class Student {
 	protected Ausgabe tempDestination;
 	protected Object closestkasse;
 	protected Boolean hungry;
+	ISchedulableAction scheduledStep;
 
 	int waitticks;
 	private int tickCount = 0;
@@ -65,7 +68,7 @@ public class Student {
 	
 	
 	
-	public Student(int num, SharedStuff sharedstuff, int fp, Context<Object> context, ContinuousSpace<Object> s) {
+	public Student(int num, SharedStuff sharedstuff, int fp, Context<Object> context, ContinuousSpace<Object> s) {  
 		this.food_preference = fp;
 		this.visitedAusgaben = new ArrayList<Ausgabe>();
 		this.context = context;
@@ -78,6 +81,16 @@ public class Student {
 		this.space = s;
 		this.velocity = new Vector2d(0,0);
 		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
+		
+
+		scheduledStep = sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(sharedstuff.schedule.getTickCount()+1, 1), this, "step");
+    //TODO Es gibt priorities in den schedules!! https://stackoverflow.com/a/57774003
+
+		context.add(this);	
+		sharedstuff.studierende.add(this);
+		float x = RandomHelper.nextIntFromTo(consts.SIZE_X*2/5, consts.SIZE_X*3/5);
+		float y = consts.SIZE_Y-5;
+		space.moveTo(this, x, y); // add students to space or grid
 	}
 
 	
@@ -102,6 +115,7 @@ public class Student {
 //		this.spentTicks = 0;							// DATA
 //		DoYouWantSalad();								// Entscheide zu beginn ob du Salat willst.
 		
+		//grid.moveTo(this, (int)x, (int)y);
 	}
 	
 	
@@ -329,7 +343,7 @@ public class Student {
 	}
 
 
-	@ScheduledMethod(start = 0, interval = 1)
+  //@ScheduledMethod(start = 0, interval = 1)
 	public void step() {
 		this.tickCount++;
 		
@@ -355,10 +369,7 @@ public class Student {
 		
 		
 		if (tempKasse != null && tempKasse.pay(this)) {
-			System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
-			NdPoint mypos = space.getLocation(this);
-			sharedstuff.grid.set((int)mypos.getX(), (int)mypos.getY(), 0);
-			context.remove(this);
+			remove_me();
 			return;
 		} else {
 			this.tempKasse = to_kasse();
@@ -371,7 +382,16 @@ public class Student {
 		do_move();
 		
 	}
-
+	
+	public void remove_me() {
+		System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
+		NdPoint mypos = space.getLocation(this);
+		sharedstuff.grid.set((int)mypos.getX(), (int)mypos.getY(), 0);
+		context.remove(this);
+		//sharedstuff.schedule.removeAction(scheduledStep);
+		sharedstuff.remove_these.add(this);
+		sharedstuff.schedule.schedule(ScheduleParameters.createOneTime(sharedstuff.schedule.getTickCount()+0.01, 1), sharedstuff.builder, "remove_studs"); //priority 1
+	}
 
 
 	/*

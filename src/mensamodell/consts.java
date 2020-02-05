@@ -10,7 +10,7 @@ public class consts {
 	public final static int SIZE_X = 100;
 	public final static int SIZE_Y = 60;
 	public final static boolean MAY_LEAVE_WITHOUT_FOOD = false;
-	
+	public final static int EINGANG_DELAY = 1000;
 	
 
 	//Theken

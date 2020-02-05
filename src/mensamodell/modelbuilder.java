@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import repast.simphony.context.Context;
+import repast.simphony.context.DefaultContext;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactory;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
@@ -13,12 +14,17 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.SimpleCartesianAdder;
 import repast.simphony.space.continuous.StrictBorders; 
+import repast.simphony.engine.schedule.ISchedule;
+import repast.simphony.engine.schedule.ScheduleParameters;
+import repast.simphony.engine.schedule.IAction;
 
 
-public class modelbuilder implements ContextBuilder<Object>{
+public class modelbuilder extends DefaultContext implements ContextBuilder<Object>{
 
+	SharedStuff sharedstuff;
 	@Override
 	public Context<Object> build(Context<Object> context) {
+		
 
 		// get parameters from the GUI
 		Parameters param = RunEnvironment.getInstance().getParameters();
@@ -114,12 +120,17 @@ public class modelbuilder implements ContextBuilder<Object>{
 			grid.setObj(obj);
 //		grid.print();
 
-		SharedStuff sharedstuff = new SharedStuff(context, space, kassen, ausgaben, grid);
+		sharedstuff = new SharedStuff(this, context, space, kassen, ausgaben, grid);
+    sharedstuff.schedule = RunEnvironment.getInstance().getCurrentSchedule();
+    //schedule.schedule(ScheduleParameters.createOneTime(1.0), new IAction() { public void execute() {} });
+    
 		MensaEingang eingang = new MensaEingang((float)(consts.SIZE_X*2.5/5), (float)(consts.SIZE_Y-5), initialNumStud, proportions, proportionsWalk, context, space, sharedstuff); //TODO darauf achten dass man immer 100 studenten drin hat bspw
 		context.add(eingang);
 		space.moveTo(eingang, eingang.x, eingang.y);
-		
-		
+		sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(1, consts.EINGANG_DELAY), eingang, "step");
+
+
+    
 		return context;
 	} // END of Context.
 
@@ -139,6 +150,13 @@ public class modelbuilder implements ContextBuilder<Object>{
 		s.moveTo(ausgabe, ausgabe.x, ausgabe.y);
 	}
 
+	
+  public void remove_studs() {
+    for (Student s : sharedstuff.remove_these) {
+    	sharedstuff.schedule.removeAction(s.scheduledStep);
+    }
+    sharedstuff.remove_these = new ArrayList<Student>();
+  }
 
 
 } // END of modelbuilder.
