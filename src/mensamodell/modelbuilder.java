@@ -54,20 +54,20 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		
 		// BATCH RUN PARAMETERS:
 		// VEGGIE
-		double vg_vg = 0; param.setValue("vg_vg", 0.9);
-		double vg_ve = 0; param.setValue("vg_ve", 0.5);
-		double vg_sa = 0; param.setValue("vg_sa", 0.2);
-		double vg_po = 0; param.setValue("vg_po", 0.1);
+		double vg_vg = (Double) param.getValue("vg_vg");
+		double vg_ve = (Double) param.getValue("vg_ve");
+		double vg_sa = (Double) param.getValue("vg_sa");
+		double vg_po = (Double) param.getValue("vg_po");
 		// VEGAN
-		double ve_ve = 0; param.setValue("ve_ve", 0.9);
-		double ve_po = 0; param.setValue("ve_po", 0.2);
-		double ve_sa = 0; param.setValue("ve_sa", 0.1);
+		double ve_ve = (Double) param.getValue("ve_ve");
+		double ve_po = (Double) param.getValue("ve_po");
+		double ve_sa = (Double) param.getValue("ve_sa");
 		// MEAT
-		double m_ve = 0; param.setValue("m_ve", 0.2);
-		double m_vg = 0; param.setValue("m_vg", 0.1);
-		double m_m = 0; param.setValue("m_m", 0.9);
-		double m_sa = 0; param.setValue("m_sa", 0.2);
-		double m_po = 0; param.setValue("m_po", 0.1);
+		double m_ve = (Double) param.getValue("m_ve");
+		double m_vg = (Double) param.getValue("m_vg");
+		double m_m = (Double) param.getValue("m_m");
+		double m_sa = (Double) param.getValue("m_sa");
+		double m_po = (Double) param.getValue("m_po");
 		
 		double[] foodParam = new double[] {vg_vg, vg_ve, vg_sa, vg_po, ve_ve, ve_po, ve_sa, m_ve, m_vg, m_m, m_sa, m_po};
 		
