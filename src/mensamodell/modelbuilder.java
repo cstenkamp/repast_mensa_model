@@ -122,9 +122,9 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 				new Ausgabe(consts.SIZE_X*3/10, 0, consts.VEGGIETHEKE, consts.ESSEN_VEGGIE, context, grid);
 				new Ausgabe(consts.SIZE_X*4/10, 0, consts.FLEISCHTHEKE, consts.ESSEN_MEAT, context, grid);
 				
-				new Ausgabe(consts.SIZE_X*6/10, 0, consts.EINTOPF, eintopfessen, context, grid);
+				new Ausgabe(consts.SIZE_X*6/10, 0, consts.FLEISCHTHEKE, consts.ESSEN_MEAT, context, grid);
 				new Ausgabe(consts.SIZE_X*7/10, 0, consts.SCHNELLERTELLER, schnellesessen, context, grid);
-				new Ausgabe(consts.SIZE_X*8/10, 0, consts.FLEISCHTHEKE, consts.ESSEN_MEAT, context, grid);
+				new Ausgabe(consts.SIZE_X*8/10, 0, consts.EINTOPF, eintopfessen, context, grid);
 				new Ausgabe(consts.SIZE_X*9/10, 0, consts.POMMES, consts.ESSEN_POMMES, context, grid);
 			
 		} else {

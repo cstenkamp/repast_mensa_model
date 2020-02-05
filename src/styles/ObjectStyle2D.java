@@ -60,6 +60,15 @@ public class ObjectStyle2D extends DefaultStyleOGL2D {
 	public String getLabel(Object agent) {
 		Object o = (Object) agent;
 		String s;
+		String d = "";
+		
+		if (o instanceof Ausgabe) {
+			if (((Ausgabe)o).essen == consts.ESSEN_VEGAN) d = "\n(vegan)";
+			else if (((Ausgabe)o).essen == consts.ESSEN_VEGGIE) d = "\n(vegetarisch)";
+			else if (((Ausgabe)o).essen == consts.ESSEN_MEAT) d = "\n(fleisch)";
+			else d = "\n(salat)";
+		}	
+		
 		if (o instanceof Student) {
 			s = String.valueOf(((Student) o).num);
 			return s;
@@ -71,7 +80,7 @@ public class ObjectStyle2D extends DefaultStyleOGL2D {
 			return s;
 		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.AKTIONSTHEKE) {
 			s = "Aktion";
-			return s;
+			return s+d;
 		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.FLEISCHTHEKE) {
 			s = "Fleisch";
 			return s;
@@ -83,10 +92,10 @@ public class ObjectStyle2D extends DefaultStyleOGL2D {
 			return s;
 		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.EINTOPF) {
 			s = "Eintopf";
-			return s;
+			return s+d;
 		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.SCHNELLERTELLER) {
 			s = "Schnellerteller";
-			return s;
+			return s+d;
 		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.VEGANTHEKE) {
 			s = "Vegan";
 			return s;

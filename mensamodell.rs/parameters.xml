@@ -13,7 +13,7 @@
 									
 		/>
 				<parameter name="m_po" displayName=".m_po" type="double" 
-						defaultValue="0.1" 
+						defaultValue="0.2" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
