@@ -55,7 +55,7 @@ public class ObjectStyle2D extends DefaultStyleOGL2D {
 		}
 		else return Position.NORTH;
 	}
-	
+		
 	@Override
 	public String getLabel(Object agent) {
 		Object o = (Object) agent;
@@ -69,17 +69,31 @@ public class ObjectStyle2D extends DefaultStyleOGL2D {
 		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.SALATBAR) {
 			s = "Salatbar";
 			return s;
-		}
-		else if (o instanceof Ausgabe) {		// TODO Zeige Fleisch, Vegan, Veggie  
-			s = String.valueOf(((Ausgabe) o).kind);
-			String d = "Ausgabe ";
-			return d + s;
-		}
-		else if (o instanceof MensaEingang) {
+		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.AKTIONSTHEKE) {
+			s = "Aktion";
+			return s;
+		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.FLEISCHTHEKE) {
+			s = "Fleisch";
+			return s;
+		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.POMMES) {
+			s = "Pommes";
+			return s;
+		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.VEGGIETHEKE) {
+			s = "Veggie";
+			return s;
+		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.EINTOPF) {
+			s = "Eintopf";
+			return s;
+		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.SCHNELLERTELLER) {
+			s = "Schnellerteller";
+			return s;
+		} else if (o instanceof Ausgabe && ((Ausgabe) o).kind == consts.VEGANTHEKE) {
+			s = "Vegan";
+			return s;
+		} else if (o instanceof MensaEingang) {
 			s = "Eingang";
 			return s;
-		}
-		else return null;
+		} else return null;
 	}
 	
 	@Override

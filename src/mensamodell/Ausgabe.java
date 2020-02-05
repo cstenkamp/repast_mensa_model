@@ -48,7 +48,7 @@ public class Ausgabe {
 		space.moveTo(this, x, y);
 	}
 	
-	//für Grid
+	//fuer Grid
 	public Ausgabe(int x, int y, int kind, int food_here, Context<Object> context, Grid<Object> grid){
 		this.x = x;
 		this.y = y;
@@ -56,14 +56,14 @@ public class Ausgabe {
 		this.essen = food_here;
 		this.grid = grid;
 		this.studentsInQueue = new ArrayList<Student>();
-		this.shift = getShift(this.kind);
+		this.shift = getShift();  
 		context.add(this);
 		grid.moveTo(this, x, y);
 	}
 	
 	
-	//TODO die müssen mal like 10.000 falls nicht mit grid
-	int getWaitTicks() { //überschrieben in Kasse
+	//TODO die muessen mal like 10.000 falls nicht mit grid
+	int getWaitTicks() { 
 		int wait_time = 0;
 		switch (kind) {
 		case consts.SALATBAR:
@@ -75,10 +75,25 @@ public class Ausgabe {
 		case consts.FLEISCHTHEKE:
 			wait_time = consts.waitMeat;
 			break;
+		case consts.VEGGIETHEKE:
+			wait_time = consts.waitVeggie;
+			break;
+		case consts.VEGANTHEKE:
+			wait_time = consts.waitVegan;
+			break;
+		case consts.EINTOPF:
+			wait_time = consts.waitEintopf;
+			break;
+		case consts.SCHNELLERTELLER:
+			wait_time = consts.waitSchnellerTeller;
+			break;
+		case consts.POMMES:
+			wait_time = consts.waitPommes;
+			break;
 		default:
 			wait_time = 3;
 		}
-		return wait_time;		
+		return wait_time;	
 	}
 	
 	
@@ -102,10 +117,8 @@ public class Ausgabe {
 	
 	
 	// In welche Richtung ausgehend von der Position der Ausgabe geht die Schlange
-	protected int[] getShift(int kind) {
-		if (kind == consts.AKTIONSTHEKE || kind == consts.FLEISCHTHEKE|| kind == consts.SALATBAR) return new int[] {0, 1};
-		//if (kind == Share.kasse) return new int[] {0, -1}; überschrieben in Kasse
-		return new int[] {0,0}; //TODO andere Theken
+	protected int[] getShift() {
+		return new int[] {0,1}; 
 	}
 
 

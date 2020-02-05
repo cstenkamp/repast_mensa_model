@@ -146,19 +146,19 @@ private Integer[] createWalkStyle(Double[] prop) {
 				if (space != null) 
 					stud = new StudentChaotic(addedStudents, sharedstuff, fp, context, space);
 				else
-					stud = new StudentChaotic(addedStudents, sharedstuff, fp, context, grid, (int)x, (int)y-1);
+					stud = new StudentChaotic(addedStudents, sharedstuff, fp, context, grid, (int)x, (int)y);
 				break;
 			case 1:
 				if (space != null) 
 					stud = new StudentGoalOriented(addedStudents, sharedstuff, fp, context, space);
 				else
-					stud = new StudentGoalOriented(addedStudents, sharedstuff, fp, context, grid, (int)x, (int)y-1);
+					stud = new StudentGoalOriented(addedStudents, sharedstuff, fp, context, grid, (int)x, (int)y);
 				break;
 			case 2:
 				if (space != null) 
 					stud = new StudentPathfinder(addedStudents, sharedstuff, fp, context, space);
 				else
-					stud = new StudentShortestQueue(addedStudents, sharedstuff, fp, context, grid, (int)x, (int)y-1);
+					stud = new StudentShortestQueue(addedStudents, sharedstuff, fp, context, grid, (int)x, (int)y);
 				break;
 			}
 
