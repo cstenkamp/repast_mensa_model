@@ -39,7 +39,7 @@ public class Kasse extends Ausgabe { //extends Ausgabe
   }
   
 	// In welche Richtung ausgehend von der Position der Ausgabe geht die Schlange
-	protected int[] getShift(int kind) {
+	protected int[] getShift() {
 		return new int[] {0, -1};
 	}
   

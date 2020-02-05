@@ -32,10 +32,11 @@ public class SharedStuff {
 	public ContinuousSpace<Object> space;
 	public Grid<Object> grid;
 
-	public SharedStuff(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext, ContinuousSpace<Object> space, MensaGrid mgrid) {
+	public SharedStuff(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext, ContinuousSpace<Object> space, MensaGrid mgrid, double[] fParam) {
 		this.context = context;
 		this.space = space;
 		this.kassen = kassen;
+		this.foodParam = fParam;
 		this.ausgaben = ausgaben;
 		this.mgrid = mgrid;
 		this.builder = builder;

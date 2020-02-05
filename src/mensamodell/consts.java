@@ -60,5 +60,9 @@ public class consts {
 	public static final int waitAktion = 20;
 	public static final int waitMeat = 20;
 	public static final int waitSalad = 60;
-	
+	public static final int waitPommes = 10;
+	public static final int waitEintopf = 10;
+	public static final int waitSchnellerTeller = 10;
+	public static final int waitVeggie = 10;
+	public static final int waitVegan = 10;	
 }
