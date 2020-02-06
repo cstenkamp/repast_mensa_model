@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.7.0">
-  <name>Food_counter</name>
+  <name>Food_Counter</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>true</inclBatchRun>
@@ -11,51 +11,51 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1552719297</hashCode>
+    <hashCode>-1887857735</hashCode>
   </scheduleParams>
   <atEnd>true</atEnd>
   <methodDataSources class="linked-hash-map"/>
   <countSources class="linked-hash-map">
     <entry>
-      <string>Food_sum</string>
+      <string>Gesamt_Food</string>
       <repast.simphony.data2.engine.CountSourceDefinition>
         <typeName>food_objs.Food</typeName>
-        <id>Food_sum</id>
+        <id>Gesamt_Food</id>
       </repast.simphony.data2.engine.CountSourceDefinition>
     </entry>
     <entry>
-      <string>Meat_sum</string>
+      <string>Meat</string>
       <repast.simphony.data2.engine.CountSourceDefinition>
         <typeName>food_objs.MeatObj</typeName>
-        <id>Meat_sum</id>
+        <id>Meat</id>
       </repast.simphony.data2.engine.CountSourceDefinition>
     </entry>
     <entry>
-      <string>Pommes_sum</string>
+      <string>Pommes</string>
       <repast.simphony.data2.engine.CountSourceDefinition>
         <typeName>food_objs.PommesObj</typeName>
-        <id>Pommes_sum</id>
+        <id>Pommes</id>
       </repast.simphony.data2.engine.CountSourceDefinition>
     </entry>
     <entry>
-      <string>Salad_sum</string>
+      <string>Salad</string>
       <repast.simphony.data2.engine.CountSourceDefinition>
         <typeName>food_objs.SaladObj</typeName>
-        <id>Salad_sum</id>
+        <id>Salad</id>
       </repast.simphony.data2.engine.CountSourceDefinition>
     </entry>
     <entry>
-      <string>Vegan_sum</string>
+      <string>Vegan</string>
       <repast.simphony.data2.engine.CountSourceDefinition>
         <typeName>food_objs.VeganObj</typeName>
-        <id>Vegan_sum</id>
+        <id>Vegan</id>
       </repast.simphony.data2.engine.CountSourceDefinition>
     </entry>
     <entry>
-      <string>Veggie_sum</string>
+      <string>Veggie</string>
       <repast.simphony.data2.engine.CountSourceDefinition>
         <typeName>food_objs.VeggieObj</typeName>
-        <id>Veggie_sum</id>
+        <id>Veggie</id>
       </repast.simphony.data2.engine.CountSourceDefinition>
     </entry>
   </countSources>

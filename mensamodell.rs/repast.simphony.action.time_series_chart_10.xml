@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.7.0">
-  <name>SpentTicks Mean</name>
-  <dataSet>SpentTicks Mean</dataSet>
+  <name>Food_Chart</name>
+  <dataSet>Food_Counter</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Mean</yAxisLabel>
-  <chartTitle>SpentTicks Mean</chartTitle>
+  <yAxisLabel>Count</yAxisLabel>
+  <chartTitle>Food-Count</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>192</red>
@@ -21,33 +21,45 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>Goal</string>
+      <string>Gesamt_Food</string>
       <SeriesData>
-        <label>Goal</label>
+        <label>Gesamt_Food</label>
         <color>
-          <red>255</red>
-          <green>153</green>
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Veggie</string>
+      <SeriesData>
+        <label>Veggie</label>
+        <color>
+          <red>0</red>
+          <green>255</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Pommes</string>
+      <SeriesData>
+        <label>Pommes</label>
+        <color>
+          <red>0</red>
+          <green>255</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>Student</string>
+      <string>Salad</string>
       <SeriesData>
-        <label>Student</label>
-        <color>
-          <red>51</red>
-          <green>0</green>
-          <blue>51</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Queue</string>
-      <SeriesData>
-        <label>Queue</label>
+        <label>Salad</label>
         <color>
           <red>255</red>
           <green>0</green>
@@ -57,9 +69,21 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>Chaotic</string>
+      <string>Vegan</string>
       <SeriesData>
-        <label>Chaotic</label>
+        <label>Vegan</label>
+        <color>
+          <red>255</red>
+          <green>200</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Meat</string>
+      <SeriesData>
+        <label>Meat</label>
         <color>
           <red>255</red>
           <green>0</green>

@@ -1,0 +1,58 @@
+<repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.7.0">
+  <name>SpentTicks Mean</name>
+  <type>AGGREGATE</type>
+  <inclTick>true</inclTick>
+  <inclBatchRun>true</inclBatchRun>
+  <inclRandomSeed>false</inclRandomSeed>
+  <scheduleParams>
+    <start>1.0</start>
+    <interval>15.0</interval>
+    <priority>-Infinity</priority>
+    <pType>LAST</pType>
+    <duration>-1.0</duration>
+    <frequency>REPEAT</frequency>
+    <hashCode>-2062545259</hashCode>
+  </scheduleParams>
+  <atEnd>true</atEnd>
+  <methodDataSources class="linked-hash-map">
+    <entry>
+      <string>Student</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Student</id>
+        <className>mensamodell.Student</className>
+        <methodName>calcMeanSpentTicks</methodName>
+        <aggType>MEAN</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Chaotic</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Chaotic</id>
+        <className>mensamodell.StudentChaotic</className>
+        <methodName>calcMeanSpentTicks</methodName>
+        <aggType>MEAN</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Goal</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Goal</id>
+        <className>mensamodell.StudentGoalOriented</className>
+        <methodName>calcMeanSpentTicks</methodName>
+        <aggType>MEAN</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Queue</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Queue</id>
+        <className>mensamodell.StudentShortestQueue</className>
+        <methodName>calcMeanSpentTicks</methodName>
+        <aggType>MEAN</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+  </methodDataSources>
+  <countSources class="linked-hash-map"/>
+  <customNADataSources class="linked-hash-map"/>
+  <customAggDataSources class="linked-hash-map"/>
+</repast.simphony.data2.engine.DataSetDescriptor>

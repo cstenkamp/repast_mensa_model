@@ -62,7 +62,6 @@ public class Student {
 	int nextLocY;
 	boolean inQueue;
 	boolean waiting;
-	boolean ThefoodIsOkay;
 	List<Ausgabe> consideredBarsList;
 	Ausgabe current;
 	int waitTicks;
@@ -77,7 +76,6 @@ public class Student {
 		this.waitticks = 0;
 		this.sharedstuff = sharedstuff;
 		this.num = num;
-		this.hungry = true;
 		this.best_food_so_far = new ArrayList<Ausgabe>();
 		context.add(this);
 		sharedstuff.studierende.add(this);
@@ -97,7 +95,6 @@ public class Student {
 		this.current = null;
 		this.nextLocX = x;
 		this.nextLocY = y;
-		this.ThefoodIsOkay = false;
 		this.spentTicks = 0;							// DATA
 
 		grid.moveTo(this, (int)x, (int)y);
@@ -341,7 +338,7 @@ public class Student {
 		else temp = sharedstuff.studierende;
 		int sum = 0;
 		for (Student s : temp) {
-			if (!sharedstuff.remove_these.contains(s))
+			if (!sharedstuff.students_that_left.contains(s))
 				sum = sum + s.spentTicks;
 		}
 		return sum / temp.size();		// Returns Mean
@@ -357,6 +354,7 @@ public class Student {
 	public Student(int num, SharedStuff sharedstuff, int fp, Context<Object> context, ContinuousSpace<Object> s) {
 		global_construct(num, sharedstuff, fp, context);
 
+		this.hungry = true;
 		this.space = s;
 		this.velocity = new Vector2d(0,0);
 		this.tempDestination = null; // stellt sicher dass der student bis zur Ausgabe laeuft
