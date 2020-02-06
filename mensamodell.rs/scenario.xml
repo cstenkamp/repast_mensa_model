@@ -4,4 +4,7 @@
 <repast.simphony.action.data_set context="mensamodell" file="repast.simphony.action.data_set_1.xml" />
 <repast.simphony.action.time_series_chart context="mensamodell" file="repast.simphony.action.time_series_chart_2.xml" />
 <repast.simphony.action.display context="mensamodell" file="repast.simphony.action.display_3.xml" />
+<repast.simphony.action.data_set context="foodContext" file="repast.simphony.action.data_set_4.xml" />
+<repast.simphony.action.file_sink context="foodContext" file="repast.simphony.action.file_sink_5.xml" />
+<repast.simphony.action.time_series_chart context="foodContext" file="repast.simphony.action.time_series_chart_6.xml" />
 </Scenario>

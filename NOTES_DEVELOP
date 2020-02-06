@@ -5,3 +5,9 @@
 -Man wird nie realistisches Laufen hinbekommen
 -Repast's übersetzen von weltkoordinaten und größen ist irgendwie inkonsistent, jedenfalls passt es nicht aufs grid
 -repast ist schlecht dokumentiert, am meisten hilfts sich an Beispielen entlang zu hangeln 
+
+
+-sanity checks sind bspw gucken obs im schnitt weniger ticks braucht wenn nur shortesqueu drin sind im gegensatz zu chaotic
+-wir haben asynchrones update, mit priority nach schlangenposition, damit die schlange schön von vorne nach  hinten geupdated wird ;)
+-wie die essenswünsche funktionieren
+-das video vom gegeneinander-laufen einbringen

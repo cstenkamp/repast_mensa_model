@@ -130,10 +130,7 @@ private Integer[] createWalkStyle(Double[] prop) {
 	//ScheduledMethod(start = 0, interval = consts.EINGANG_DELAY)
 	public void step() {		
 		if (addedStudents < numStudents) {
-			
-			if (aktionstheke != null && aktionstheke.getStudentsInQueue() > (y-9)) 
-				return; //falls es ein grid gibt und hier zu viel schlange ist kann keiner kommen //TODO Hm kann das anders?
-			
+					
 			int fp = foodPrefArray[addedStudents];
 			Student stud = null;
 			switch(walkStyleArray[addedStudents]) {

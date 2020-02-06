@@ -1,0 +1,18 @@
+<repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.7.0">
+  <name>Food_counter_sink</name>
+  <dataSet>Food_counter</dataSet>
+  <delimiter>,</delimiter>
+  <format>TABULAR</format>
+  <sourceIds class="linked-hash-set">
+    <string>tick</string>
+    <string>run</string>
+    <string>Food_sum</string>
+    <string>Meat_sum</string>
+    <string>Pommes_sum</string>
+    <string>Salad_sum</string>
+    <string>Vegan_sum</string>
+    <string>Veggie_sum</string>
+  </sourceIds>
+  <fileName>Food_output.txt</fileName>
+  <addTimeStamp>true</addTimeStamp>
+</repast.simphony.data2.engine.FileSinkDescriptor>
