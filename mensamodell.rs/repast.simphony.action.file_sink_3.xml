@@ -2,7 +2,7 @@
   <name>Student Count</name>
   <dataSet>Student Count</dataSet>
   <delimiter>,</delimiter>
-  <format>LINE</format>
+  <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
     <string>run</string>
     <string>tick</string>

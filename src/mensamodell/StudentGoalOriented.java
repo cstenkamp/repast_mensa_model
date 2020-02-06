@@ -31,8 +31,15 @@ public class StudentGoalOriented extends Student {
 	
 	@Override
 	public Ausgabe next_ausgabe() {
-		int index = this.consideredBarsList.size();
-		Ausgabe nextBar = this.consideredBarsList.get(RandomHelper.nextIntFromTo(0, index-1));
+		List<Ausgabe> empty_enough_bars = new ArrayList<Ausgabe>();
+		for (Ausgabe a : consideredBarsList) 
+			if (a.getStudentsInQueue() < consts.SIZE_Y-5)
+				empty_enough_bars.add(a);
+		
+		if (empty_enough_bars.isEmpty())
+			throw new IndexOutOfBoundsException(this+": findet keine leer genug-en Ausgaben!");
+		
+		Ausgabe nextBar = empty_enough_bars.get(RandomHelper.nextIntFromTo(0, empty_enough_bars.size()-1));
 		return nextBar;
 	}
 	

@@ -249,8 +249,13 @@ public class Student {
 							consts.print(this+" found a meal at "+this.current);
 							create_food_obj(this.current);
 							if (additionallywants != -1) {
-								if (additionallywants == consts.ESSEN_POMMES) this.current = sharedstuff.pommesbar;
-								if (additionallywants == consts.ESSEN_SALAD) this.current = sharedstuff.salatbar;
+								Ausgabe tmp = null;
+								if (additionallywants == consts.ESSEN_POMMES) tmp = sharedstuff.pommesbar;
+								if (additionallywants == consts.ESSEN_SALAD) tmp = sharedstuff.salatbar;
+								if (tmp.getStudentsInQueue() < consts.SIZE_Y-5)
+									current = tmp;
+								else
+									throw new IndexOutOfBoundsException(this+": Salat/Pommesbar zu voll! Weiß nicht was er tun soll!");
 								additionallywants = -1;
 							} else {
 								this.current = toKasse();
@@ -309,8 +314,16 @@ public class Student {
 	}
 
 	public Kasse toKasse() {
-		int index = sharedstuff.kassen.size();
-		Kasse randomCheckout = sharedstuff.kassen.get(RandomHelper.nextIntFromTo(0, index-1)); // zufaellige Wahl der Kasse
+		//nehme eine zufällige Kasse dessen Schlange kurz genug ist
+		List<Integer> allowed_indices = new ArrayList<Integer>();
+		for(int i = 0; i < sharedstuff.kassen.size(); i++) 
+			if (sharedstuff.kassen.get(i).getStudentsInQueue() < consts.SIZE_Y-5)
+				allowed_indices.add(i);
+		
+		if (allowed_indices.isEmpty())
+			throw new IndexOutOfBoundsException();
+		
+		Kasse randomCheckout = sharedstuff.kassen.get(allowed_indices.get(RandomHelper.nextIntFromTo(0, allowed_indices.size()-1)));
 		return randomCheckout;
 	}
 

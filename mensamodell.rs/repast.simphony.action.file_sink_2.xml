@@ -2,7 +2,7 @@
   <name>SpentTicks Mean</name>
   <dataSet>SpentTicks Mean</dataSet>
   <delimiter>,</delimiter>
-  <format>LINE</format>
+  <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
     <string>Student</string>
     <string>Chaotic</string>

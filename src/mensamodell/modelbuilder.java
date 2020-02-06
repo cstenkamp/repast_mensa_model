@@ -44,10 +44,19 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		double veganProp = (Double) param.getValue("veganProp");
 		double meatProp = (Double) param.getValue("meatProp");
 		double noPrefProp = 1.0 - veggieProp - veganProp - meatProp; 
+		if (noPrefProp < 0) { //dann ist die Summe der 3 anderen >1, kann in batch run parameter sweeps passieren
+    	System.out.println("Bad Parameter combination.");
+    	RunEnvironment.getInstance().endRun();
+		}
+		
 	
 		double chaoticProp = (Double) param.getValue("chaoticProp");
 		double goalProp = (Double) param.getValue("goalProp");
 		double pathProp = 1.0 - chaoticProp - goalProp; 
+		if (pathProp < 0) { //dann ist die Summe der 3 anderen >1, kann in batch run parameter sweeps passieren
+    	System.out.println("Bad Parameter combination.");
+    	RunEnvironment.getInstance().endRun();
+		}
 		
 		Double[] proportionsEat = new Double[] {veggieProp, veganProp, meatProp, noPrefProp};
 		Double[] proportionsWalk = new Double[] {chaoticProp, goalProp, pathProp};

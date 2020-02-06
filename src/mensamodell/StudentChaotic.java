@@ -35,7 +35,8 @@ public class StudentChaotic extends Student {
 		ArrayList<Ausgabe> non_visitedAusgaben = new ArrayList<Ausgabe>();
 		for (Ausgabe a : this.consideredBarsList) {
 			if (!this.visitedAusgaben.contains(a)) {
-				non_visitedAusgaben.add(a);
+				if (a.getStudentsInQueue() < consts.SIZE_Y-5)
+					non_visitedAusgaben.add(a);
 			}
 		}
 		if (non_visitedAusgaben.isEmpty()) {
