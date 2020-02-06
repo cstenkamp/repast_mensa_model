@@ -24,16 +24,23 @@ public class SharedStuff {
 	public ContextBuilder<Object> builder = null;
 	public Context<Food> foodContext;
 	public double[] foodParam;
-	
+
 	public List<Student> studierende;
 	public List<Student> studierendeChaotic;
 	public List<Student> studierendeGoal;		// DATA
 	public List<Student> studierendeQueue;
 	
 	public List<Student> remove_these;
+	public List<Student> students_that_left = null;
+	public int initialNumStud = 0;
+	
 
+	
 	public ContinuousSpace<Object> space;
 	public Grid<Object> grid;
+	public Ausgabe pommesbar = null;
+	public Ausgabe salatbar = null;
+	
 
 	
 	private void auslager_constr(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext) {
@@ -48,7 +55,9 @@ public class SharedStuff {
 		studierendeChaotic = new ArrayList<Student>();
 		studierendeGoal = new ArrayList<Student>();
 		studierendeQueue = new ArrayList<Student>();
+
 		remove_these = new ArrayList<Student>();
+		students_that_left = new ArrayList<Student>();
 	}
 	
 	

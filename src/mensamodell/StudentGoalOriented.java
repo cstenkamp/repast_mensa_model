@@ -37,11 +37,16 @@ public class StudentGoalOriented extends Student {
 	}
 	
 	@Override
-	public void DoYouWantThatFood() {
-		this.ThefoodIsOkay = true; 
+	/// Goal-Oriented studierende sind mit jedem Essen einverstanden
+	public boolean chooseMeal(Ausgabe currentBar) {
+		if (sharedstuff.space != null)
+			this.waitticks = currentBar.getWaitTicks();
+		return true;
 	}
 	
-	// ######### Space opertaions:
+	
+	
+	// ====================================== Space operations ======================================
 	
 	public Object next_aim() {
 		//returns null wenn er gerade was zu essen gefunden hat, nicht mehr hungrig ist, oder schon alle Theken besucht hat

@@ -86,11 +86,11 @@ private Integer[] createFoodPref(Double[] prop) {
 			else if (i < numVeggie+numVegan+numMeat+numNoPref)
 				tmp_arr[i] = consts.NOPREFERENCE;
 		}
-		System.out.println(Arrays.toString(tmp_arr));
+		//System.out.println(Arrays.toString(tmp_arr));
 		List<Integer> intList = Arrays.asList(tmp_arr);
 		Collections.shuffle(intList);
 		intList.toArray(tmp_arr);
-		System.out.println(Arrays.toString(tmp_arr));
+		//System.out.println(Arrays.toString(tmp_arr));
 		return tmp_arr;
 	}
 		
@@ -116,11 +116,11 @@ private Integer[] createWalkStyle(Double[] prop) {
 			else if (i < numChaotic+numGoal+numPath)
 				tmp_arr[i] = 2;
 		}
-		System.out.println(Arrays.toString(tmp_arr));
+		//System.out.println(Arrays.toString(tmp_arr));
 		List<Integer> intListWalk = Arrays.asList(tmp_arr);
 		Collections.shuffle(intListWalk);
 		intListWalk.toArray(tmp_arr);
-		System.out.println(Arrays.toString(tmp_arr));		
+		//System.out.println(Arrays.toString(tmp_arr));		
 		return tmp_arr;
 	}
 
@@ -159,7 +159,7 @@ private Integer[] createWalkStyle(Double[] prop) {
 
 			addedStudents++;
 
-			System.out.println(stud+" @"+(int)sharedstuff.schedule.getTickCount()+" x:"+x+" y:"+y);
+			consts.print(stud+" @"+(int)sharedstuff.schedule.getTickCount()+" x:"+x+" y:"+y);
 		}
 
 		if (sharedstuff.mgrid != null && sharedstuff.schedule.getTickCount()/consts.EINGANG_DELAY % 100 == 0) {
