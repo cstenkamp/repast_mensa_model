@@ -18,7 +18,7 @@ public class consts {
 	public static int EINGANG_DELAY;
 	public final static float WANTS_SALADFRIES_PROB = 0.3f;
 	public final static float IFWANTS_WANTS_FRIES = 0.5f;
-	public final static boolean DO_PRINT = false;
+	public final static boolean DO_PRINT = true;
 	
 
 	//Theken

@@ -209,6 +209,9 @@ public class Student {
 		//sharedstuff.schedule.removeAction(scheduledStep);
 		sharedstuff.remove_these.add(this);
 		sharedstuff.schedule.schedule(ScheduleParameters.createOneTime(sharedstuff.schedule.getTickCount()+0.01, 1), sharedstuff.builder, "remove_studs"); //priority 1
+
+  	if (!sharedstuff.students_that_left.contains(this))
+  			sharedstuff.students_that_left.add(this);
 	}
 
 

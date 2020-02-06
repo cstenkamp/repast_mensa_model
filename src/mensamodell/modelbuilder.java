@@ -227,7 +227,6 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
     		sharedstuff.schedule.removeAction(a);
     	}
     	s.scheduledSteps = new ArrayList<ISchedulableAction>();
-    	sharedstuff.students_that_left.add(s);
     }
     sharedstuff.remove_these = new ArrayList<Student>();
     
