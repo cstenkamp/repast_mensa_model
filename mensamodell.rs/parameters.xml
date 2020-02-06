@@ -54,7 +54,7 @@
 		/>
 		
 				<parameter name="ve_po" displayName="z ve_po" type="double" 
-						defaultValue="0.2" 
+						defaultValue="0.1" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
@@ -72,43 +72,43 @@
 									
 		/>
 				<parameter name="vg_vg" displayName="z vg_vg" type="double" 
-						defaultValue="0.9" 
+						defaultValue="0.7" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
 		/>
 				<parameter name="ve_sa" displayName="z ve_sa" type="double" 
-						defaultValue="0.5" 
+						defaultValue="0.4" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
 		/>
 				<parameter name="ve_ve" displayName="z ve_ve" type="double" 
-						defaultValue="0.9" 
+						defaultValue="0.8" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
 		/>
 				<parameter name="m_vg" displayName="z m_vg" type="double" 
-						defaultValue="0.1" 
-						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
-									
-		/>
-				<parameter name="vg_ve" displayName="z vg_ve" type="double" 
-						defaultValue="0.5" 
-						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
-									
-		/>
-				<parameter name="m_sa" displayName="z m_sa" type="double" 
 						defaultValue="0.2" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
 		/>
+				<parameter name="vg_ve" displayName="z vg_ve" type="double" 
+						defaultValue="0.6" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
+				<parameter name="m_sa" displayName="z m_sa" type="double" 
+						defaultValue="0.1" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
 				<parameter name="vg_sa" displayName="z vg_sa" type="double" 
-						defaultValue="0.5" 
+						defaultValue="0.4" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
@@ -120,7 +120,7 @@
 									
 		/>
 				<parameter name="m_m" displayName="z m_m" type="double" 
-						defaultValue="0.9" 
+						defaultValue="0.7" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									

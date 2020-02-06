@@ -254,8 +254,11 @@ public class Student {
 								if (additionallywants == consts.ESSEN_SALAD) tmp = sharedstuff.salatbar;
 								if (tmp.getStudentsInQueue() < consts.SIZE_Y-5)
 									current = tmp;
-								else
-									throw new IndexOutOfBoundsException(this+": Salat/Pommesbar zu voll! Weiß nicht was er tun soll!");
+								else {
+									//throw new IndexOutOfBoundsException(this+": Salat/Pommesbar zu voll! Weiß nicht was er tun soll!");
+									consts.print(this+": Beilagenschlange zu lang, geh zur Kasse.");
+									this.current = toKasse();
+								}
 								additionallywants = -1;
 							} else {
 								this.current = toKasse();

@@ -64,13 +64,15 @@ public class consts {
 	
 
 	//wait times
-	public static final int waitKasse = 20;
-	public static final int waitAktion = 20;
+	public static final int EINGANG_DELAY_GRID = 2;
+	
+	public static final int waitKasse = 15;
+	public static final int waitSalad = 40;
+	public static final int waitVegan = 15;	
+	public static final int waitVeggie = 15;
 	public static final int waitMeat = 20;
-	public static final int waitSalad = 60;
-	public static final int waitPommes = 10;
+	public static final int waitAktion = 20;
+	public static final int waitSchnellerTeller = 20;
 	public static final int waitEintopf = 10;
-	public static final int waitSchnellerTeller = 10;
-	public static final int waitVeggie = 10;
-	public static final int waitVegan = 10;	
+	public static final int waitPommes = 20;
 }

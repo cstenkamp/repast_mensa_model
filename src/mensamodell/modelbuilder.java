@@ -57,7 +57,7 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
     	System.out.println("Bad Parameter combination.");
     	RunEnvironment.getInstance().endRun();
 		}
-		
+			
 		Double[] proportionsEat = new Double[] {veggieProp, veganProp, meatProp, noPrefProp};
 		Double[] proportionsWalk = new Double[] {chaoticProp, goalProp, pathProp};
 		
@@ -116,7 +116,7 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		Ausgabe salat = null;
 		Ausgabe pommes = null;
 		if (USE_GRID) {
-				consts.EINGANG_DELAY = 10;
+				consts.EINGANG_DELAY = consts.EINGANG_DELAY_GRID;
 			
 				GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);	
 				grid = gridFactory.createGrid("MensaGrid", context, new GridBuilderParameters<Object>(new StickyBorders(), new SimpleGridAdder<Object>(), false, consts.SIZE_X, consts.SIZE_Y));
