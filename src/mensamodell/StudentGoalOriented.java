@@ -30,9 +30,8 @@ public class StudentGoalOriented extends Student {
 	
 	@Override
 	public Ausgabe next_ausgabe() {
-		Ausgabe nextBar = null;
 		int index = this.consideredBarsList.size();
-		nextBar = this.consideredBarsList.get(RandomHelper.nextIntFromTo(0, index-1));
+		Ausgabe nextBar = this.consideredBarsList.get(RandomHelper.nextIntFromTo(0, index-1));
 		return nextBar;
 	}
 	

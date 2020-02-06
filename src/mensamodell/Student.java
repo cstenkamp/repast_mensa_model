@@ -123,7 +123,8 @@ public class Student {
 	// waehle dein Essen
 	public boolean chooseMeal(Ausgabe currentBar) {
 		// warte vor der Ausgabe (nur im space)
-		this.waitticks = currentBar.getWaitTicks();
+		if (sharedstuff.space != null)
+			this.waitticks = currentBar.getWaitTicks();
 
 		//Essen funktioniert so: wenn das Essen vom vegetarismus-Grad zu ihnen passt, nehmen sie es zu einem gewissem Prozentsatz sofort. Wenn sie am Ende
 		//alle Ausgaben abgelaufen sind, ohne was zu nehmen, nehmen sie das ein zufälliges von denen die "am besten" zu ihnen passen.
