@@ -79,24 +79,24 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		// Aktionstheke ist zufaellig vegan, veggie, salad oder meat 
 		int aktionsessen = RandomHelper.nextIntFromTo(0, 2);
 		switch (aktionsessen) {
-			case consts.ESSEN_VEGGIE: System.out.println("Aktionstheke ist Vegetarisch."); break;
-			case consts.ESSEN_VEGAN: System.out.println("Aktionstheke ist Vegan."); break;
-			case consts.ESSEN_MEAT: System.out.println("Aktionstheke ist Fleisch."); break;
-			default: System.out.println("Irgendwas ist mit der Aktionstheke falsch.");
+			case consts.ESSEN_VEGGIE: consts.print("Aktionstheke ist Vegetarisch."); break;
+			case consts.ESSEN_VEGAN: consts.print("Aktionstheke ist Vegan."); break;
+			case consts.ESSEN_MEAT: consts.print("Aktionstheke ist Fleisch."); break;
+			default: consts.print("Irgendwas ist mit der Aktionstheke falsch.");
 		}
 		int eintopfessen = RandomHelper.nextIntFromTo(0, 2);
 		switch (eintopfessen) {
-			case consts.ESSEN_VEGGIE: System.out.println("Eintopf ist Vegetarisch."); break;
-			case consts.ESSEN_VEGAN: System.out.println("Eintopf ist Vegan."); break;
-			case consts.ESSEN_MEAT: System.out.println("Eintopf ist Fleisch."); break;
-			default: System.out.println("Irgendwas ist mit der Eintopf falsch.");
+			case consts.ESSEN_VEGGIE: consts.print("Eintopf ist Vegetarisch."); break;
+			case consts.ESSEN_VEGAN: consts.print("Eintopf ist Vegan."); break;
+			case consts.ESSEN_MEAT: consts.print("Eintopf ist Fleisch."); break;
+			default: consts.print("Irgendwas ist mit der Eintopf falsch.");
 		}
 		int schnellesessen = RandomHelper.nextIntFromTo(0, 2);
 		switch (schnellesessen) {
-			case consts.ESSEN_VEGGIE: System.out.println("Schneller Teller ist Vegetarisch."); break;
-			case consts.ESSEN_VEGAN: System.out.println("Schneller Teller ist Vegan."); break;
-			case consts.ESSEN_MEAT: System.out.println("Schneller Teller ist Fleisch."); break;
-			default: System.out.println("Irgendwas ist mit der Schnellen Teller falsch.");
+			case consts.ESSEN_VEGGIE: consts.print("Schneller Teller ist Vegetarisch."); break;
+			case consts.ESSEN_VEGAN: consts.print("Schneller Teller ist Vegan."); break;
+			case consts.ESSEN_MEAT: consts.print("Schneller Teller ist Fleisch."); break;
+			default: consts.print("Irgendwas ist mit der Schnellen Teller falsch.");
 		}
 
 		ContinuousSpace<Object> space = null;

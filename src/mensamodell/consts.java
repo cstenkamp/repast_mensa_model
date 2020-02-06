@@ -6,13 +6,19 @@ import java.util.List;
 
 public class consts {
 
+	public static void print(String what) {
+		if (DO_PRINT) 
+			System.out.println(what);
+	}
+	
 	//settings
 	public static int SIZE_X = 0;
 	public static int SIZE_Y = 0;
 	public final static boolean MAY_LEAVE_WITHOUT_FOOD = false;
 	public static int EINGANG_DELAY;
 	public final static float WANTS_SALADFRIES_PROB = 0.3f;
-	public final static float IFWANTS_WANTS_FRIES = 0.5f; 
+	public final static float IFWANTS_WANTS_FRIES = 0.5f;
+	public final static boolean DO_PRINT = true;
 	
 
 	//Theken

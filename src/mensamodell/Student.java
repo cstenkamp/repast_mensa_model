@@ -200,7 +200,7 @@ public class Student {
 
 
 	public void remove_me() {
-		System.out.println(this + " hat die Mensa verlassen.");
+		consts.print(this + " hat die Mensa verlassen.");
 		if (space != null && sharedstuff.mgrid != null) {
 			NdPoint mypos = space.getLocation(this);
 			sharedstuff.mgrid.set((int)mypos.getX(), (int)mypos.getY(), 0);
@@ -240,14 +240,13 @@ public class Student {
 					this.waiting = true;
 				} else {  //Du bist dran!!
 					this.waiting = false; 
-					//System.out.println("First in Queue: #"+this.num + " [" +this.nextLocX+ " , " +this.nextLocY+ "] " + current.kind);
 					getOutOfQueue();
 					if (current instanceof Kasse) { //Wenn du an einer Kasse stehst
 						remove_me();
 						return;
 					} else {							
 						if (chooseMeal(this.current)) {
-							System.out.println(this+" found a meal at "+this.current);
+							consts.print(this+" found a meal at "+this.current);
 							create_food_obj(this.current);
 							if (additionallywants != -1) {
 								if (additionallywants == consts.ESSEN_POMMES) this.current = sharedstuff.pommesbar;
@@ -462,7 +461,6 @@ public class Student {
 		for (Object b : ausgabeInRange.query()) {
 			if (b instanceof Ausgabe && (!visitedAusgaben.contains(b)) || this.tempDestination == b) {
 				visitedAusgaben.add((Ausgabe) b);
-				//System.out.println("new bar");
 				return (Ausgabe) b;
 			}
 		}
