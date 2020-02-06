@@ -30,6 +30,9 @@ public class SharedStuff {
 
 	public ContinuousSpace<Object> space;
 	public Grid<Object> grid;
+	public Ausgabe pommesbar = null;
+	public Ausgabe salatbar = null;
+	
 
 	
 	private void auslager_constr(ContextBuilder<Object> builder, Context<Object> context, List<Kasse> kassen, List<Ausgabe> ausgaben, Context<Food> foodContext) {

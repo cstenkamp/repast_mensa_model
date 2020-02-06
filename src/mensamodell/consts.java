@@ -11,6 +11,8 @@ public class consts {
 	public static int SIZE_Y = 0;
 	public final static boolean MAY_LEAVE_WITHOUT_FOOD = false;
 	public static int EINGANG_DELAY;
+	public final static float WANTS_SALADFRIES_PROB = 0.3f;
+	public final static float IFWANTS_WANTS_FRIES = 0.5f; 
 	
 
 	//Theken

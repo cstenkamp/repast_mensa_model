@@ -77,11 +77,10 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		
 		
 		// Aktionstheke ist zufaellig vegan, veggie, salad oder meat 
-		int aktionsessen = RandomHelper.nextIntFromTo(0, 3);
+		int aktionsessen = RandomHelper.nextIntFromTo(0, 2);
 		switch (aktionsessen) {
 			case consts.ESSEN_VEGGIE: System.out.println("Aktionstheke ist Vegetarisch."); break;
 			case consts.ESSEN_VEGAN: System.out.println("Aktionstheke ist Vegan."); break;
-			case consts.ESSEN_SALAD: System.out.println("Aktionstheke ist Salat."); break;
 			case consts.ESSEN_MEAT: System.out.println("Aktionstheke ist Fleisch."); break;
 			default: System.out.println("Irgendwas ist mit der Aktionstheke falsch.");
 		}
@@ -92,11 +91,10 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 			case consts.ESSEN_MEAT: System.out.println("Eintopf ist Fleisch."); break;
 			default: System.out.println("Irgendwas ist mit der Eintopf falsch.");
 		}
-		int schnellesessen = RandomHelper.nextIntFromTo(0, 3);
+		int schnellesessen = RandomHelper.nextIntFromTo(0, 2);
 		switch (schnellesessen) {
 			case consts.ESSEN_VEGGIE: System.out.println("Schneller Teller ist Vegetarisch."); break;
 			case consts.ESSEN_VEGAN: System.out.println("Schneller Teller ist Vegan."); break;
-			case consts.ESSEN_SALAD: System.out.println("Schneller Teller ist Salat."); break;
 			case consts.ESSEN_MEAT: System.out.println("Schneller Teller ist Fleisch."); break;
 			default: System.out.println("Irgendwas ist mit der Schnellen Teller falsch.");
 		}
@@ -105,6 +103,8 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		MensaGrid mgrid = null;
 		Grid<Object> grid = null;
 		Ausgabe aktion = null;
+		Ausgabe salat = null;
+		Ausgabe pommes = null;
 		if (USE_GRID) {
 				consts.EINGANG_DELAY = 10;
 			
@@ -115,15 +115,14 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 				new Kasse(consts.SIZE_X/6, consts.SIZE_Y-1, context, grid);
 				new Kasse(consts.SIZE_X*5/6, consts.SIZE_Y-1, context, grid);
 				aktion = new Ausgabe(consts.SIZE_X/2, 0, consts.AKTIONSTHEKE, aktionsessen, context, grid);
-				new Ausgabe(consts.SIZE_X*1/10, 0, consts.SALATBAR, consts.ESSEN_SALAD, context, grid);
+				salat = new Ausgabe(consts.SIZE_X*1/10, 0, consts.SALATBAR, consts.ESSEN_SALAD, context, grid);
 				new Ausgabe(consts.SIZE_X*2/10, 0, consts.VEGANTHEKE, consts.ESSEN_VEGAN, context, grid);
 				new Ausgabe(consts.SIZE_X*3/10, 0, consts.VEGGIETHEKE, consts.ESSEN_VEGGIE, context, grid);
 				new Ausgabe(consts.SIZE_X*4/10, 0, consts.FLEISCHTHEKE, consts.ESSEN_MEAT, context, grid);
-				
 				new Ausgabe(consts.SIZE_X*6/10, 0, consts.FLEISCHTHEKE, consts.ESSEN_MEAT, context, grid);
 				new Ausgabe(consts.SIZE_X*7/10, 0, consts.SCHNELLERTELLER, schnellesessen, context, grid);
 				new Ausgabe(consts.SIZE_X*8/10, 0, consts.EINTOPF, eintopfessen, context, grid);
-				new Ausgabe(consts.SIZE_X*9/10, 0, consts.POMMES, consts.ESSEN_POMMES, context, grid);
+				pommes = new Ausgabe(consts.SIZE_X*9/10, 0, consts.POMMES, consts.ESSEN_POMMES, context, grid);
 			
 		} else {
 				consts.EINGANG_DELAY = 1000;
@@ -195,6 +194,8 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		if (USE_GRID)  {
 			sharedstuff = new SharedStuff(this, context, kassen, ausgaben, foodContext, grid, null, foodParam);
 			eingang = new MensaEingang((int)consts.SIZE_X/2, (int)consts.SIZE_Y-1, initialNumStud, proportionsEat, proportionsWalk, context, sharedstuff, grid, aktion);
+			sharedstuff.pommesbar = pommes;
+			sharedstuff.salatbar = salat;
 		} else {
 			sharedstuff = new SharedStuff(this, context, kassen, ausgaben, foodContext, space, mgrid, foodParam);
 			eingang = new MensaEingang((float)(consts.SIZE_X*2.5/5), (float)(consts.SIZE_Y-5), initialNumStud, proportionsEat, proportionsWalk, context, space, sharedstuff); 

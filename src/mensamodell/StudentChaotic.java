@@ -25,7 +25,7 @@ public class StudentChaotic extends Student {
 	
   @Override
   public String toString() { 
-      return "StudentChaotic(#"+num+", "+get_pref_string()+")";
+      return "StudentChaotic     (#"+num+", "+get_pref_string()+")";
   } 
 	
 	@Override
@@ -37,13 +37,19 @@ public class StudentChaotic extends Student {
 				non_visitedAusgaben.add(a);
 			}
 		}
-		if (non_visitedAusgaben.isEmpty()) return null;
+		if (non_visitedAusgaben.isEmpty()) {
+			best_food_so_war_was = -1;
+			return best_food_so_far.get(RandomHelper.nextIntFromTo(0, best_food_so_far.size()-1));
+		}
 		
 		int index = non_visitedAusgaben.size();
 		nextBar = non_visitedAusgaben.get(RandomHelper.nextIntFromTo(0, index-1));
-//		System.out.println("#" + this.num +" kind: " + nextBar.kind );
 		return nextBar;
 	}
+	
+	
+	
+	// ====================================== Space operations ======================================
 	
 
 	//returns null wenn er gerade was zu essen gefunden hat, nicht mehr hungrig ist, oder schon alle Theken besucht hat

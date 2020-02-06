@@ -63,12 +63,12 @@ public class Student {
 	boolean inQueue;
 	boolean waiting;
 	boolean ThefoodIsOkay;
-	boolean wantSalad;
 	List<Ausgabe> consideredBarsList;
 	Ausgabe current;
 	int waitTicks;
 	int spentTicks;	 // DATA
-
+	int additionallywants = -1; //entweder -1, dann will er nur ne Hauptmahlzeit, oder consts.SALAD oder consts.POMMES
+	int additionallywants_orig = -1;
 
 	private void global_construct(int num, SharedStuff sharedstuff, int fp, Context<Object> context) {
 		this.food_preference = fp;
@@ -81,7 +81,9 @@ public class Student {
 		this.best_food_so_far = new ArrayList<Ausgabe>();
 		context.add(this);
 		sharedstuff.studierende.add(this);
-		consideredBarsList = setConsiredBars();
+		additionallywants = want_salad_or_fries();	// Entscheide zu beginn ob du Salat/Pommes willst.
+		additionallywants_orig = additionallywants; //zum printen
+		consideredBarsList = setConsideredBars(additionallywants); //wenn er Salat/Pommes ZUSÄTZLICH will will er das nicht mehr als Hauptmahlzeit.
 	}
 
 
@@ -96,9 +98,7 @@ public class Student {
 		this.nextLocX = x;
 		this.nextLocY = y;
 		this.ThefoodIsOkay = false;
-		this.wantSalad = false;
 		this.spentTicks = 0;							// DATA
-		DoYouWantSalad();								// Entscheide zu beginn ob du Salat willst.
 
 		grid.moveTo(this, (int)x, (int)y);
 
@@ -115,12 +115,14 @@ public class Student {
 			case consts.VEGANER: foodprefstring = "Veganer"; break;
 			default: foodprefstring = "NoPrefEater"; break;
 		}
+		if (additionallywants_orig == consts.ESSEN_SALAD) foodprefstring += "+Salad";
+		if (additionallywants_orig == consts.ESSEN_POMMES) foodprefstring += "+Pommes";
 		return foodprefstring;
 	}
 	
 
 
-	// waehle dein Essen
+  //Überschrieben im StudentGoalOriented: der mags in jedem Fall da er eh nur hingeht wo er's mag
 	public boolean chooseMeal(Ausgabe currentBar) {
 		// warte vor der Ausgabe (nur im space)
 		if (sharedstuff.space != null)
@@ -129,6 +131,9 @@ public class Student {
 		//Essen funktioniert so: wenn das Essen vom vegetarismus-Grad zu ihnen passt, nehmen sie es zu einem gewissem Prozentsatz sofort. Wenn sie am Ende
 		//alle Ausgaben abgelaufen sind, ohne was zu nehmen, nehmen sie das ein zufälliges von denen die "am besten" zu ihnen passen.
 		int essen = currentBar.getEssen();
+	
+		if (essen == additionallywants_orig) //wenn er zusätzlich salat/pommes will nimmt ers in jedem fall (anderenfalls gehet er nicht an diese schlnage) 
+			return true;
 
 		if (essen >= food_preference) { //foodpreference and food are sorted by priority: a person of type meat will like the lowest one most. A person of type vegan will like the lowest one >= itself (=2) most.
 			if ((best_food_so_war_was > essen) && (food_preference != consts.NOPREFERENCE)) { //die mit no preference fügen einfach alles zu ihrer best_so_far liste hinzu, alle anderen nur die die sie am meisten mochten.
@@ -138,52 +143,56 @@ public class Student {
 			best_food_so_far.add(currentBar);
 		}
 
-		//System.out.println(visitedAusgaben.size() + "/" + sharedstuff.ausgaben.size());
-
-		if (best_food_so_war_was == -1) { //das ist der Fal wenn du schon alle durchprobiert hast
-			if (essen == consts.ESSEN_VEGGIE) {new VeggieObj(sharedstuff.foodContext);}
-			if (essen == consts.ESSEN_VEGAN) {new VeganObj(sharedstuff.foodContext);}
-			if (essen == consts.ESSEN_MEAT) {new MeatObj(sharedstuff.foodContext);}
-			if (essen == consts.ESSEN_SALAD) {new SaladObj(sharedstuff.foodContext);}
-			if (essen == consts.ESSEN_POMMES) {new PommesObj(sharedstuff.foodContext);}
+		if (best_food_so_war_was == -1) { //das ist der Fall wenn du schon alle durchprobiert hast
 			return true;
 		}
 
 		double randomNum = RandomHelper.nextDoubleFromTo(0, 1);
-		// VEGGIE
-		if (food_preference == consts.VEGGIE && consts.vegetarian.contains(essen)) {
-			if (essen == consts.ESSEN_VEGGIE && randomNum <= sharedstuff.foodParam[0]) {new VeggieObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_VEGAN && randomNum <= sharedstuff.foodParam[1]) {new VeganObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_SALAD && randomNum <= sharedstuff.foodParam[2]) {new SaladObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_POMMES && randomNum <= sharedstuff.foodParam[3]) {new PommesObj(sharedstuff.foodContext); return true;}
+		if (food_preference == consts.VEGGIE && consts.vegetarian.contains(essen)) {           // VEGGIE
+			if (essen == consts.ESSEN_VEGGIE && randomNum <= sharedstuff.foodParam[0]) return true;
+			if (essen == consts.ESSEN_VEGAN && randomNum <= sharedstuff.foodParam[1]) return true;
+			if (essen == consts.ESSEN_SALAD && randomNum <= sharedstuff.foodParam[2]) return true;
+			if (essen == consts.ESSEN_POMMES && randomNum <= sharedstuff.foodParam[3]) return true;
 		}
-		// VEGAN
-		else if (food_preference == consts.VEGANER && consts.vegan.contains(essen)) {
-			if (essen == consts.ESSEN_VEGAN && randomNum <= sharedstuff.foodParam[4]) {new VeganObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_SALAD && randomNum <= sharedstuff.foodParam[5]) {new SaladObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_POMMES && randomNum <= sharedstuff.foodParam[6]) {new PommesObj(sharedstuff.foodContext); return true;}
+		else if (food_preference == consts.VEGANER && consts.vegan.contains(essen)) {           // VEGAN
+			if (essen == consts.ESSEN_VEGAN && randomNum <= sharedstuff.foodParam[4]) return true;
+			if (essen == consts.ESSEN_SALAD && randomNum <= sharedstuff.foodParam[5]) return true;
+			if (essen == consts.ESSEN_POMMES && randomNum <= sharedstuff.foodParam[6]) return true;
 		}
-		// MEAT
-		else if (food_preference == consts.MEAT && consts.meatlover.contains(essen)) {
-			if (essen == consts.ESSEN_VEGGIE && randomNum <= sharedstuff.foodParam[7]) {new VeggieObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_VEGAN && randomNum <= sharedstuff.foodParam[8]) {new VeganObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_MEAT && randomNum <= sharedstuff.foodParam[9]) {new MeatObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_SALAD && randomNum <= sharedstuff.foodParam[10]) {new SaladObj(sharedstuff.foodContext); return true;}
-			if (essen == consts.ESSEN_POMMES && randomNum <= sharedstuff.foodParam[11]) {new PommesObj(sharedstuff.foodContext); return true;}
+		else if (food_preference == consts.MEAT && consts.meatlover.contains(essen)) {		     // MEAT
+			if (essen == consts.ESSEN_VEGGIE && randomNum <= sharedstuff.foodParam[7]) return true;
+			if (essen == consts.ESSEN_VEGAN && randomNum <= sharedstuff.foodParam[8]) return true;
+			if (essen == consts.ESSEN_MEAT && randomNum <= sharedstuff.foodParam[9]) return true;
+			if (essen == consts.ESSEN_SALAD && randomNum <= sharedstuff.foodParam[10]) return true;
+			if (essen == consts.ESSEN_POMMES && randomNum <= sharedstuff.foodParam[11]) return true;
 		}
-		// No Preference
-		else if (food_preference == consts.NOPREFERENCE && consts.noPref.contains(essen)) {
-			if (essen == consts.ESSEN_VEGGIE) {new VeggieObj(sharedstuff.foodContext);}
-			if (essen == consts.ESSEN_VEGAN) {new VeganObj(sharedstuff.foodContext);}
-			if (essen == consts.ESSEN_MEAT) {new MeatObj(sharedstuff.foodContext);}
-			if (essen == consts.ESSEN_SALAD) {new SaladObj(sharedstuff.foodContext);}
-			if (essen == consts.ESSEN_POMMES) {new PommesObj(sharedstuff.foodContext);}
+		else if (food_preference == consts.NOPREFERENCE && consts.noPref.contains(essen)) {	  	// No Preference
 			return true;
 		}
 		return false;
 	}
+	
+	
+	public void create_food_obj(Ausgabe currentBar) {
+		int essen = currentBar.getEssen();
+		if (essen == consts.ESSEN_VEGGIE) new VeggieObj(sharedstuff.foodContext);
+		if (essen == consts.ESSEN_VEGAN) new VeganObj(sharedstuff.foodContext);
+		if (essen == consts.ESSEN_MEAT) new MeatObj(sharedstuff.foodContext);
+		if (essen == consts.ESSEN_SALAD) new SaladObj(sharedstuff.foodContext);
+		if (essen == consts.ESSEN_POMMES) new PommesObj(sharedstuff.foodContext);
+	}
 
 
+	public int want_salad_or_fries() {
+		if (RandomHelper.nextDoubleFromTo(0, 1) < consts.WANTS_SALADFRIES_PROB) {
+			if (RandomHelper.nextDoubleFromTo(0, 1) < consts.IFWANTS_WANTS_FRIES) 
+				return consts.ESSEN_POMMES;
+			else
+				return consts.ESSEN_SALAD;
+		}
+		return -1;
+	}
+	
 
 	public int getTickCount() {
 		return this.tickCount;
@@ -191,7 +200,7 @@ public class Student {
 
 
 	public void remove_me() {
-		System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
+		System.out.println(this + " hat die Mensa verlassen.");
 		if (space != null && sharedstuff.mgrid != null) {
 			NdPoint mypos = space.getLocation(this);
 			sharedstuff.mgrid.set((int)mypos.getX(), (int)mypos.getY(), 0);
@@ -205,6 +214,7 @@ public class Student {
 
 	// ==================================== Grid methods ====================================
 
+	
 	//to be overridden
 	public Ausgabe next_ausgabe() {
 		return null;
@@ -238,7 +248,14 @@ public class Student {
 					} else {							
 						if (chooseMeal(this.current)) {
 							System.out.println(this+" found a meal at "+this.current);
-							this.current = toKasse();
+							create_food_obj(this.current);
+							if (additionallywants != -1) {
+								if (additionallywants == consts.ESSEN_POMMES) this.current = sharedstuff.pommesbar;
+								if (additionallywants == consts.ESSEN_SALAD) this.current = sharedstuff.salatbar;
+								additionallywants = -1;
+							} else {
+								this.current = toKasse();
+							}
 							getInQueue();
 						} else {
 							this.current = null;							
@@ -258,64 +275,6 @@ public class Student {
 		update();
 	} // End Of Step.
 	
-	
-//				if (this.ThefoodIsOkay) { 					// Wenn das essen gut ist gehe zur Kasse ansonsten hole dir was neues
-//					nextBar = sharedstuff.ausgaben.get(0); //TODO war Share.saladList.get(0);
-//					if (this.wantSalad && nextBar.getStudentsInQueue() < 15) { // wenn du salat willst & Schlange kleiner 15 gehe zur salatbar
-//						this.current = nextBar;
-//						this.wantSalad = false;
-//					} else {								// warst du bereits an der salatbar oder willst du keinen Salat gehe zur kasse
-//						nextBar = toKasse();
-//						this.current = nextBar;
-//					}
-//				} else {									// Such dir deinen Weg wenn du noch kein Essen gefunden hast
-//					nextBar = next_ausgabe(); //Kann auch zu ner Kasse gehen
-//					if (nextBar != null) {
-//						this.visitedAusgaben.add(nextBar);
-//						this.current = nextBar;
-//						DoYouWantThatFood();				// Willst du das Essen von dieser Bar?
-//						// TODO wenn du das Essen nicht nimmst gehe zu einer anderen Bar Do-While Schleife
-//						// Jedoch geht man dann direkt zur Ziel Bar somit sind alle goal Oriented weil keiner mehr unn�tig ansteht
-//					}  else {								// Falls alle Bars gesehen gehe zur Kasse
-//						nextBar = toKasse();
-//						this.current = nextBar;
-//					}
-//				}
-//				int[] lastQueuePos = nextBar.getLastQueuePos(this); // Gehe zum ende der Queue
-//				getInQueue();
-//				this.nextLocX = lastQueuePos[0];
-//				this.nextLocY = lastQueuePos[1];
-//				this.waitTicks = nextBar.getWaitTicks();					// Get waitTicks from current Bar
-//	//			System.out.println("#"+this.num + " [" +nextLocX+ " , " +nextLocY+ "]");
-//		} else if (current.firstInQueue(this)){					// DU bist der ERSTE in einer Queue
-////			System.out.println("Warte: " + waitTicks);
-//				if (this.waitTicks > 0) {							// Warte vor der Ausgabe
-//					this.waitTicks--;
-//					this.waiting = true;
-//				} else {
-//					this.waiting = false; 
-//	//				System.out.println("First in Queue: #"+this.num + " [" +this.nextLocX+ " , " +this.nextLocY+ "] " + current.kind);
-//					getOutOfQueue();
-//					// Leave the Mensa
-//					if (current instanceof Kasse) {
-//						remove_me();
-//						return;
-//					} else {										// Ansonsten suche dir im naechsten Schritt eine neue Ausgabe
-//						System.out.println("#"+this.num + " Next Bar");
-//						this.current = null;
-//					}
-//				}
-//		} else {												// Du stehst in einer Schlange
-//			int[] nextPos = this.current.moveForwardInQueue(this);	// Sieh nach ob du eine Position weiter aufruecken kannst
-//			if (nextPos == null) {								// Falls du nicht nachruecken kannst warte einen Zeitschritt
-//				this.waiting = true;
-//			} else {											// Du kannst nachruecken
-//				this.waiting = false;
-//				this.nextLocX = nextPos[0];
-//				this.nextLocY = nextPos[1];
-//			}
-//		}
-
 
 	public void getInQueue() {
 		int[] lastQueuePos = this.current.getLastQueuePos(this); // Gehe zum ende der Queue
@@ -356,18 +315,7 @@ public class Student {
 		return randomCheckout;
 	}
 
-	public void DoYouWantThatFood() {
-		if (RandomHelper.nextIntFromTo(0, 3) == 0) this.ThefoodIsOkay = true;	// Entscheide dich mit 1/4 ob du das Essen nimmst.
-		else this.ThefoodIsOkay = false;
-	}
-
-	// TODO Wenn die schlange an der Salatbar zu lang ist setze wantSalad auf false
-	public void DoYouWantSalad() {
-		if (RandomHelper.nextIntFromTo(0, 1) == 0) this.wantSalad = true; 		// Entscheide dich mit 1/2 ob du Salat willst
-		else this.wantSalad = false;
-	}
-
-	public List<Ausgabe> setConsiredBars() {
+	public List<Ausgabe> setConsideredBars(int wants_salad_or_fries) {
 		List<Ausgabe> res = new ArrayList<Ausgabe>();
 		List<Integer> temp = new ArrayList<Integer>();
 		if (this.food_preference == consts.MEAT) temp = consts.meatlover;
@@ -376,7 +324,8 @@ public class Student {
 		else temp = consts.noPref;
 		for (Ausgabe bar : sharedstuff.ausgaben) {
 			if (temp.contains(bar.essen)) 
-				res.add(bar);
+				if (bar.essen != wants_salad_or_fries)  //wenn er ZUSÄTZLICH salad or fries will will er's nicht als Hauptmahlzeit
+					res.add(bar);
 		}
 		return res;
 	}
