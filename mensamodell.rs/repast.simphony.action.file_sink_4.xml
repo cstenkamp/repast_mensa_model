@@ -1,0 +1,16 @@
+<repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.7.0">
+  <name>Student Count</name>
+  <dataSet>Student Count</dataSet>
+  <delimiter>,</delimiter>
+  <format>LINE</format>
+  <sourceIds class="linked-hash-set">
+    <string>run</string>
+    <string>tick</string>
+    <string>Student</string>
+    <string>Chaotic</string>
+    <string>Goal</string>
+    <string>Queue</string>
+  </sourceIds>
+  <fileName>Student Count.txt</fileName>
+  <addTimeStamp>true</addTimeStamp>
+</repast.simphony.data2.engine.FileSinkDescriptor>

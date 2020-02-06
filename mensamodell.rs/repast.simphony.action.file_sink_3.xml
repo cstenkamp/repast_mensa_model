@@ -1,0 +1,16 @@
+<repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.7.0">
+  <name>SpentTicks Mean</name>
+  <dataSet>SpentTicks Mean</dataSet>
+  <delimiter>,</delimiter>
+  <format>LINE</format>
+  <sourceIds class="linked-hash-set">
+    <string>Student</string>
+    <string>Chaotic</string>
+    <string>Goal</string>
+    <string>Queue</string>
+    <string>tick</string>
+    <string>run</string>
+  </sourceIds>
+  <fileName>SpentTicks Mean.txt</fileName>
+  <addTimeStamp>true</addTimeStamp>
+</repast.simphony.data2.engine.FileSinkDescriptor>
