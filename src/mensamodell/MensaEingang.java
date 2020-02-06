@@ -5,11 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import repast.simphony.context.Context;
-import repast.simphony.engine.environment.RunEnvironment;
-import repast.simphony.engine.schedule.ISchedule;
-import repast.simphony.engine.schedule.ScheduleParameters;
-import repast.simphony.engine.schedule.ScheduledMethod;
-import repast.simphony.essentials.RepastEssentials;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.grid.Grid;
@@ -83,13 +78,13 @@ private Integer[] createFoodPref(Double[] prop) {
 		Integer[] tmp_arr = new Integer[this.numStudents];
 		for (int i = 0; i < numStudents; i++) {
 			if (i < numVeggie)
-				tmp_arr[i] = 0;
+				tmp_arr[i] = consts.VEGGIE;
 			else if (i < numVeggie+numVegan)
-				tmp_arr[i] = 1;
+				tmp_arr[i] = consts.VEGANER;
 			else if (i < numVeggie+numVegan+numMeat)
-				tmp_arr[i] = 2;
+				tmp_arr[i] = consts.MEAT;
 			else if (i < numVeggie+numVegan+numMeat+numNoPref)
-				tmp_arr[i] = 3;
+				tmp_arr[i] = consts.NOPREFERENCE;
 		}
 		System.out.println(Arrays.toString(tmp_arr));
 		List<Integer> intList = Arrays.asList(tmp_arr);
@@ -163,8 +158,8 @@ private Integer[] createWalkStyle(Double[] prop) {
 			}
 
 			addedStudents++;
-//			System.out.println("Student #"+addedStudents+" @"+(int)sharedstuff.schedule.getTickCount()+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented " : stud instanceof StudentChaotic ? "Chaotic " : "Pathfinder ")+
-//					(fp == consts.MEAT ? "Fleischesser" : fp == consts.VEGGIE ? "Vegetarier" : fp == consts.VEGANER ? "Veganer" : "Ohne Praeferenz"));
+
+			System.out.println(stud+" @"+(int)sharedstuff.schedule.getTickCount()+" x:"+x+" y:"+y);
 		}
 
 		if (sharedstuff.mgrid != null && sharedstuff.schedule.getTickCount()/consts.EINGANG_DELAY % 100 == 0) {

@@ -61,6 +61,32 @@ public class Ausgabe {
 		grid.moveTo(this, x, y);
 	}
 	
+  @Override
+  public String toString() { 
+  	  String ausgaben_name;
+  	  switch(kind) {
+	  	case consts.AKTIONSTHEKE: ausgaben_name = "Aktionstheke"; break;
+	  	case consts.FLEISCHTHEKE: ausgaben_name = "Fleischtheke"; break;
+	  	case consts.POMMES: ausgaben_name = "Pommestheke"; break;
+	  	case consts.VEGGIETHEKE: ausgaben_name = "Veggietheke"; break;
+	  	case consts.EINTOPF: ausgaben_name = "Eintopftheke"; break;
+	  	case consts.SCHNELLERTELLER: ausgaben_name = "SchnellerTeller"; break;
+	  	case consts.SALATBAR: ausgaben_name = "Salatbar"; break; 
+	  	case consts.VEGANTHEKE: ausgaben_name = "Vegantheke"; break; 
+	  	default: ausgaben_name = "Unknown";
+  	  }
+  	  String essens_name;
+  	  switch(essen) {
+	  	case consts.ESSEN_MEAT: essens_name = "Fleisch"; break;
+	  	case consts.ESSEN_VEGGIE: essens_name = "Veggie"; break;
+	  	case consts.ESSEN_VEGAN: essens_name = "Vegan"; break;
+	  	case consts.ESSEN_SALAD: essens_name = "Salat"; break;
+	  	case consts.ESSEN_POMMES: essens_name = "Pommes"; break;
+	  	default: essens_name = "Unknown";
+  	  }
+      return "Ausgabe("+ausgaben_name+" mit "+essens_name+")";
+  } 
+	
 	
 	//TODO die muessen mal like 10.000 falls nicht mit grid
 	int getWaitTicks() { 
