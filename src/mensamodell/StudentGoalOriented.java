@@ -21,6 +21,7 @@ public class StudentGoalOriented extends Student {
 	
 	public StudentGoalOriented(int num, SharedStuff sharedstuff, int fp, Context<Object> context, Grid<Object> g, int x, int y) {
 		super(num, sharedstuff, fp, context, g, x, y);
+		sharedstuff.studierendeGoal.add(this);
 	}
 	
   @Override

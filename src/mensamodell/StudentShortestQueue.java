@@ -8,6 +8,7 @@ public class StudentShortestQueue extends Student{
 
 	public StudentShortestQueue(int num, SharedStuff sharedstuff, int fp, Context<Object> context, Grid<Object> g, int x, int y) {
 		super(num, sharedstuff, fp, context, g, x, y);
+		sharedstuff.studierendeQueue.add(this);
 	}
 
   @Override

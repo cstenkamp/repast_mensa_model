@@ -87,9 +87,9 @@ public class Student {
 	}
 
 
-	//constructor für Grid
+	//constructor fuer Grid
 	public Student(int num, SharedStuff sharedstuff, int fp, Context<Object> context, Grid<Object> g, int x, int y) {
-		global_construct(num, sharedstuff, fp, context); //viel ist gleich ob für grid oder für space
+		global_construct(num, sharedstuff, fp, context); //viel ist gleich ob fuer grid oder für space
 
 		this.grid = g;
 		this.inQueue = false;
@@ -334,11 +334,18 @@ public class Student {
 
 	// DATA
 	public double calcMeanSpentTicks() {
+		List<Student> temp = new ArrayList<Student>();
+		if (this instanceof StudentShortestQueue) temp = sharedstuff.studierendeQueue;
+		else if (this instanceof StudentChaotic) temp = sharedstuff.studierendeChaotic;
+		else if (this instanceof StudentGoalOriented) temp = sharedstuff.studierendeGoal;
+		else temp = sharedstuff.studierende;
 		int sum = 0;
-		for (Student s : sharedstuff.studierende) {
-			sum = sum + s.spentTicks;
+		for (Student s : temp) {
+			if (!sharedstuff.remove_these.contains(s))
+				sum = sum + s.spentTicks;
 		}
-		return sum / sharedstuff.studierende.size();		// Returns Mean
+		return sum / temp.size();		// Returns Mean
+//		return spentTicks;
 	}
 
 

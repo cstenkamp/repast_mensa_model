@@ -21,6 +21,7 @@ public class StudentChaotic extends Student {
 	
 	public StudentChaotic(int num, SharedStuff sharedstuff, int fp, Context<Object> context, Grid<Object> g, int x, int y) {
 		super(num, sharedstuff, fp, context, g, x, y);
+		sharedstuff.studierendeChaotic.add(this);
 	}
 	
   @Override

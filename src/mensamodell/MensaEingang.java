@@ -158,6 +158,7 @@ private Integer[] createWalkStyle(Double[] prop) {
 			}
 
 			addedStudents++;
+
 			consts.print(stud+" @"+(int)sharedstuff.schedule.getTickCount()+" x:"+x+" y:"+y);
 		}
 
