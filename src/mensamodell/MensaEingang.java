@@ -163,8 +163,8 @@ private Integer[] createWalkStyle(Double[] prop) {
 			}
 
 			addedStudents++;
-			System.out.println("Student #"+addedStudents+" @"+(int)sharedstuff.schedule.getTickCount()+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented " : stud instanceof StudentChaotic ? "Chaotic " : "Pathfinder ")+
-					(fp == consts.MEAT ? "Fleischesser" : fp == consts.VEGGIE ? "Vegetarier" : fp == consts.VEGANER ? "Veganer" : "Ohne Präferenz"));
+//			System.out.println("Student #"+addedStudents+" @"+(int)sharedstuff.schedule.getTickCount()+" x:"+x+" y:"+y+" "+(stud instanceof StudentGoalOriented ? "GoalOriented " : stud instanceof StudentChaotic ? "Chaotic " : "Pathfinder ")+
+//					(fp == consts.MEAT ? "Fleischesser" : fp == consts.VEGGIE ? "Vegetarier" : fp == consts.VEGANER ? "Veganer" : "Ohne Praeferenz"));
 		}
 
 		if (sharedstuff.mgrid != null && sharedstuff.schedule.getTickCount()/consts.EINGANG_DELAY % 100 == 0) {

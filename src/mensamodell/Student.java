@@ -175,8 +175,8 @@ public class Student {
 
 	public boolean chooseMeal(Ausgabe a) {
 		boolean tmp = chooseMeal_inner(a);
-		if (tmp)
-			System.out.println("Student #" + this.num + " hat sich ein Essen gesucht.");
+//		if (tmp)
+//			System.out.println("Student #" + this.num + " hat sich ein Essen gesucht.");
 		return tmp;
 	}
 
@@ -187,7 +187,7 @@ public class Student {
 
 
 	public void remove_me() {
-		System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
+//		System.out.println("Student #" + this.num + " hat die Mensa verlassen.");
 		if (space != null && sharedstuff.mgrid != null) {
 			NdPoint mypos = space.getLocation(this);
 			sharedstuff.mgrid.set((int)mypos.getX(), (int)mypos.getY(), 0);
@@ -254,7 +254,7 @@ public class Student {
 						remove_me();
 						return;
 					} else {										// Ansonsten suche dir im naechsten Schritt eine neue Ausgabe
-						System.out.println("#"+this.num + " Next Bar");
+//						System.out.println("#"+this.num + " Next Bar");
 						this.current = null;
 					}
 				}
@@ -334,6 +334,7 @@ public class Student {
 		for (Student s : sharedstuff.studierende) {
 			sum = sum + s.spentTicks;
 		}
+		System.out.println(sum / sharedstuff.studierende.size());
 		return sum / sharedstuff.studierende.size();		// Returns Mean
 	}
 

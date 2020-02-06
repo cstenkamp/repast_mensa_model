@@ -168,7 +168,7 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		}
 		
 		// ##########################################################
-		// Speicher die Essen für jede Pref in der jeweiligen Liste
+		// Speicher die Essen fuer jede Pref in der jeweiligen Liste
 		consts.vegetarian.add(consts.ESSEN_VEGGIE);
 		consts.vegetarian.add(consts.ESSEN_VEGAN);
 		consts.vegetarian.add(consts.ESSEN_SALAD);
