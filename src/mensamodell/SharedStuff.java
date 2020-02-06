@@ -24,10 +24,14 @@ public class SharedStuff {
 	public ContextBuilder<Object> builder = null;
 	public Context<Food> foodContext;
 	public double[] foodParam;
-	
+
 	public List<Student> studierende;
 	public List<Student> remove_these;
+	public List<Student> students_that_left = null;
+	public int initialNumStud = 0;
+	
 
+	
 	public ContinuousSpace<Object> space;
 	public Grid<Object> grid;
 	public Ausgabe pommesbar = null;
@@ -42,9 +46,10 @@ public class SharedStuff {
 		this.ausgaben = ausgaben;
 		this.builder = builder;
 		schedule = RunEnvironment.getInstance().getCurrentSchedule(); //schedule.schedule(ScheduleParameters.createOneTime(1.0), new IAction() { public void execute() {} });
-		
+				
 		studierende = new ArrayList<Student>();
 		remove_these = new ArrayList<Student>();
+		students_that_left = new ArrayList<Student>();
 	}
 	
 	

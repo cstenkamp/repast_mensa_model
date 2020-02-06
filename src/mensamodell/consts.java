@@ -18,7 +18,7 @@ public class consts {
 	public static int EINGANG_DELAY;
 	public final static float WANTS_SALADFRIES_PROB = 0.3f;
 	public final static float IFWANTS_WANTS_FRIES = 0.5f;
-	public final static boolean DO_PRINT = true;
+	public final static boolean DO_PRINT = false;
 	
 
 	//Theken
@@ -64,7 +64,7 @@ public class consts {
 	
 
 	//wait times
-	public static final int waitKasse = 40;
+	public static final int waitKasse = 20;
 	public static final int waitAktion = 20;
 	public static final int waitMeat = 20;
 	public static final int waitSalad = 60;

@@ -22,6 +22,7 @@ import repast.simphony.space.grid.GridBuilderParameters;
 import repast.simphony.space.grid.SimpleGridAdder;
 import repast.simphony.space.grid.StickyBorders;
 import repast.simphony.engine.schedule.ScheduleParameters;
+import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.engine.schedule.ISchedulableAction;
 
 
@@ -196,6 +197,7 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 			eingang = new MensaEingang((int)consts.SIZE_X/2, (int)consts.SIZE_Y-1, initialNumStud, proportionsEat, proportionsWalk, context, sharedstuff, grid, aktion);
 			sharedstuff.pommesbar = pommes;
 			sharedstuff.salatbar = salat;
+			sharedstuff.initialNumStud = initialNumStud;
 		} else {
 			sharedstuff = new SharedStuff(this, context, kassen, ausgaben, foodContext, space, mgrid, foodParam);
 			eingang = new MensaEingang((float)(consts.SIZE_X*2.5/5), (float)(consts.SIZE_Y-5), initialNumStud, proportionsEat, proportionsWalk, context, space, sharedstuff); 
@@ -225,8 +227,15 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
     		sharedstuff.schedule.removeAction(a);
     	}
     	s.scheduledSteps = new ArrayList<ISchedulableAction>();
+    	sharedstuff.students_that_left.add(s);
     }
     sharedstuff.remove_these = new ArrayList<Student>();
+    
+    if (sharedstuff.students_that_left.size() ==  sharedstuff.initialNumStud) {
+    	System.out.println("End Run");
+    	RunEnvironment.getInstance().endRun();
+    }
+    	
   }
 
 

@@ -1,9 +1,9 @@
-model.archive = C:/Users/alexs/OneDrive/SyWi/3_Semester/Regelbasierte_Modellierung/Modellprojekt/repast_mensa_model/output/complete_model.jar
+model.archive = /home/chris/Documents/UNI/sem_13/regelbasierte_modellierung/projekt/mensamodell/output/complete_model.jar
 batch.params.file = scenario.rs/batch_params.xml
-ssh.key_dir = C:/Users/alexs/.ssh
+ssh.key_dir = /home/chris/.ssh
 poll.frequency = 60.0
-model.output = C:/Users/alexs/OneDrive/SyWi/3_Semester/Regelbasierte_Modellierung/Modellprojekt/repast_mensa_model/output
+model.output = /home/chris/Documents/UNI/sem_13/regelbasierte_modellierung/projekt/mensamodell/output
 
 vm.arguments = 
 local.0.instances = 2
-local.0.working_directory = C:/Users/alexs/AppData/Local/Temp/
+local.0.working_directory = /tmp
