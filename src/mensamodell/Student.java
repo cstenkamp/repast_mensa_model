@@ -341,7 +341,7 @@ public class Student {
 		else temp = sharedstuff.studierende;
 		int sum = 0;
 		for (Student s : temp) {
-			if (!sharedstuff.remove_these.contains(s))
+			if (!sharedstuff.students_that_left.contains(s))
 				sum = sum + s.spentTicks;
 		}
 		return sum / temp.size();		// Returns Mean

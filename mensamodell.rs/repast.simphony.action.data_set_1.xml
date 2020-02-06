@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.7.0">
-  <name>SpentTicks</name>
+  <name>SpentTicks Mean</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -16,36 +16,36 @@
   <atEnd>true</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Mean</string>
+      <string>Student</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Mean</id>
+        <id>Student</id>
         <className>mensamodell.Student</className>
         <methodName>calcMeanSpentTicks</methodName>
         <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>MeanChaotic</string>
+      <string>Chaotic</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>MeanChaotic</id>
+        <id>Chaotic</id>
         <className>mensamodell.StudentChaotic</className>
         <methodName>calcMeanSpentTicks</methodName>
         <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>MeanGoal</string>
+      <string>Goal</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>MeanGoal</id>
+        <id>Goal</id>
         <className>mensamodell.StudentGoalOriented</className>
         <methodName>calcMeanSpentTicks</methodName>
         <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>MeanQueue</string>
+      <string>Queue</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>MeanQueue</id>
+        <id>Queue</id>
         <className>mensamodell.StudentShortestQueue</className>
         <methodName>calcMeanSpentTicks</methodName>
         <aggType>MEAN</aggType>

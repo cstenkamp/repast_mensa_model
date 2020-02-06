@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.7.0">
-  <name>Mean Ticks</name>
-  <dataSet>SpentTicks</dataSet>
+  <name>Student Count</name>
+  <dataSet>Student Count</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Mean Value</yAxisLabel>
-  <chartTitle>Mean Tick Students</chartTitle>
+  <yAxisLabel>Count</yAxisLabel>
+  <chartTitle>Student Count</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>192</red>
@@ -21,33 +21,33 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>Mean</string>
+      <string>Goal</string>
       <SeriesData>
-        <label>Mean</label>
-        <color>
-          <red>0</red>
-          <green>51</green>
-          <blue>51</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>MeanChaotic</string>
-      <SeriesData>
-        <label>MeanChaotic</label>
+        <label>Goal</label>
         <color>
           <red>255</red>
-          <green>0</green>
+          <green>153</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>MeanQueue</string>
+      <string>Student</string>
       <SeriesData>
-        <label>MeanQueue</label>
+        <label>Student</label>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>51</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Queue</string>
+      <SeriesData>
+        <label>Queue</label>
         <color>
           <red>255</red>
           <green>0</green>
@@ -57,12 +57,12 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>MeanGoal</string>
+      <string>Chaotic</string>
       <SeriesData>
-        <label>MeanGoal</label>
+        <label>Chaotic</label>
         <color>
           <red>255</red>
-          <green>153</green>
+          <green>0</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
