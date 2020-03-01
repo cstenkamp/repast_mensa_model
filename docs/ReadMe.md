@@ -1,1 +1,6 @@
-[![Youtube-Video of a run of a simulation](https://img.youtube.com/vi/sI0sD4b7qmU/hqdefault.jpg)](https://youtu.be/sI0sD4b7qmU)
+# Repast-Simphony Model of the Westerberg-Mensa of the University of Osnabrueck
+
+
+Watch a run of the Simulation on Youtube:
+[![Youtube-Video of a run of a simulation](../Mensamodell_-_Grid-1.gif)](https://youtu.be/sI0sD4b7qmU)
+
