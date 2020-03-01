@@ -20,18 +20,17 @@ public class Ausgabe {
 	int x;
 	int y;
 	public int kind;
-	public Vector2d size;
-	protected ContinuousSpace space;
-	private double barRange = 5;
 	public int essen;
-	public Vector2d ap1 = null;
-	public Vector2d ap2 = null;
 	
 	//relevant if grid
 	private Grid<Object> grid;
 	ArrayList<Student> studentsInQueue;
 	int[] shift = null; //TODO den von der position berechnen
 		
+	//relevant if space
+	protected ContinuousSpace space;
+	private double barRange = 5;
+	
 	
 	public int getStudentsInQueue() {
 		return studentsInQueue.size(); 

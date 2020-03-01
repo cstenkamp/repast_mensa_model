@@ -24,8 +24,8 @@ public class StudentGoalOriented extends Student {
 		sharedstuff.studierendeGoal.add(this);
 	}
 	
-  @Override
-  public String toString() {
+    @Override
+    public String toString() {
       return "StudentGoalOriented(#"+num+", "+get_pref_string()+")";
   } 
 	
@@ -33,7 +33,7 @@ public class StudentGoalOriented extends Student {
 	public Ausgabe next_ausgabe() {
 		List<Ausgabe> empty_enough_bars = new ArrayList<Ausgabe>();
 		for (Ausgabe a : consideredBarsList) 
-			if (a.getStudentsInQueue() < consts.SIZE_Y-5)
+			if (a.getStudentsInQueue() < consts.SIZE_Y-5) //sonst würdest du dich außerhalb des grids stellen
 				empty_enough_bars.add(a);
 		
 		if (empty_enough_bars.isEmpty())
@@ -47,7 +47,7 @@ public class StudentGoalOriented extends Student {
 	/// Goal-Oriented studierende sind mit jedem Essen einverstanden
 	public boolean chooseMeal(Ausgabe currentBar) {
 		if (sharedstuff.space != null)
-			this.waitticks = currentBar.getWaitTicks();
+			this.waitTicks = currentBar.getWaitTicks();
 		return true;
 	}
 	

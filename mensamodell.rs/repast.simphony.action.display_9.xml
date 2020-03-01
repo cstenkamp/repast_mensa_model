@@ -7,6 +7,10 @@
       <string>styles.ObjectStyle2D</string>
     </entry>
     <entry>
+      <string>data_objs.MeanTimeCalulator_Vegan</string>
+      <string>repast.simphony.visualizationOGL2D.DefaultStyleOGL2D</string>
+    </entry>
+    <entry>
       <string>mensamodell.Ausgabe</string>
       <string>styles.ObjectStyle2D</string>
     </entry>
@@ -30,6 +34,10 @@
   <editedStyles>
     <entry>
       <string>mensamodell.Student</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>data_objs.MeanTimeCalulator_Vegan</string>
       <null/>
     </entry>
     <entry>
@@ -63,7 +71,7 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1717491120</hashCode>
+    <hashCode>980875656</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>MensaGrid</layoutProjection>
@@ -71,27 +79,31 @@
   <layerOrder>
     <entry>
       <string>mensamodell.Student</string>
+      <int>1</int>
+    </entry>
+    <entry>
+      <string>data_objs.MeanTimeCalulator_Vegan</string>
       <int>0</int>
     </entry>
     <entry>
       <string>mensamodell.Ausgabe</string>
-      <int>2</int>
-    </entry>
-    <entry>
-      <string>mensamodell.StudentGoalOriented</string>
       <int>3</int>
     </entry>
     <entry>
-      <string>mensamodell.StudentShortestQueue</string>
+      <string>mensamodell.StudentGoalOriented</string>
       <int>4</int>
     </entry>
     <entry>
+      <string>mensamodell.StudentShortestQueue</string>
+      <int>5</int>
+    </entry>
+    <entry>
       <string>mensamodell.MensaEingang</string>
-      <int>1</int>
+      <int>2</int>
     </entry>
     <entry>
       <string>mensamodell.StudentChaotic</string>
-      <int>5</int>
+      <int>6</int>
     </entry>
   </layerOrder>
   <projections>

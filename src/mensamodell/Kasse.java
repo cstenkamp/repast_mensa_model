@@ -6,7 +6,9 @@ import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.grid.Grid;
 
-public class Kasse extends Ausgabe { //extends Ausgabe
+public class Kasse extends Ausgabe {
+
+	//variable nur relevant für space-Modell
 	private double payRange = 3;
 	
 	

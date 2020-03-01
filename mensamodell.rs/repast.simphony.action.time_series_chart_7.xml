@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.7.0">
-  <name>Student Count</name>
-  <dataSet>Student Count</dataSet>
+  <name>SpentTicks Mean</name>
+  <dataSet>SpentTicks Mean</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Count</yAxisLabel>
-  <chartTitle>Student Count</chartTitle>
+  <yAxisLabel>Mean</yAxisLabel>
+  <chartTitle>SpentTicks Mean</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>192</red>
@@ -37,7 +37,7 @@
       <SeriesData>
         <label>Student</label>
         <color>
-          <red>0</red>
+          <red>51</red>
           <green>0</green>
           <blue>51</blue>
           <alpha>255</alpha>

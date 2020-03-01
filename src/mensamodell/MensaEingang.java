@@ -12,7 +12,6 @@ import repast.simphony.space.grid.Grid;
 public class MensaEingang {
 	int numStudents;
 	Context<Object> context;
-	ContinuousSpace<Object> space;
 	SharedStuff sharedstuff;
 	int addedStudents = 0;
 	int numVeggie;
@@ -29,6 +28,9 @@ public class MensaEingang {
 	float y;
 	Grid<Object> grid;
 	Ausgabe aktionstheke; //wenn da zu viele stehen nicht anstellen //TODO!!
+
+	//für Space
+	ContinuousSpace<Object> space;
 
 	
 	//Konstruktor für 2D-Env

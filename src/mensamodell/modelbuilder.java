@@ -3,6 +3,10 @@ package mensamodell;
 import java.util.ArrayList;
 import java.util.List;
 
+import data_objs.MeanTimeCalulator_Meat;
+import data_objs.MeanTimeCalulator_NoPref;
+import data_objs.MeanTimeCalulator_Vegan;
+import data_objs.MeanTimeCalulator_Veggie;
 import food_objs.Food;
 import repast.simphony.context.Context;
 import repast.simphony.context.DefaultContext;
@@ -79,14 +83,13 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		double m_po = (Double) param.getValue("m_po");
 		
 		double[] foodParam = new double[] {vg_vg, vg_ve, vg_sa, vg_po, ve_ve, ve_po, ve_sa, m_ve, m_vg, m_m, m_sa, m_po};
-		
-		
 
 		consts.SIZE_X = (int) param.getValue("size_x");
 		consts.SIZE_Y = (int) param.getValue("size_y");
-		
-		
-		// Aktionstheke ist zufaellig vegan, veggie, salad oder meat 
+
+		// ======================== Lege das Essen der Special Theken fest ========================
+
+		// Aktionstheke ist zufaellig vegan, veggie, salad oder meat
 		int aktionsessen = RandomHelper.nextIntFromTo(0, 2);
 		switch (aktionsessen) {
 			case consts.ESSEN_VEGGIE: consts.print("Aktionstheke ist Vegetarisch."); break;
@@ -108,6 +111,9 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 			case consts.ESSEN_MEAT: consts.print("Schneller Teller ist Fleisch."); break;
 			default: consts.print("Irgendwas ist mit der Schnellen Teller falsch.");
 		}
+
+		// ======================== Erzeuge Ausgaben, Kassen, Eingang ========================
+
 
 		ContinuousSpace<Object> space = null;
 		MensaGrid mgrid = null;
@@ -173,8 +179,7 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 			if (!kassen.contains(th))
 				ausgaben.add((Ausgabe) th);
 		}
-		
-		// ##########################################################
+
 		// Speicher die Essen fuer jede Pref in der jeweiligen Liste
 		consts.vegetarian.add(consts.ESSEN_VEGGIE);
 		consts.vegetarian.add(consts.ESSEN_VEGAN);
@@ -195,10 +200,10 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		consts.noPref.add(consts.ESSEN_MEAT);
 		
 
-		Context<Food> foodContext = new DefaultContext<>("foodContext");
+		Context<Object> foodContext = new DefaultContext<>("foodContext");
 		context.addSubContext(foodContext);
-		
-		// #########################################################
+
+		// ======================== Erzeuge den Mensa-Eingang ========================
 
 		MensaEingang eingang;
 		if (USE_GRID)  {
@@ -214,9 +219,13 @@ public class modelbuilder extends DefaultContext implements ContextBuilder<Objec
 		}	
  
 		context.add(eingang);
-		sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(1, consts.EINGANG_DELAY), eingang, "step");
+		sharedstuff.schedule.schedule(ScheduleParameters.createRepeating(1, consts.EINGANG_DELAY), eingang, "step");  //da der Eingang_delay je nachdem ob wir space oder grid nutzen anders ist müssen wir ihn manuell schedulen.
 
-
+		foodContext.add(new MeanTimeCalulator_Vegan(sharedstuff));
+		foodContext.add(new MeanTimeCalulator_Veggie(sharedstuff));  //DATA
+		foodContext.add(new MeanTimeCalulator_Meat(sharedstuff));
+		foodContext.add(new MeanTimeCalulator_NoPref(sharedstuff));
+		
     
 		return context;
 	} // END of Context.

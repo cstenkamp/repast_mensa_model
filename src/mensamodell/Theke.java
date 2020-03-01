@@ -1,11 +1,12 @@
 package mensamodell;
 
+
 import javax.vecmath.Vector2d;
 
 import repast.simphony.space.continuous.ContinuousSpace;
 
-//student laeuft rum, sieht theke, called enqueueInTheke, ab dann geht er in jedem zeitschritt ggf nen schlangenplatz vor
-//wenn er die theke sieht sieht er aber auch die länge der schlange und reiht sich nur ggf ein
+// die Klasse "Theke" ist nur relevant für das 2D-Space Modell (!=Grid), welches nicht präsentiert wurde.
+// Eine Theke hat lediglich eine räumliche Ausdehnung und soll ausschließlich als Lauf-Blockade für die Studenten dienen.
 
 public class Theke {
 	int x;
